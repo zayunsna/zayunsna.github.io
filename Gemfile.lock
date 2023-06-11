@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/eventmachine/eventmachine.git
+  revision: 9cb13a8a62363df5ebcc414169a3deb2c1608528
+  tag: v1.2.7
+  specs:
+    eventmachine (1.2.7-x86-mingw32)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -9,7 +16,6 @@ GEM
     em-websocket (0.5.3)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0)
-    eventmachine (1.2.7-x86-mingw32)
     execjs (2.8.1)
     ffi (1.15.5)
     forwardable-extended (2.6.0)
@@ -107,6 +113,7 @@ PLATFORMS
 
 DEPENDENCIES
   duktape
+  eventmachine (= 1.2.7)!
   jekyll (~> 4.1)
   jekyll-compose
   jekyll-default-layout
