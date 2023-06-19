@@ -50,6 +50,8 @@ author:
 menu:
   - title: Tech-Note
     url: /blog/
+  - title: Tip-Note
+    url: /tips/
   - title: Documentation
     url: /docs/
   - title: About
