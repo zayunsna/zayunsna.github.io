@@ -135,10 +135,10 @@ defaults:
       sitemap: false
 
   # # You can use the following to enable comments on all posts.
-  # - scope:
-  #     type:            posts
-  #   values:
-  #     comments:        true
+  - scope:
+      type: posts
+    values:
+      comments: true
 
   # `jekyll-seo-tag` will mark collection outputs as `BlogPosting`,
   # but we want them to be `WebPage`s:
@@ -192,7 +192,8 @@ utterances:
 
 hydejack:
   # Configure the order of complementary content on blog posts
-  post_addons: [about, newsletter, related, random, comments]
+  # post_addons: [about, newsletter, related, random, comments]
+  post_addons: [comments, about, newsletter, related, random]
 
   # Configure the order of complementary content on project pages
   project_addons: [about, newsletter, other, comments]
