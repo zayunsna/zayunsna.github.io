@@ -177,6 +177,14 @@ kramdown:
 # Setting a tinyletter username will enable the newsletter subscription box.
 # PRO version only!
 # tinyletter:            <username>
+comments:
+  provider: utterances
+
+utterances:
+  repo: "zayunsna/blog_comment_control"
+  issue-term: "pathname"
+  label: "Comments"
+  theme: "github-dark-orange"
 
 # Hydejack Settings
 # ----------------------------------------------------------------------------------------
