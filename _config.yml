@@ -31,7 +31,7 @@ description: >
 tagline: Data Analyist, ML Developer and a little dumb
 
 # A list of keywords for your blog
-keywords: [DA, ML, Blog]
+keywords: [Data Analysis, Data Scientist, Machine Learning, Blog]
 
 # A (square) logo for your site.
 # If provided, it will be shown at the top of the sidebar.
@@ -88,7 +88,7 @@ remote_theme: hydecorp/hydejack@v9
 # ----------------------------------------------------------------------------------------
 
 # Sidebar image and theme color of the site.
-accent_image: /assets/img/sidebar-bg.jpg
+accent_image: /assets/img/pexels-ricky-esquivel-2627063.jpg
 accent_color: rgb(79,177,186)
 
 # This is used for the `theme-color` meta tag,

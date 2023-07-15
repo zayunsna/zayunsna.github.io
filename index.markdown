@@ -5,6 +5,8 @@
 layout: home
 ---
 
-# HK Playground
+# 🎡 HK Playground 🎢
 
-![image](./assets/img/post/Gloomy_future.png)
+<p align="center">
+  <img src="/assets/img/giphy.gif" alt="text" width="number" />
+</p>
