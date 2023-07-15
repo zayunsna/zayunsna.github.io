@@ -1,8 +1,6 @@
-# the source of HK Playground.
+# :sparkles: Wellcome to my slow update tech blog! :sparkles:
 
-## Wellcome to my slow update tech blog!
-
-the blog you can find [Here!](https://zayunsna.github.io/)
+My blog :camel: you can find [Here! :+1:](https://zayunsna.github.io/)
 
 # Below is the introduction of the package of my blog!
 
