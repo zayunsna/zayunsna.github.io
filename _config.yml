@@ -164,6 +164,9 @@ kramdown:
   math_engine_opts: {}
   footnote_backlink: "&#x21a9;&#xfe0e;"
 
+# file: "_config.yml"
+favicon: /assets/icons/favicon.ico
+apple_touch_icon: /assets/icons/icon_256x256.png
 # 3rd Party Integrations
 # ----------------------------------------------------------------------------------------
 
