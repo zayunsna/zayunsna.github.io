@@ -8,7 +8,7 @@ author1:
   # Used at the bottom of each page and at the top of the `about` layout
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
   about: |
-    생각날때마다 업로드하기! 나만의 wiki를 만들어 보자!
+    Let's keep building out our tech WIKI!
   # This photo will be used in the about section
   picture:
     path: /assets/img/new_profile_image.png
