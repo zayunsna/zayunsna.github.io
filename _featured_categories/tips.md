@@ -10,7 +10,7 @@ slug: tips
 
 # (Optional) Write a short (~150 characters) description of this featured tag.
 description: >
-  이것저것 메모해놓는 Tips!
+  Memo Memo and Memo Tips!
 
 # (Optional) You can disable grouping posts by date.
 # no_groups: true

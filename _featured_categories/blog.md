@@ -10,7 +10,7 @@ slug: blog
 
 # (Optional) Write a short (~150 characters) description of this featured tag.
 description: >
-  맨땅에서 시작하는 Data Aanalysis, ML 공부!
+  Starting From zero - Data Aanalysis, ML!
 
 # (Optional) You can disable grouping posts by date.
 # no_groups: true
