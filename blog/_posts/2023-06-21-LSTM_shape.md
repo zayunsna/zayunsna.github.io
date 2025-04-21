@@ -105,7 +105,7 @@ TrainY shape : (1735, 30, 1)
 ```python
 Node: 'sequential/lstm/mul'
 Incompatible shapes: [25,30,7] vs. [30,30,7]
-         [[{{node sequential/lstm/mul}}]] [Op:__inference_train_function_6923]
+         {% raw %}{{node sequential/lstm/mul}}{% endraw %} [Op:__inference_train_function_6923]
 ```
 
 쉽게 이해하면, 입력된 shape (25, 30, 7)과 입력예정인 shape (30, 30, 7)이 다르다는 뜻이다.

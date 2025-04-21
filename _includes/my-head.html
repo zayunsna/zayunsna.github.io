@@ -1,14 +1,13 @@
-<head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EFHZ9GHP8R"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+{% comment %}
+<!--
+Using `preload` so that page rendering doesn't get blocked.
+Fill in `href`. You may have to adjust `as` and `onload`/`rel`, depending on content.
+-->
+<link href="<path/to/content.css>" rel="preload" as="style" onload="this.rel='stylesheet'">
 
-  gtag('config', 'G-EFHZ9GHP8R');
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3890858786959706"
-     crossorigin="anonymous"></script>
-
-</head>
+<!--
+Fallback in case JavaScript isn't enabled.
+Fill in `href`. You may have to adjust `rel`.
+-->
+<noscript><link href="<path/to/content.css>" rel="stylesheet"></noscript>
+{% endcomment %}
