@@ -2,5 +2,13 @@
 <aside class="comments related" role="complementary">
   <h2 class="hr-bottom">{{ site.data.strings.comments | default:"Comments" }}</h2>
   {% include my-comments.html %}
+  <script src="https://utteranc.es/client.js"
+  repo="zayunsna/blog_comment_control"
+  issue-term="pathname"
+  theme="github-dark-orange"
+  crossorigin="anonymous"
+  async>
+</script>
+
 </aside>
 {% endif %}
