@@ -14,7 +14,7 @@ sitemap:
 ---
 So I spent the weekend diving into how Airbnb tackled their search ranking problem, and honestly, it's fascinating how much trial and error went into it.
 
-[You can find the paper!](https://archive.is/o/j46tZ/https://arxiv.org/pdf/1810.09591)
+[HERE You can find the paper!](https://archive.is/o/j46tZ/https://arxiv.org/pdf/1810.09591)
 
 You know how it goes when you're searching for a place on Airbnb—you type in "Miami" or whatever, and somehow their system decides which 20 places (out of thousands) to show you first. That ordering can make or break a host's business, and from a technical perspective, it's insanely complex.
 
