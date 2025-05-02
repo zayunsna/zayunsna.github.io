@@ -2,7 +2,7 @@
 layout: post
 title: Data Framework
 description: >
-  Journal Club - 1
+  Journal Club - From prototype to Production - Airbnb's Deep Learning Paper
 image: /assets/img/ds/airbnb/cover.png
 sitemap:
   changefreq: daily
