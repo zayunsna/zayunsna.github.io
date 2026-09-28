@@ -47,14 +47,14 @@ Mojo를 사용해보려면 초대장을 받기 위해 이메일로 가입해야 
 - 🔄 Mojo는 파이썬과 호환되며, Mojo 코드는 파이썬에서도 실행될 수 있다.
 - 🧪 Mojo는 병렬 처리와 메모리 안전성을 위한 기능을 제공한다.
 - 📝 Mojo는 Class 를 아직 지원하지 않으며 오픈소스가 아니다.
-- 🆓 Mojo를 사용해보려면 초대장을 받기 위해 이메일로 가입해야 한다. [신청하러 가기!](<[https://www.modular.com/get-started](https://www.modular.com/get-started)>)
+- 🆓 Mojo를 사용해보려면 초대장을 받기 위해 이메일로 가입해야 한다. [신청하러 가기!](https://www.modular.com/)
 
 한 가지 매우 특이한 점은, mojo로 작성한 언어의 확장자다. 보통 python의 경우 확장자는 ‘.py’ 고 C++의 경우 ‘.cc’ 또는 ‘.cpp’로 저장한다. 반면에, mojo의 경우 ‘.mojo’ 와 불 이모지인 ‘.🔥’ (U+1F525)을 사용할 수 있다. 놀랍게도 이모지는 파일 확장자로 사용 가능하다 ;;;
 
 ## 참고 문헌
 
-[1] [Moduler official blog](<[https://docs.modular.com/mojo/](https://docs.modular.com/mojo/)>)
+[1] [Moduler official blog](https://mojolang.org/docs/)
 
 [2] Mojo Playground - 가입 필요.
 
-[3] [찐 파이썬 킬러?! 해외에서 난리난 언어 Mojo🔥 - 노마드 코더](<[https://www.youtube.com/watch?v=fYb2DkFo01U](https://www.youtube.com/watch?v=fYb2DkFo01U)>)
+[3] [찐 파이썬 킬러?! 해외에서 난리난 언어 Mojo🔥 - 노마드 코더](https://www.youtube.com/watch?v=fYb2DkFo01U)
