@@ -11,6 +11,10 @@ sitemap:
 
 # Self Attention에 대해 공부
 
+> **Corrected September 2026:** The worked example used a different K matrix than the code; it now uses K = [[1, 2], [2, 3]] in both, and K^T replaces a typo (K^2). Section 3.2 wrongly said self-attention's cost does not depend on sentence length; the score matrix is n × n, so cost grows with the square of the length.
+{:.note}
+
+
 트랜스포머 메커니즘이 등장하면서 자연어 처리와 기계 번역의 전통적인 패러다임은 근본적으로 변화하게 되었다. 특히, 이러한 혁신을 주도하는 핵심 기술 중 하나가 셀프 어텐션(**Self Attention**)이다. **Self Attention**은 텍스트 데이터 내의 단어 간 상호 작용과 관계를 정교하게 모델링할 수 있어, 문장의 의미를 훨씬 정확하게 파악하거나 번역하는 데 있어 비약적인 향상을 가져왔다. 이러한 **Self Attention** mechanism이 어떻게 동작하는지, 그리고 왜 이것이 효과적인지에 대한 깊은 이해는 자연어 처리를 연구하거나 애플리케이션을 개발하는 데 있어 필수적이다. 본 글에서는 이러한 점들을 깊이 있고 자세하게 탐구하며, **Self Attention**의 개념부터 그 구현 디테일, 그리고 그 장점까지 철저히 분석하고자 한다.
 
 ## **1. 셀프 어텐션의 개념**
@@ -61,7 +65,7 @@ $$
 
 $$
 Q = \begin{bmatrix} 1\quad 0 \\0\quad 1 \end{bmatrix} \\
-K = \begin{bmatrix}1\quad 2\\3\quad 4 \end{bmatrix} \\
+K = \begin{bmatrix}1\quad 2\\2\quad 3 \end{bmatrix} \\
 V = \begin{bmatrix} 0\quad 1 \\1\quad 0 \end{bmatrix} \\
 
 
@@ -73,7 +77,7 @@ $$
 
 $$
 QK^{T}\;=\; \begin{bmatrix}1\quad0\\0\quad1\end{bmatrix}
-\begin{bmatrix}1\quad2\\3\quad4\end{bmatrix}^{2}
+\begin{bmatrix}1\quad2\\2\quad3\end{bmatrix}^{T}
 \;=\;
 \begin{bmatrix}1\quad2\\2\quad3\end{bmatrix}
 $$
@@ -154,9 +158,9 @@ print("\n output : ", output)
 
 전통적인 RNN이나 LSTM은 시퀀스의 각 요소를 순차적으로 처리해야 하지만, **Self Attention**은 모든 요소를 동시에 처리할 수 있다. 이로 인해 병렬 계산이 가능하며, 연산 속도가 빠르다.
 
-### **3.2. 문장 길이에 영향 받지 않음**
+### **3.2. 먼 단어도 한 번에 연결**
 
-**Self Attention**은 문장의 길이에 영향을 받지 않는다. 기존의 순차적인 모델들은 문장의 길이가 길어질수록 계산 시간이 길어지는 단점이 있었다. 하지만 **Self Attention**은 모든 단어 간의 관계를 한 번에 계산하기 때문에 문장의 길이에 상관 없이 일정한 계산 시간을 유지할 수 있다.
+**Self Attention**은 모든 단어 쌍의 관계를 한 번에 계산하기 때문에, 문장 안에서 멀리 떨어진 단어끼리도 한 단계 만에 연결된다. RNN처럼 정보가 여러 단계를 거치며 희미해지지 않는다. 대신 attention score 행렬이 (문장 길이 × 문장 길이) 크기라서, 문장이 2배 길어지면 계산량과 메모리는 약 4배로 늘어난다.
 
 ### **3.3. 문맥 파악 능력 강화**
 
