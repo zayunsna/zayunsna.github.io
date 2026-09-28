@@ -28,7 +28,7 @@ description: >
   deep learning, and the problems that come up in real projects.
 
 # A shorter description for the sidebar.
-tagline: Data Analyist, ML Developer and a little dumb
+tagline: Data Analyst, ML Developer and a little dumb
 
 # A list of keywords for your blog
 keywords: [Data Analysis, Data Scientist, Machine Learning, Blog]
@@ -171,7 +171,7 @@ kramdown:
 
 # file: "_config.yml"
 favicon: /assets/icons/favicon.ico
-apple_touch_icon: /assets/icons/icon_256x256.png
+apple_touch_icon: /assets/icons/icon-256x256.png
 # 3rd Party Integrations
 # ----------------------------------------------------------------------------------------
 
@@ -224,7 +224,7 @@ hydejack:
   # Set to true to disable the built-in search functionality.
   # Note that search is disabled during local use to save on build time.
   # Run Jekyll with the `JEKYLL_ENV` environment variable set to `production` to enable.
-  no_search: false
+  no_search: true  # search needs the PRO version's data file; free version has no search UI
 
   # Set to `true` if you do not want parts of the css inlined in <head/>
   # This will increase site build speed dramatically!
@@ -279,7 +279,7 @@ hydejack:
   # TODO
   hide_last_modified: false
 
-  # Note that dark mode only works in the PRO version of Hydejack.
+  # Dark mode works in the free version 9.2.1 (checked 2026-09-28).
   dark_mode:
     # Set to `true` to always use the dark theme.
     always: true
@@ -329,6 +329,10 @@ exclude:
   # Private working notes and the stock Hydejack manual — not site content
   - CLAUDE.md
   - docs
+  # Hydejack leftovers with no inbound links
+  - CHANGELOG.md
+  - posts.md
+  - licenses/PRO.md
   - _featured_categories/example.md
 include:
   - .well-known

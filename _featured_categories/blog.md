@@ -10,7 +10,7 @@ slug: blog
 
 # (Optional) Write a short (~150 characters) description of this featured tag.
 description: >
-  Starting From zero - Data Aanalysis, ML!
+  Starting From zero - Data Analysis, ML!
 
 # (Optional) You can disable grouping posts by date.
 # no_groups: true
