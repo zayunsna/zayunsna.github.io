@@ -4,6 +4,7 @@ title: cuDNN을 설치해보자
 description: >
   cuDNN이 꼭 필요할까? 응. 필요하다.
 image: /assets/img/post/cuDNN_install/cover.png
+lastmod: 2026-09-28
 sitemap:
   changefreq: daily
   priority: 1.0

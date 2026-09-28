@@ -4,6 +4,7 @@ title: Nohup 사용법
 description: >
   잊기전에 적어두자 nohup 사용법!
 image: /assets/img/tips/nohub_tips/cover.png
+lastmod: 2026-09-28
 sitemap:
   changefreq: daily
   priority: 1.0

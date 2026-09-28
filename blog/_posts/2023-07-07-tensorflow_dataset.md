@@ -4,6 +4,7 @@ title: Tensorflow의 Dataset 사용법 정리
 description: >
   MinMaxScaler와 같이 사용할 때 마다 까먹는 Tensorflow의 Dataset사용법 정리!!
 image: /assets/img/post/tensorflow_dataset/cover.png
+lastmod: 2026-09-28
 sitemap:
   changefreq: daily
   priority: 1.0

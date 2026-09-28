@@ -4,6 +4,7 @@ title: Torch에서 CUDA 사용 실패하는 경우
 description: >
   CUDA는 Version에 예민해..
 image: /assets/img/post/torch_error_1/cover.png
+lastmod: 2026-09-28
 sitemap:
   changefreq: daily
   priority: 1.0
