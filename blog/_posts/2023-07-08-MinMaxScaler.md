@@ -11,6 +11,9 @@ sitemap:
 
 # MinMaxScaler 사용법
 
+> **Corrected September 2026:** An earlier version of this post said MinMaxScaler normalizes each row. It scales each column (feature) separately. The last code example also referred to an undefined `scaler` variable; it now uses `sc`.
+{:.note}
+
 ## Scaling 적용
 
 MinMaxScaler는 Scikit-learn에서 제공하는 Normalizing API이다.
@@ -40,9 +43,9 @@ scaled_data = sc.fit_transform(data)
 
 ![image](../../assets/img/post/minmaxscaler/numpy_case.png)
 
-각 열 별로 normalizing이 되는게 아닌 각 행별로 normalizing이 되는 것을 확인할 수 있다.
+각 **열(column) 별로** normalizing 되는 것을 확인할 수 있다. 각 열의 최솟값은 0, 최댓값은 1이 된다.
 
-위에 예제로 부터 알 수 있는 건, MinMaxScaler의 input shape 은 ( n, 1 ) 이어야 한다. 즉 1차원 array의 경우 reshape(-1, 1)을 이용 shape을 변경해야 한다.
+MinMaxScaler는 2차원 입력(행 = 샘플, 열 = feature)을 받는다. 따라서 1차원 array 하나를 스케일링하려면 reshape(-1, 1)로 ( n, 1 ) 모양으로 바꿔야 한다.
 
 두번째로, numpy array뿐 아니라 pandas의 Dataframe에도 쉽게 적용 가능하다.
 
@@ -105,8 +108,8 @@ restored_column = sc.inverse_transform(scaled_data)[:, column_index]
 ```python
 # 특정 열에 대한 스케일링 팩터 추출
 column_name = 'A'  # 추출하려는 열의 이름
-column_min = scaler.data_min_[df.columns.get_loc(column_name)]
-column_max = scaler.data_max_[df.columns.get_loc(column_name)]
+column_min = sc.data_min_[df.columns.get_loc(column_name)]
+column_max = sc.data_max_[df.columns.get_loc(column_name)]
 ```
 
 ![image](../../assets/img/post/minmaxscaler/dataframe_case3.png)
