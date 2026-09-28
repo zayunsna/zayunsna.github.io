@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Nohub 사용법
+title: Nohup 사용법
 description: >
-  잊기전에 적어두자 nohub 사용법!
+  잊기전에 적어두자 nohup 사용법!
 image: /assets/img/tips/nohub_tips/cover.png
 sitemap:
   changefreq: daily
@@ -11,7 +11,10 @@ sitemap:
 
 # nohup 명령어 정리
 
-**nohub은 리눅스나 유닉스 시스템에서 백그라운드로 프로세스를 실행시키고, 해당 터미널이 종료된 후에도 그 프로세스가 계속 실행되게 하는 스크립트.**
+> **Corrected September 2026:** The original `kill_proc.sh` did not run: `echo #TARGET_LINE` turned the rest of the line into a comment (bash reported a syntax error) and `kill &JOB_ID` should have been `kill $JOB_ID`. The script is fixed and now excludes the `grep` process itself. A shorter alternative is `pkill -f run.sh`. Both were tested on 2026-09-28.
+{:.note}
+
+**nohup은 리눅스나 유닉스 시스템에서 백그라운드로 프로세스를 실행시키고, 해당 터미널이 종료된 후에도 그 프로세스가 계속 실행되게 하는 명령어.**
 
 ### 1. 기본 구조
 
@@ -34,17 +37,17 @@ $ nohup <process_name> > <log_file_name> 2>&1 &
 ### 3. [번외] nohup을 이용해 background로 실행중인 process 찾아 종료하기
 
 ```bash
-$ nuhup run.sh > out_log.txt 2>&1 &
+$ nohup run.sh > out_log.txt 2>&1 &
 
 $ cat kill_proc.sh
 #!/bin/bash
 
 TARGET_NAME=$1
-TARGET_LINE=$(ps -ef | grep $TARGET_NAME)
-JOB_ID=$(echo #TARGET_LINE | awk '{print $2}')
+TARGET_LINE=$(ps -ef | grep "$TARGET_NAME" | grep -v grep)
+JOB_ID=$(echo "$TARGET_LINE" | awk '{print $2}')
 echo 'Background process [' $TARGET_NAME ', Process ID : ' $JOB_ID '] has been killed. '
 
-kill &JOB_ID
+kill $JOB_ID
 
 $ . kill_proc.sh run
 Background process [run , Process ID : 230053] has been killed.
