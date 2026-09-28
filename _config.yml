@@ -24,8 +24,8 @@ title: HK Playground
 # A short description (~150 chars) of the page used for the meta description tag.
 # Can use markdown, but no more than one paragraph (enforced by `>`)
 description: >
-  Hydejack is a boutique Jekyll theme for hackers, nerds, and academics,
-  with a focus on personal sites that are meant to impress.
+  Practical notes on data analysis and machine learning: statistics, Python,
+  deep learning, and the problems that come up in real projects.
 
 # A shorter description for the sidebar.
 tagline: Data Analyist, ML Developer and a little dumb
@@ -55,23 +55,23 @@ menu:
     url: /tips/
   - title: Data-Note
     url: /ds/
-  - title: Documentation
-    url: /docs/
   - title: About
     url: /about/
 
 # Add links to the footer.
 # Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
 legal:
+  - title: Privacy Policy
+    url: /privacy/
+  - title: Contact
+    url: /contact/
   - title: LICENSE
     url: /LICENSE/
   - title: NOTICE
     url: /NOTICE/
-  - title: CHANGELOG
-    url: /CHANGELOG/
 
 # This text will appear in a `<small>` tag in the footer of every page.
-copyright: © 2021. All rights reserved.
+copyright: © 2023–2026 HK Jeon. All rights reserved.
 
 # Format of the permalinks
 permalink: /:categories/:year-:month-:day-:title/
@@ -323,6 +323,10 @@ exclude:
   - vendor
   - Gemfile
   - Gemfile.lock
+  # Private working notes and the stock Hydejack manual — not site content
+  - CLAUDE.md
+  - docs
+  - _featured_categories/example.md
 include:
   - .well-known
   - LICENSE.md
