@@ -53,3 +53,16 @@ The snippet below will run the code on every `hy-push-state-load` event instead.
   });
 </script>
 {% endcomment %}
+
+<!--
+Hydejack swaps page content without a full reload, and videos inserted that way do not start on their own.
+Restart muted autoplay videos (e.g. the home page loop) after every in-site navigation.
+-->
+<script>
+  document.getElementById('_pushState').addEventListener('hy-push-state-load', function () {
+    document.querySelectorAll('main video[autoplay]').forEach(function (v) {
+      v.load();
+      v.play().catch(function () {});
+    });
+  });
+</script>

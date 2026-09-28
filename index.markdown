@@ -8,5 +8,6 @@ layout: home
 # 🎡 HK Playground 🎢
 
 <p align="center">
-  <img src="/assets/img/giphy.gif" alt="text" width="number" />
+  <video src="/assets/img/home_loop.mp4" poster="/assets/img/home_loop_poster.jpg" width="480"
+         autoplay loop muted playsinline aria-hidden="true"></video>
 </p>
