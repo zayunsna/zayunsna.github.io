@@ -73,6 +73,9 @@ legal:
 # This text will appear in a `<small>` tag in the footer of every page.
 copyright: © 2023–2026 HK Jeon. All rights reserved.
 
+# Dates in post filenames are Korean dates; GitHub builds in UTC.
+timezone: Asia/Seoul
+
 # Format of the permalinks
 permalink: /:categories/:year-:month-:day-:title/
 
