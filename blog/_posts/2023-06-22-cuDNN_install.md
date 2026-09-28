@@ -11,6 +11,9 @@ sitemap:
 
 # cuDNN을 설치해보자
 
+> **Added September 2026:** This post was written in 2023 and reflects the tools and library versions available at that time. Installation steps, APIs, and version numbers may have changed since.
+{:.note}
+
 현재 내 OS는 Ubuntu22.04 다.
 
 ```bash

@@ -11,6 +11,9 @@ sitemap:
 
 # Torch에서 CUDA 사용 실패하는 경우
 
+> **Added September 2026:** This post was written in 2023 and reflects the tools and library versions available at that time. Installation steps, APIs, and version numbers may have changed since.
+{:.note}
+
 진행하던 프로젝트를 시험 서버에서 가동하기위해 세팅중 예전에 봐뒀다가 해결 후 정리 안해둔 머리아픈 에러를 마주했다.
 
 ```latex

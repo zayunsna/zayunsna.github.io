@@ -11,6 +11,9 @@ sitemap:
 
 # Tensorflow의 Dataset 사용법 정리
 
+> **Added September 2026:** This post was written in 2023 and reflects the tools and library versions available at that time. Installation steps, APIs, and version numbers may have changed since.
+{:.note}
+
 모델 학습을 위한 Dataset을 만들때 사용하는 Tensorflow의 Dataset기능 중 가장 자주 사용하는 용어에 대해 정리해볼 생각이다.
 
 Tensorflow의 Dataset은 데이터를 모델학습에 최적화 시킨 구조로 변환 및 가공하는 효율적인 API이다.

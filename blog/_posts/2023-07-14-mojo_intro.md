@@ -11,6 +11,9 @@ sitemap:
 
 # Mojo가 모죠?
 
+> **Added September 2026:** This post was written in 2023 and reflects the tools and library versions available at that time. Installation steps, APIs, and version numbers may have changed since.
+{:.note}
+
 ## Mojo가 모죠?
 
 기존 Python은 사용자 친화적인 환경으로 C++ 못지 않게 엄청 많은 분야에서 사용되고 그 인기 또한 높았다. 하지만 Python의 가장 큰 단점 중 하나는 속도이다. C++에 비하면 수천 배(과장 살짝 해서..) 가 느리니 무거운 Job 을 돌리거나 sorting을 하면 좀 답답하다. Python3.11 이 업데이트 되었고 속도 면에서 엄청 큰 변화를 가져왔다. 실제로 사용해본 결과, 개인적으로는 체감이 가능한 수준 하지만 드라마틱 하게 빨라졌다는 느낌은 받지 못했다. 또 다른 단점으로는 Complie이 불가능 하다는 점이다. Complie 을 할 수 없어서 배포나 소스 코드 공유에 어려움이 많다. 매번 동작 환경을 고려하고 동일하게 설정해줘야 하기 때문이다.
