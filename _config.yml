@@ -328,6 +328,7 @@ exclude:
   - Gemfile.lock
   # Private working notes and the stock Hydejack manual — not site content
   - CLAUDE.md
+  - AGENTS.md
   - docs
   - scripts
   # Hydejack leftovers with no inbound links
