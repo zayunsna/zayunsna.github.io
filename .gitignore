@@ -58,3 +58,4 @@ _zip
 
 # Search Console reports (local only)
 .gsc/
+__pycache__/
