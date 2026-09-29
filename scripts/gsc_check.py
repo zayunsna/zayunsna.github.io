@@ -141,11 +141,15 @@ def service():
     from google.oauth2.credentials import Credentials
     from google_auth_oauthlib.flow import InstalledAppFlow
     from googleapiclient.discovery import build
+    from google.auth.exceptions import RefreshError
     creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES) if os.path.exists(TOKEN_FILE) else None
     if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
+        try:
+            if not (creds and creds.expired and creds.refresh_token):
+                raise RefreshError("no usable token")
             creds.refresh(Request())
-        else:
+        except RefreshError:
+            # In "Testing" mode Google expires refresh tokens after 7 days: log in again in the browser
             creds = InstalledAppFlow.from_client_secrets_file(CLIENT_FILE, SCOPES).run_local_server(port=0)
         with open(os.open(TOKEN_FILE, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600), "w") as fh:
             fh.write(creds.to_json())
