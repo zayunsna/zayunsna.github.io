@@ -10,6 +10,7 @@ Scope is read-only; this script never requests indexing or changes anything in S
 import argparse
 import datetime as dt
 import glob
+import json
 import os
 import re
 import sys
@@ -31,6 +32,17 @@ PAGE_TWO_POSITION = (8.0, 20.0)
 PAGE_TWO_MIN_IMPRESSIONS = 20
 NOT_CRAWLED_AFTER_DAYS = 7
 NO_IMPRESSIONS_AFTER_DAYS = 28
+
+# Publishing-pace rule: judged on posts published 3-14 days ago (Google gets at least 3 days to index them)
+RECENT_MIN_AGE, RECENT_MAX_AGE, RECENT_MIN_POSTS = 3, 14, 5
+WARNING_STATES = ("Crawled - currently not indexed", "Discovered - currently not indexed")
+WARNING_JUMP = 3                                   # this many more warnings than last week -> one level slower
+PACE = [  # (label, new posts, improvements per week at most)
+    ("healthy", "2 per day", 2),
+    ("caution", "1 per day", 4),
+    ("slow down", "3 per week", 7),
+]
+HISTORY_FILE = os.path.join(REPORT_DIR, "history.json")
 
 SETUP_GUIDE = f"""Search Console credentials not found: {CLIENT_FILE}
 One-time setup (about 10 minutes):
@@ -104,7 +116,29 @@ def performance_flags(page_rows, published_by_url, today):
     return flags
 
 
+def decide_pace(recent_total, recent_indexed, warnings_now, warnings_last, candidates):
+    """Return (label, new posts, improvements this week, reason) from indexing health."""
+    if recent_total < RECENT_MIN_POSTS:
+        return ("not enough data", "keep the current schedule", min(PACE[0][2], candidates),
+                f"only {recent_total} posts are {RECENT_MIN_AGE}-{RECENT_MAX_AGE} days old")
+    rate = recent_indexed / recent_total
+    level = 0 if rate >= 0.9 else 1 if rate >= 0.7 else 2
+    reason = f"{recent_indexed}/{recent_total} recent posts indexed ({rate:.0%})"
+    if warnings_last is not None and warnings_now - warnings_last >= WARNING_JUMP:
+        level = min(level + 1, 2)
+        reason += f"; not-indexed warnings rose {warnings_last} -> {warnings_now}"
+    label, new, improve_cap = PACE[level]
+    return (label, new, min(improve_cap, candidates), reason)
+
+
 def selftest():
+    assert decide_pace(3, 3, 0, None, 5)[0] == "not enough data"
+    assert decide_pace(10, 10, 0, 0, 5)[:3] == ("healthy", "2 per day", 2)
+    assert decide_pace(10, 8, 0, 0, 5)[:3] == ("caution", "1 per day", 4)
+    assert decide_pace(10, 5, 0, 0, 3)[:3] == ("slow down", "3 per week", 3)      # capped by candidates
+    assert decide_pace(10, 10, 6, 2, 5)[0] == "caution"                          # warnings jumped by 4
+    assert decide_pace(10, 5, 9, 2, 9)[0] == "slow down"                         # already slowest
+
     today = dt.date(2026, 11, 1)
     ins = {
         "u/ok": (dt.date(2026, 10, 1), {"verdict": "PASS", "lastCrawlTime": "x", "googleCanonical": "u/ok", "userCanonical": "u/ok"}),
@@ -208,6 +242,31 @@ def main():
         lines += ["", "Top queries:", ""]
         lines += [f"- {r['keys'][0]}: {r['impressions']:.0f} impressions, {r['clicks']:.0f} clicks, "
                   f"position {r['position']:.1f}" for r in qrows] or ["- no queries yet"]
+
+        # 5. Pace: how many new posts and how many improvements of existing posts next week
+        recent = {u: r for u, (d, r) in inspections.items() if RECENT_MIN_AGE <= (today - d).days <= RECENT_MAX_AGE}
+        recent_indexed = sum(1 for r in recent.values() if r.get("verdict") == "PASS")
+        warnings_now = sum(1 for _, r in inspections.values() if r.get("coverageState") in WARNING_STATES)
+        history = json.load(open(HISTORY_FILE)) if os.path.exists(HISTORY_FILE) else []
+        last = next((h for h in reversed(history) if h["date"] < str(today)), None)
+        perf = performance_flags(rows, {u: d for d, u, _ in published}, today)
+        candidates = sorted({u for u, m in perf if m.startswith(("low CTR", "near page one"))} |
+                            {u for u, (d, r) in inspections.items() if r.get("coverageState") == WARNING_STATES[0]})
+        label, new, improve, reason = decide_pace(len(recent), recent_indexed, warnings_now,
+                                                  last["warnings"] if last else None, len(candidates))
+        lines += ["", f"## 5. Next week's plan: {label}", "",
+                  f"- Why: {reason}; not-indexed warnings now {warnings_now}"
+                  + (f" (last check {last['date']}: {last['warnings']})" if last else " (no earlier check)"),
+                  f"- New posts: {new}",
+                  f"- Improve existing posts: {improve} this week, from {len(candidates)} candidates:"]
+        lines += [f"  - {u}" for u in candidates] or ["  - none"]
+        history = [h for h in history if h["date"] != str(today)] + [{
+            "date": str(today), "published": len(published), "indexed": indexed,
+            "recent_total": len(recent), "recent_indexed": recent_indexed, "warnings": warnings_now,
+            "clicks": sum(r["clicks"] for r in rows), "impressions": sum(r["impressions"] for r in rows)}]
+        os.makedirs(REPORT_DIR, exist_ok=True)
+        with open(HISTORY_FILE, "w") as fh:
+            json.dump(history, fh, indent=1)
 
     os.makedirs(REPORT_DIR, exist_ok=True)
     out = os.path.join(REPORT_DIR, f"report-{today}.md")
