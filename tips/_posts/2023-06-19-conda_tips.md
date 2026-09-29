@@ -1,4 +1,5 @@
 ---
+lang: ko
 layout: post
 title: Conda 사용법
 description: >

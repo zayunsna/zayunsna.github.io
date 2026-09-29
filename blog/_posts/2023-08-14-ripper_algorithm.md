@@ -1,4 +1,5 @@
 ---
+lang: ko
 layout: post
 title: RIPPER Algorithm 이란?
 description: >

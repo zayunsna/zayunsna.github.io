@@ -1,4 +1,5 @@
 ---
+lang: ko
 layout: post
 title: Python의 속도를 빠르게 만드는 방법
 description: >

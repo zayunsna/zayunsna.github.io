@@ -1,10 +1,12 @@
 ---
+lang: ko
 layout: post
 title: Self Attention에 대해 공부
 description: >
   Transformer에 기초, 핵심 부분에 대해 알아보자
 image: /assets/img/post/self_attention/cover.png
 lastmod: 2026-09-28
+last_modified_at: 2026-09-28
 sitemap:
   changefreq: daily
   priority: 1.0

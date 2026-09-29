@@ -1,4 +1,5 @@
 ---
+lang: ko
 layout: post
 title: Ubuntu 자동 업데이트 끄기
 description: >

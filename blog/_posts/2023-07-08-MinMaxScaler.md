@@ -1,10 +1,12 @@
 ---
+lang: ko
 layout: post
 title: MinMaxScaler 사용법
 description: >
   할때마다 까먹는 Scikit-Learn 의 MinMaxScaler 사용법 정리!!
 image: /assets/img/post/minmaxscaler/cover.png
 lastmod: 2026-09-28
+last_modified_at: 2026-09-28
 sitemap:
   changefreq: daily
   priority: 1.0

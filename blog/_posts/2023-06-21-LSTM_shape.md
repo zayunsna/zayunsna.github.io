@@ -1,4 +1,5 @@
 ---
+lang: ko
 layout: post
 title: LSTM 의 Input Shape정리
 description: >

@@ -1,4 +1,5 @@
 ---
+lang: ko
 layout: post
 title: Linux System info, 환경정보 확인
 description: >

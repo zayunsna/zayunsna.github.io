@@ -1,10 +1,12 @@
 ---
+lang: ko
 layout: post
 title: Mojo가 모죠?
 description: >
   첫 발표에 큰 관심을 가져왔지만 지금은 좀 뜨뜨 미지근한 Mojo. 하지만 출시한다면 너도나도 시도할 기대되는 AI 를 위한 강력한 language!!!
 image: /assets/img/post/what_is_mojo/cover.png
 lastmod: 2026-09-28
+last_modified_at: 2026-09-28
 sitemap:
   changefreq: daily
   priority: 1.0
