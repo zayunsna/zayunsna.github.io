@@ -1,0 +1,173 @@
+// Site-specific presentation and accessibility improvements.
+
+.sidebar-bg.sidebar-overlay::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 31, 38, 0.44) 0%,
+    rgba(18, 31, 38, 0.82) 52%,
+    rgba(18, 31, 38, 0.64) 100%
+  );
+}
+
+.sidebar-sticky {
+  padding: 1.25rem;
+}
+
+.sidebar-about .avatar {
+  width: 5.5rem;
+  height: 5.5rem;
+  margin-bottom: 1rem;
+}
+
+.sidebar-about > .sidebar-title > h2 {
+  font-size: 1.65rem;
+}
+
+.sidebar-about p {
+  max-width: 16rem;
+  margin-right: auto;
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.sidebar-nav > ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  margin-top: 1.25rem;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.4rem;
+  text-decoration: none;
+}
+
+.sidebar-nav-item:hover,
+.sidebar-nav-item:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.post > header .note-sm {
+  padding: 1.35rem 1rem 0.8rem;
+  border-left: 3px solid var(--accent-color);
+  background: var(--gray-bg);
+}
+
+.post-date {
+  font-size: 0.92rem;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+.site-search {
+  margin: 2rem 0 1.5rem;
+}
+
+.site-search label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-family-heading);
+  font-weight: 700;
+}
+
+.site-search-control {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.site-search input {
+  min-width: 0;
+  flex: 1;
+  padding: 0.75rem 0.9rem;
+  color: var(--body-color);
+  border: 1px solid var(--border-color);
+  border-radius: 0.45rem;
+  background: var(--body-bg);
+  font: inherit;
+}
+
+.site-search button {
+  padding: 0.75rem 1rem;
+  color: var(--body-color);
+  border: 1px solid var(--border-color);
+  border-radius: 0.45rem;
+  background: var(--gray-bg);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.site-search button:hover {
+  border-color: var(--accent-color);
+}
+
+.site-search-help,
+.site-search-status,
+.search-result-meta {
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.site-search-help {
+  margin-top: 0.55rem;
+}
+
+.site-search-status {
+  margin-bottom: 1rem;
+}
+
+.search-results {
+  padding: 0;
+  list-style: none;
+}
+
+.search-result {
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.search-result:last-child {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.search-result-title {
+  font-family: var(--font-family-heading);
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.search-result-description {
+  margin: 0.45rem 0 0;
+}
+
+@media screen and (max-width: 42em) {
+  .content {
+    padding-top: 6.5rem;
+    padding-bottom: 8rem;
+  }
+
+  .sidebar-sticky {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .site-search-control {
+    align-items: stretch;
+  }
+
+  .site-search input {
+    font-size: 16px;
+  }
+}

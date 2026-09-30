@@ -28,7 +28,7 @@ description: >
   deep learning, and the problems that come up in real projects.
 
 # A shorter description for the sidebar.
-tagline: Data Analyst, ML Developer and a little dumb
+tagline: Code-tested notes on data analysis, machine learning, and practical AI
 
 # A list of keywords for your blog
 keywords: [Data Analysis, Data Scientist, Machine Learning, Blog]
@@ -49,12 +49,14 @@ author:
 
 # Add links to the sidebar.
 menu:
-  - title: Tech-Note
+  - title: ML & Engineering
     url: /blog/
-  - title: Tip-Note
+  - title: AI & Dev Tips
     url: /tips/
-  - title: Data-Note
+  - title: Data Analysis
     url: /ds/
+  - title: Search
+    url: /search/
   - title: About
     url: /about/
 

@@ -66,3 +66,92 @@ Restart muted autoplay videos (e.g. the home page loop) after every in-site navi
     });
   });
 </script>
+
+<!--
+The free Hydejack theme does not ship a search index. This original implementation searches
+the published post metadata embedded in /search/ and works after Hydejack push-state navigation.
+-->
+<script>
+  (function () {
+    var categoryNames = {
+      blog: 'ML & Engineering',
+      tips: 'AI & Developer Tips',
+      ds: 'Data Analysis & Statistics'
+    };
+
+    function initSiteSearch() {
+      var form = document.getElementById('site-search-form');
+      var dataElement = document.getElementById('site-search-data');
+      var input = document.getElementById('site-search-input');
+      var results = document.getElementById('site-search-results');
+      var status = document.getElementById('site-search-status');
+
+      if (!form || !dataElement || !input || !results || !status || form.dataset.searchReady) return;
+
+      var posts;
+      try {
+        posts = JSON.parse(dataElement.textContent);
+      } catch (error) {
+        status.textContent = 'Search is temporarily unavailable.';
+        return;
+      }
+
+      form.dataset.searchReady = 'true';
+
+      function render(query) {
+        var terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+        var matches = posts.filter(function (post) {
+          var haystack = [post.title, post.description, post.category].join(' ').toLocaleLowerCase();
+          return terms.every(function (term) { return haystack.indexOf(term) !== -1; });
+        });
+
+        if (!terms.length) matches = posts.slice(0, 8);
+        matches = matches.slice(0, 30);
+        results.textContent = '';
+
+        matches.forEach(function (post) {
+          var item = document.createElement('li');
+          var link = document.createElement('a');
+          var meta = document.createElement('div');
+          var description = document.createElement('p');
+
+          item.className = 'search-result';
+          link.className = 'search-result-title';
+          link.href = post.url;
+          link.textContent = post.title;
+          meta.className = 'search-result-meta';
+          meta.textContent = post.date + ' · ' + (categoryNames[post.category] || post.category || 'Post');
+          description.className = 'search-result-description';
+          description.textContent = post.description;
+
+          item.appendChild(link);
+          item.appendChild(meta);
+          item.appendChild(description);
+          results.appendChild(item);
+        });
+
+        if (!terms.length) {
+          status.textContent = 'Showing the 8 newest published posts.';
+        } else if (matches.length === 1) {
+          status.textContent = '1 result for “' + query.trim() + '”.';
+        } else {
+          status.textContent = matches.length + ' results for “' + query.trim() + '”.';
+        }
+      }
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        render(input.value);
+      });
+      form.addEventListener('reset', function () {
+        window.setTimeout(function () { render(''); input.focus(); }, 0);
+      });
+      input.addEventListener('input', function () { render(input.value); });
+
+      render(input.value);
+    }
+
+    initSiteSearch();
+    document.getElementById('_pushState').addEventListener('hy-push-state-load', initSiteSearch);
+  }());
+</script>
