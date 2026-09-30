@@ -3,7 +3,7 @@ lang: ko
 layout: post
 title: Python의 속도를 빠르게 만드는 방법
 description: >
-  "이 포스트에서는 파이썬의 강력한 최적화 기법들을 발견하실 수 있습니다. 복잡한 알고리즘부터 메모리 관리, 다양한 라이브러리 활용법까지, 당신의 파이썬 코드를 고속으로 실행할 수 있는 방법을 소개합니다. 지금 바로 이 비밀을 풀어보세요!" by ChatGPT
+  "코드가 92% 빨라진다"는 파이썬 속도 팁 7개 중 5개를 직접 재봤다. 확실히 빨라진 것도 있고, 해보니 별 차이 없던 것도 있었다.
 image: /assets/img/post/make_python_fast/cover.png
 sitemap:
   changefreq: daily
