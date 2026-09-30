@@ -5,8 +5,8 @@ title: Tensorflow의 Dataset 사용법 정리
 description: >
   MinMaxScaler와 같이 사용할 때 마다 까먹는 Tensorflow의 Dataset사용법 정리!!
 image: /assets/img/post/tensorflow_dataset/cover.png
-lastmod: 2026-09-28
-last_modified_at: 2026-09-28
+lastmod: 2026-09-30
+last_modified_at: 2026-09-30
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -112,7 +112,7 @@ for x, y in ts_dataset.take(5):
 
 주의해야 할 점, repeat을 이용해 반복하는 와중 take으로 범위를 조건으로 주지 않으면 무한으로 데이터셋을 반복해서 불러온다.
 
-💡 from_tensor_slices와 repeat을 사용하게 된다면, 기존 post했던 [LSTM shape](https://zayunsna.github.io/blog/2023-06-21-LSTM_shape) 에 내용중 data size%batch_size == 0 과 같은 부가적인 단계를 고민하지 않아도 된다. 항상 같은 shape을 입력해야 하는데 data를 batch_size만큼 나누었을 때 나머지가 생기면 마지막 batch의 data shape은 작기 때문에 학습도중 에러가 발생한다. 하지만 tensor화 시키고 repeat을 사용하게 된다면 그러한 문제를 아주 쉽게 해결 할 수 있다.
+💡 기존 post했던 [LSTM shape](/blog/2023-06-21-LSTM_shape/) 에서 data size%batch_size == 0 을 맞춰야 했던 건 stateful LSTM처럼 **batch 크기가 고정된 모델**일 때의 이야기다. 이런 모델은 나머지가 생겨 마지막 batch가 작으면 학습도중 에러가 발생한다. Dataset을 쓰면 `batch(batch_size, drop_remainder=True)`로 모자란 마지막 batch를 버리거나, repeat으로 데이터를 이어 붙여서 이 문제를 쉽게 피할 수 있다. (보통 LSTM은 마지막 batch가 작아도 에러 없이 학습된다. 2026-09 수정)
 
 ## shuffle()
 
