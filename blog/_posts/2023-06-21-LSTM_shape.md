@@ -5,8 +5,8 @@ title: LSTM 의 Input Shape정리
 description: >
   LSTM input_shape의 (time_step, features) 의미와 batch_input_shape, 그리고 "Incompatible shapes" 에러가 왜 나는지 정리. 2026년에 Keras 3로 다시 돌려본 결과 포함.
 image: /assets/img/post/LSTM_shape/cover.png
-lastmod: 2026-09-30
-last_modified_at: 2026-09-30
+lastmod: 2026-10-06
+last_modified_at: 2026-10-06
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -212,3 +212,5 @@ A의 `None`이 위에서 말한 "Data size는 생략"의 정체다. 배치 크�
 - Keras 3에서 배치 크기를 고정하려면 `batch_input_shape` 대신 `keras.Input(batch_shape=(batch, time_step, features))`.
 
 그리고 예전 모델 코드의 두 번째 LSTM에 넣은 `input_shape`는 의미가 없었다. 첫 층 뒤의 층은 앞 층 출력으로 shape이 정해진다.
+
+Related: [LSTM input shape explained: (batch, timesteps, features)](/blog/2026-10-05-lstm_input_shape/) — 세 차원의 의미와 PyTorch `batch_first`까지 영어로 정리한 글

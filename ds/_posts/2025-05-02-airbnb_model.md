@@ -1,20 +1,22 @@
 ---
 layout: post
-title: Data Framework
+title: "Applying Deep Learning to Airbnb Search: lessons from the paper"
 description: >
-  Journal Club - From prototype to Production - Airbnb's Deep Learning Paper
+  My notes on Airbnb's paper "Applying Deep Learning To Airbnb Search": why their first neural net barely matched GBDT, what LambdaRank changed, and the ideas that failed (listing IDs, multi-task learning).
 image: /assets/img/ds/airbnb/cover.png
+lastmod: 2026-10-06
+last_modified_at: 2026-10-06
 sitemap:
   changefreq: daily
   priority: 1.0
 ---
 
-# Airbnb's Deep Learning Journey: Lessons from the Trenches
+# Applying Deep Learning to Airbnb Search: lessons from the paper
 
 ---
 So I spent the weekend diving into how Airbnb tackled their search ranking problem, and honestly, it's fascinating how much trial and error went into it.
 
-[HERE You can find the paper!](https://archive.is/o/j46tZ/https://arxiv.org/pdf/1810.09591)
+Paper: [Applying Deep Learning To Airbnb Search](https://arxiv.org/abs/1810.09591) (Haldar et al., arXiv:1810.09591)
 
 You know how it goes when you're searching for a place on Airbnb—you type in "Miami" or whatever, and somehow their system decides which 20 places (out of thousands) to show you first. That ordering can make or break a host's business, and from a technical perspective, it's insanely complex.
 
