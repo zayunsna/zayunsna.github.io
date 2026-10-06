@@ -1,0 +1,27 @@
+{% assign ga4_id = site.google_analytics4 | default: "" | strip %}
+{% if ga4_id != "" and jekyll.environment == "production" %}
+<!-- GA4 uses enhanced measurement for initial loads and browser history changes. -->
+<script>
+  (function () {
+    var measurementId = {{ ga4_id | jsonify }};
+    var siteHost = {{ site.url | jsonify }};
+    if (!/^G-[A-Z0-9]+$/.test(measurementId)) return;
+    if (!siteHost || window.location.hostname !== new URL(siteHost).hostname) return;
+    if (window.hkGa4Initialized) return;
+    window.hkGa4Initialized = true;
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', measurementId, {
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false
+    });
+
+    var tag = document.createElement('script');
+    tag.async = true;
+    tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+    document.head.appendChild(tag);
+  }());
+</script>
+{% endif %}

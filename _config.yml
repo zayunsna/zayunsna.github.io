@@ -181,6 +181,10 @@ apple_touch_icon: /assets/icons/icon-256x256.png
 # To remove Google Anaylics from your page, remove the line below.
 # google_analytics:      UA-XXXXXXXX-X
 
+# GA4 web stream measurement ID (G-...). Leave empty to disable tracking.
+# Keep Enhanced measurement > Page views > Browser history changes enabled.
+google_analytics4: "G-QB8Y4X9TJ2"
+
 # Setting a disqus shortname will enable the comment section on
 # pages with `comments: true` in the front matter.
 # disqus:                <username>

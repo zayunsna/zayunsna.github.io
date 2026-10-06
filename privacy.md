@@ -5,15 +5,30 @@ permalink: /privacy/
 description: >
   What data this site and the third-party services it uses collect about visitors.
 hide_description: true
+lastmod: 2026-10-06
+last_modified_at: 2026-10-06
 ---
 
 # Privacy Policy
 
-_Last updated: September 28, 2026_
+_Last updated: October 6, 2026_
 
 HK Playground (`zayunsna.github.io`) is a personal technical blog. This page explains what information
-is collected when you visit it, and by whom. I do not run my own analytics, I do not ask you to create
-an account, and I do not sell or share any personal data.
+is collected when you visit it, and by whom. I do not ask you to create an account or sell personal data.
+
+## Analytics
+
+{% if site.google_analytics4 and site.google_analytics4 != "" %}
+This site uses Google Analytics 4 to measure page views, visits, and engagement. Google processes
+visit information such as page URLs, referring sites, browser and device information, and interactions.
+Analytics uses cookies to distinguish browsers and sessions. Google Signals and advertising
+personalization signals are disabled in this site's tracking configuration.
+
+See [How Google uses information from sites that use its services](https://policies.google.com/technologies/partner-sites)
+and the [Google Analytics opt-out browser add-on](https://tools.google.com/dlpage/gaoptout).
+{% else %}
+Google Analytics tracking is not enabled on this site.
+{% endif %}
 
 ## Hosting
 
