@@ -5,14 +5,17 @@ title: MinMaxScaler 사용법
 description: >
   할때마다 까먹는 Scikit-Learn 의 MinMaxScaler 사용법 정리!!
 image: /assets/img/post/minmaxscaler/cover.png
-lastmod: 2026-09-28
-last_modified_at: 2026-09-28
+lastmod: 2026-10-08
+last_modified_at: 2026-10-08
 sitemap:
   changefreq: daily
   priority: 1.0
 ---
 
 # MinMaxScaler 사용법
+
+> **Reading in English?** This note is in Korean. For an English, step-by-step guide to scikit-learn's MinMaxScaler, with real output for `fit`, `transform`, `inverse_transform` on a single column, `clip`, NaN and the "Expected 2D array" error, see [How to use MinMaxScaler in scikit-learn](/blog/2026-10-12-minmaxscaler_sklearn/). To decide between MinMaxScaler and StandardScaler, see [Min-max scaling vs standardization](/blog/2026-09-29-minmax_vs_standard_scaler/).
+{:.note}
 
 > **Corrected September 2026:** An earlier version of this post said MinMaxScaler normalizes each row. It scales each column (feature) separately. The last code example also referred to an undefined `scaler` variable; it now uses `sc`.
 {:.note}
