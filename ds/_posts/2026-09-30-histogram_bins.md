@@ -5,6 +5,8 @@ description: >
   Too few bins hide the shape of your data, too many turn it into noise. Here is what the common bin rules
   (sqrt, Sturges, Freedman–Diaconis, auto) actually return, tested with NumPy.
 image: /assets/img/ds/histogram_bins/cover.png
+lastmod: 2026-10-08
+last_modified_at: 2026-10-08
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -57,6 +59,8 @@ bins=200   -> 200 bins, width 0.19 min, empty bins: 25
 - **10 bins (the default):** both groups show up, but the peak positions are still rough.
 - **`auto` (13 bins):** clear peaks near 30 and 45 minutes, with a dip between them.
 - **200 bins:** 25 bins are empty and the bars jump up and down. Most of that is random noise.
+
+Want to click through 5, 200 and auto bins on this same sample yourself? The [interactive visualizer](/ds/2026-10-08-histogram_kde_interactive/#what-changes-when-you-change-the-number-of-bins) has it as a lesson.
 
 ## What do the common bin rules return?
 

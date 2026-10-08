@@ -84,7 +84,7 @@ What you **can't** conclude: that 13 is "the right number". It is a reasonable c
 | Scott (factor 0.25) | 2.14 | 2 |
 | factor 0.8 | 6.82 | 1 |
 
-(Peaks counted as local maxima higher than 5% of the curve's maximum.)
+(Peaks counted as local maxima higher than 5% of the curve's maximum. The [KDE post](/ds/2026-10-04-histogram_vs_kde/) counts every local maximum and finds 10 at factor 0.05; the two extra are tiny bumps in the tails, at 1% and 3% of the highest peak.)
 
 **What it tells you:** the numeric value is SciPy's *factor*; the kernel's actual width is factor × sample standard
 deviation. At 0.05 the curve invents bumps that aren't in the true density. At 0.8 it hides a valley that **is** real.

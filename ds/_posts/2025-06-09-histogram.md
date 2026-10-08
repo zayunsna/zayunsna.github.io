@@ -4,8 +4,8 @@ title: What is a histogram?
 description: >
   What a histogram shows, how to read its shape (symmetric, skewed, bimodal), how it differs from a bar chart, and when to use something else. Includes a short Python example with real output.
 image: /assets/img/ds/histogram/cover.png
-lastmod: 2026-10-06
-last_modified_at: 2026-10-06
+lastmod: 2026-10-08
+last_modified_at: 2026-10-08
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -196,7 +196,7 @@ What I take from it:
 - **Bimodal:** this is the one that surprised me. Mean and median are both about 52.5, right in the gap where almost no data points are. If you only looked at the summary numbers, you would describe a "typical value" that almost nobody has. The histogram shows it immediately.
 - **density=True** rescales the bars so their total area is exactly 1, which is what you want when comparing groups of different sizes.
 
-Choosing the number of bins and the KDE bandwidth deserve their own posts, so I wrote those separately (links at the end).
+Choosing the number of bins and the KDE bandwidth deserve their own posts, so I wrote those separately (links at the end). If you'd rather change these settings yourself and watch the result, try the [interactive histogram and KDE visualizer](/ds/2026-10-08-histogram_kde_interactive/).
 
 ## When to Use Histograms and Alternatives
 Histograms are incredibly useful, but knowing when to use them (and when not to) is just as important.

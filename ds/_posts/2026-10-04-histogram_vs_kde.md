@@ -5,6 +5,8 @@ description: >
   A KDE is a smooth histogram, and its bandwidth works like the bin width. Tested with SciPy: what Scott's rule
   gets right, how a KDE leaks below zero, and when a histogram shows more.
 image: /assets/img/ds/histogram_vs_kde/cover.png
+lastmod: 2026-10-08
+last_modified_at: 2026-10-08
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -66,6 +68,8 @@ Scott's factor is `n^(-1/5)`, which is 0.251 for 1,000 points. That gives a band
 | `"silverman"` | 2.27 min | 2 (29.6, 44.8) | Nearly the same as Scott |
 | `0.8` | 6.82 min | 1 | Too wide: the two groups merge |
 
+You can switch between these bandwidths on the same sample in the [interactive visualizer](/ds/2026-10-08-histogram_kde_interactive/#what-changes-when-you-change-the-kde-bandwidth).
+
 ## What goes wrong with data that can't be negative?
 
 The KDE puts bell curves on points near zero, and half of each curve lands below zero.
@@ -91,6 +95,7 @@ KDE probability mass below zero: 0.088
 No waiting time is negative, but **8.8%** of the KDE's area is. The curve is also too low just above zero, where the data is densest.
 For data with a hard limit (durations, prices, counts), a histogram is safer.
 Another option is to fit the KDE on `np.log(wait)` and read the result on the log scale.
+The [interactive visualizer](/ds/2026-10-08-histogram_kde_interactive/#why-does-the-kde-extend-below-zero) has a lesson that shows this leak below zero step by step.
 
 ## Can a KDE hide a narrow spike?
 
