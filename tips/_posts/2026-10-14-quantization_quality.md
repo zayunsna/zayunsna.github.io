@@ -31,7 +31,7 @@ This is **simulated** weight quantization: weights are rounded to fewer bits and
 
 We rounded every linear layer's weights to *n* bits and back (symmetric, round-to-nearest), then measured two things:
 **perplexity** on a fixed paragraph (how surprised the model is by the text; lower is better) and the number of correct answers
-on the 12-question test set from our [evaluation post](/tips/2026-10-09-evaluate_llm_answers/), using its key-fact check.
+on the 12-question test set from our [evaluation post](/tips/2026-10-13-evaluate_llm_answers/), using its key-fact check.
 
 ```python
 import copy, math, os, runpy, contextlib, io
@@ -154,4 +154,4 @@ Sizes in the table count only the linear-layer weights and leave out the small o
 - [AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration](https://arxiv.org/abs/2306.00978) — Lin et al., 2023
 - [Qwen/Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct) — model card, checked 2026-09-28
 
-Related: [How do you evaluate LLM answers?](/tips/2026-10-09-evaluate_llm_answers/) · [Prompting vs RAG vs fine-tuning: which one do you need?](/tips/2026-10-06-prompt_rag_finetune/)
+Related: [How do you evaluate LLM answers?](/tips/2026-10-13-evaluate_llm_answers/) · [Prompting vs RAG vs fine-tuning: which one do you need?](/tips/2026-10-06-prompt_rag_finetune/)
