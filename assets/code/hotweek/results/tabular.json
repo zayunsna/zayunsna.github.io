@@ -1,0 +1,23 @@
+{
+  "lightgbm": "4.7.0",
+  "numpy": "2.5.3",
+  "sklearn": "1.9.1",
+  "results": [
+    {
+      "split": "random rows",
+      "train_rows": 3000,
+      "test_rows": 1000,
+      "shared_groups": 199,
+      "auc": 1.0,
+      "fit_seconds": 0.0374
+    },
+    {
+      "split": "unseen groups",
+      "train_rows": 3000,
+      "test_rows": 1000,
+      "shared_groups": 0,
+      "auc": 0.4748,
+      "fit_seconds": 0.0299
+    }
+  ]
+}

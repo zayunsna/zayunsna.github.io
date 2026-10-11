@@ -1,0 +1,14 @@
+{
+  "all_tasks": {
+    "tasks": 100,
+    "manual_minutes": 6000,
+    "assisted_minutes": 4050,
+    "time_change_percent": -32.5
+  },
+  "submitted_tasks": {
+    "tasks": 50,
+    "manual_minutes": 3000,
+    "assisted_minutes": 3300,
+    "time_change_percent": 10.0
+  }
+}

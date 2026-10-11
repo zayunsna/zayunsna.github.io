@@ -1,0 +1,53 @@
+{
+  "environment": {
+    "python": "3.15.0 free-threading build (main, Oct  9 2026, 15:11:36) [Clang 22.1.3 ]",
+    "numpy": "2.5.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "free_threaded_build": true,
+    "gil_enabled": false
+  },
+  "results": [
+    {
+      "task": "python",
+      "workers": 1,
+      "median": 0.2092373339983169,
+      "min": 0.1999347919918364,
+      "max": 0.2241144580038963
+    },
+    {
+      "task": "python",
+      "workers": 2,
+      "median": 0.10208549999515526,
+      "min": 0.1018342089955695,
+      "max": 0.10736258300312329
+    },
+    {
+      "task": "python",
+      "workers": 4,
+      "median": 0.051723917000344954,
+      "min": 0.05134845800057519,
+      "max": 0.05257137501030229
+    },
+    {
+      "task": "numpy",
+      "workers": 1,
+      "median": 0.024236167009803466,
+      "min": 0.024046499995165505,
+      "max": 0.024366540994378738
+    },
+    {
+      "task": "numpy",
+      "workers": 2,
+      "median": 0.012707916990621015,
+      "min": 0.012552582993521355,
+      "max": 0.013147249992471188
+    },
+    {
+      "task": "numpy",
+      "workers": 4,
+      "median": 0.007354208006290719,
+      "min": 0.007243582993396558,
+      "max": 0.009770667005795985
+    }
+  ]
+}
