@@ -5,6 +5,8 @@ description: >
   Four classic sorting algorithms as Python generators, drawn step by step with pygame. Same input for all of them,
   real screen recordings, and measured comparisons and swaps: quick sort was fastest on random data and slowest on sorted data.
 image: /assets/img/blog/sorting_algorithms_visualized/cover.png
+lastmod: 2026-10-13
+last_modified_at: 2026-10-13
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -320,4 +322,4 @@ and watch it slow down. There are also 12 view styles (circle, spiral, heatmap, 
 - [Sorting Techniques — Python documentation](https://docs.python.org/3/howto/sorting.html) (Timsort in Python), checked 2026-10-07
 - Full source code: [github.com/zayunsna/sorting-visualizer](https://github.com/zayunsna/sorting-visualizer) (MIT License)
 
-Related: [Self-attention from scratch in NumPy (checked against PyTorch)](/blog/2026-10-06-self_attention_numpy/)
+Related: [Loop vs vectorization: how much faster is NumPy, really?](/blog/2026-10-13-loop_vs_vectorization/) · [Self-attention from scratch in NumPy (checked against PyTorch)](/blog/2026-10-06-self_attention_numpy/)
