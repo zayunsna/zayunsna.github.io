@@ -9,7 +9,6 @@ sitemap:
   changefreq: daily
   priority: 1.0
 ---
-
 # How can you explore histograms and KDE interactively in Python?
 
 **TL;DR** — Run the [histogram-visualizer](https://github.com/zayunsna/histogram-visualizer), a small Python desktop
@@ -19,8 +18,7 @@ area below zero.
 
 ![The app window with four areas outlined: 1 cards for distribution, samples and seed on the left, 2 lesson step buttons on top, 3 the graph with Count or Density, theoretical PDF and KDE in the middle, and 4 the controls for display, bins and curves on the right](/assets/img/ds/histogram_kde_interactive/start_screen.png)
 
-_Tested on 2026-10-08 with repository commit `515d859`, Python 3.13.11, NumPy 2.4.1, SciPy 1.18.1 and pygame 2.6.1
-on macOS. The repository's 98 tests passed in that environment._
+*Tested on 2026-10-08, Python 3.13.11, NumPy 2.4.1, SciPy 1.18.1 and pygame 2.6.1 on macOS. The repository's 98 tests passed in that environment.*
 
 ## Key points
 
@@ -78,11 +76,13 @@ What you **can't** conclude: that 13 is "the right number". It is a reasonable c
 
 **Look at:** the dashed white line (the KDE) against the solid purple line (the true density).
 
-| Bandwidth | Kernel standard deviation | Local peaks in the KDE |
-|---|---|---|
-| factor 0.05 | 0.43 | 8 |
-| Scott (factor 0.25) | 2.14 | 2 |
-| factor 0.8 | 6.82 | 1 |
+
+| Bandwidth           | Kernel standard deviation | Local peaks in the KDE |
+| ------------------- | ------------------------- | ---------------------- |
+| factor 0.05         | 0.43                      | 8                      |
+| Scott (factor 0.25) | 2.14                      | 2                      |
+| factor 0.8          | 6.82                      | 1                      |
+
 
 (Peaks counted as local maxima higher than 5% of the curve's maximum. The [KDE post](/ds/2026-10-04-histogram_vs_kde/) counts every local maximum and finds 10 at factor 0.05; the two extra are tiny bumps in the tails, at 1% and 3% of the highest peak.)
 
@@ -101,10 +101,12 @@ Scott's rule happened to land between them on this sample. It is a starting poin
 
 **Look at:** the region left of x = 0. The solid theoretical curve stops at zero. The dashed KDE doesn't.
 
-| Bandwidth | KDE area below zero | Shape |
-|---|---|---|
-| Scott | 8.8% | smooth, but misses the sharp start at 0 |
-| factor 0.05 | 1.8% | jagged, 9 local peaks |
+
+| Bandwidth   | KDE area below zero | Shape                                   |
+| ----------- | ------------------- | --------------------------------------- |
+| Scott       | 8.8%                | smooth, but misses the sharp start at 0 |
+| factor 0.05 | 1.8%                | jagged, 9 local peaks                   |
+
 
 **What it tells you:** each point gets a Gaussian bump, and bumps near zero spill over it. A smaller bandwidth
 shrinks the spill but makes the rest of the curve noisy. The app shows this on purpose: it does not clip or
@@ -114,13 +116,15 @@ renormalize the KDE. For bounded data, consider plotting `log(x)`, or use a meth
 
 You don't need to read all of it. These five pieces are where you'd change things:
 
-| Code | What it does | Change it to… |
-|---|---|---|
-| `build_lesson()` in `lessons.py` | Builds each lesson's samples from a fixed seed | add your own lesson |
-| `Model.rebin()` in `model.py` | Recomputes bin edges and keeps the samples | try other bin rules |
-| `Model.histograms()` in `model.py` | Turns counts into Count or Density for each view | see how density is normalized |
-| `KDECache` in `kde.py` | Runs SciPy's `gaussian_kde` in the background and caches results | change the evaluation grid |
-| `references()` in `curves.py` | Draws the theoretical curve for the chosen distribution | compare against another reference |
+
+| Code                               | What it does                                                     | Change it to…                     |
+| ---------------------------------- | ---------------------------------------------------------------- | --------------------------------- |
+| `build_lesson()` in `lessons.py`   | Builds each lesson's samples from a fixed seed                   | add your own lesson               |
+| `Model.rebin()` in `model.py`      | Recomputes bin edges and keeps the samples                       | try other bin rules               |
+| `Model.histograms()` in `model.py` | Turns counts into Count or Density for each view                 | see how density is normalized     |
+| `KDECache` in `kde.py`             | Runs SciPy's `gaussian_kde` in the background and caches results | change the evaluation grid        |
+| `references()` in `curves.py`      | Draws the theoretical curve for the chosen distribution          | compare against another reference |
+
 
 ## Common mistakes
 
