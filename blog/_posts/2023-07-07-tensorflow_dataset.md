@@ -5,17 +5,14 @@ title: Tensorflow의 Dataset 사용법 정리
 description: >
   MinMaxScaler와 같이 사용할 때 마다 까먹는 Tensorflow의 Dataset사용법 정리!!
 image: /assets/img/post/tensorflow_dataset/cover.png
-lastmod: 2026-09-30
-last_modified_at: 2026-09-30
+lastmod: 2026-10-12
+last_modified_at: 2026-10-12
 sitemap:
   changefreq: daily
   priority: 1.0
 ---
 
 # Tensorflow의 Dataset 사용법 정리
-
-> **Added September 2026:** This post was written in 2023 and reflects the tools and library versions available at that time. Installation steps, APIs, and version numbers may have changed since.
-{:.note}
 
 모델 학습을 위한 Dataset을 만들때 사용하는 Tensorflow의 Dataset기능 중 가장 자주 사용하는 용어에 대해 정리해볼 생각이다.
 
@@ -50,7 +47,7 @@ items = df[['item1','item2']]
 labels = df['label']
 
 ## from_tensor_slices로 feature와 label을 아주 쉽게 매칭하고 데이터 구조를 설정 가능.
-ts_dataset = tf.data.Dataset.from_tensor_slices((item, labels))
+ts_dataset = tf.data.Dataset.from_tensor_slices((items, labels))
 
 ## take은 얼마만큼 tensor 개수를 가져올지 정한다.
 ## 아래의 경우 5개의 tensor를 가져온다는 뜻이다. 위 예제 dataframe의 경우 모두 다 가져온다.
@@ -66,14 +63,14 @@ for x, y in ts_dataset.take(5):
 
 ![image](../../assets/img/post/tensorflow_dataset/take_tensor_slice.png)
 
-또한 take는 tensorflow 의 dataset에서 얼마만큼의 tensor양을 가져올지를 정한다. 위 예제에서 처럼 take(5)라면 총 5개의 tensor를 가져온다.
+또한 take는 Dataset에서 element를 몇 개 가져올지를 정한다. 위 예제에서는 feature와 label 한 쌍이 element 하나이므로, `take(5)`는 다섯 쌍을 가져온다. `batch()` 뒤에 사용하면 배치 하나가 element 하나가 된다.
 
 ## batch()
 
 batch(int)는 입력된 int argument만큼 미니배치로 분할한다.
 
 ```python
-ts_dataset = tf.data.Dataset.from_tensor_slices((item, labels))
+ts_dataset = tf.data.Dataset.from_tensor_slices((items, labels))
 ## 3개씩 tensor를 묶어서 미니배치를 생성.
 ts_dataset = ts_dataset.batch(3)
 
@@ -93,10 +90,10 @@ take(5)로 총 5개를 가져와야하지만 2개의 batch로 묶였기 때문�
 
 ## repeat()
 
-repeat()은 데이터셋을 반복하여 학습의 epoch만큼 수를 제공한다. 이렇게 하면 한번의 epoch동안 모든 데이터를 사용할 수 있으며, 반복하여 데이터를 공급할 수 있다.
+repeat()은 데이터셋을 반복해서 공급한다. `repeat(2)`처럼 횟수를 지정하면 두 번 반복하고, 인수를 생략하면 무한히 반복한다. 학습의 epoch 수를 알아서 맞춰 주는 기능은 아니라서, 무한 반복 Dataset으로 학습할 때는 `steps_per_epoch`처럼 한 epoch의 종료 조건도 정해줘야 한다.
 
 ```python
-ts_dataset = tf.data.Dataset.from_tensor_slices((item, labels))
+ts_dataset = tf.data.Dataset.from_tensor_slices((items, labels))
 ## 3개씩 tensor를 묶어서 미니배치를 생성.
 ts_dataset = ts_dataset.batch(3).repeat()
 
@@ -112,15 +109,35 @@ for x, y in ts_dataset.take(5):
 
 주의해야 할 점, repeat을 이용해 반복하는 와중 take으로 범위를 조건으로 주지 않으면 무한으로 데이터셋을 반복해서 불러온다.
 
-💡 기존 post했던 [LSTM shape](/blog/2023-06-21-LSTM_shape/) 에서 data size%batch_size == 0 을 맞춰야 했던 건 stateful LSTM처럼 **batch 크기가 고정된 모델**일 때의 이야기다. 이런 모델은 나머지가 생겨 마지막 batch가 작으면 학습도중 에러가 발생한다. Dataset을 쓰면 `batch(batch_size, drop_remainder=True)`로 모자란 마지막 batch를 버리거나, repeat으로 데이터를 이어 붙여서 이 문제를 쉽게 피할 수 있다. (보통 LSTM은 마지막 batch가 작아도 에러 없이 학습된다. 2026-09 수정)
+여기서 `repeat()`과 `batch()`의 순서도 중요하다. 위 코드처럼 먼저 배치로 묶으면, 크기가 3인 배치와 2인 배치가 그대로 반복된다. 데이터를 먼저 반복한 뒤 묶으면 다음 반복의 데이터까지 이어서 크기가 3인 배치를 만들게 된다.
+
+```python
+dataset = tf.data.Dataset.from_tensor_slices((items, labels))
+
+for name, repeated in [
+    ("batch then repeat", dataset.batch(3).repeat()),
+    ("repeat then batch", dataset.repeat().batch(3)),
+]:
+    sizes = [int(x.shape[0]) for x, _ in repeated.take(5)]
+    print(f"{name}: {sizes}")
+```
+
+```text
+batch then repeat: [3, 2, 3, 2, 3]
+repeat then batch: [3, 3, 3, 3, 3]
+```
+
+💡 기존 post했던 [LSTM shape](/blog/2023-06-21-LSTM_shape/) 에서 data size%batch_size == 0 을 맞춰야 했던 건 stateful LSTM처럼 **batch 크기가 고정된 모델**일 때의 이야기다. 이런 모델은 나머지가 생겨 마지막 batch가 작으면 학습도중 에러가 발생한다. `batch(batch_size, drop_remainder=True)`로 작은 마지막 batch를 버릴 수 있지만, `batch().repeat()`만으로는 이 문제가 없어지지 않는다. 보통의 stateless LSTM은 마지막 batch가 작아도 학습할 수 있다.
+
+stateful LSTM은 batch 크기만 맞추면 끝나는 것도 아니다. 다음 batch의 같은 위치에 이전 시퀀스의 이어지는 데이터가 와야 하므로, 무작정 `repeat()`으로 연결하거나 `shuffle()`로 순서를 섞으면 상태가 엉뚱한 시퀀스로 이어질 수 있다. 시퀀스 순서와 상태를 초기화할 시점도 같이 고려해야 한다.
 
 ## shuffle()
 
 말그대로 데이터 셋을 무작위로 섞는다. 보통 shuffle(BUFFER_SIZE)의 형태로 사용하며 여기에서 ‘BUFFER_SIZE’는 섞기위해 사용되는 버퍼의 크기를 나타낸다. 일반적으로 ‘BUFFER_SIZE’는 데이터셋 보다 큰 값을 넣어 준다.
 
 ```python
-ts_dataset = tf.data.Dataset.from_tensor_slices((item, labels))
-## 3개씩 tensor를 묶어서 미니배치를 생성.
+ts_dataset = tf.data.Dataset.from_tensor_slices((items, labels))
+# Shuffle individual examples with a buffer of 10.
 ts_dataset = ts_dataset.shuffle(10)
 
 for x, y in ts_dataset.take(5):
@@ -132,7 +149,7 @@ for x, y in ts_dataset.take(5):
 ![image](../../assets/img/post/tensorflow_dataset/shuffle.png)
 
 ```python
-ts_dataset = tf.data.Dataset.from_tensor_slices((item, labels))
+ts_dataset = tf.data.Dataset.from_tensor_slices((items, labels))
 ## 3개씩 tensor를 묶어서 미니배치를 생성.
 ts_dataset = ts_dataset.shuffle(10).batch(3)
 
@@ -143,3 +160,7 @@ for x, y in ts_dataset.take(5):
 ```
 
 ![image](../../assets/img/post/tensorflow_dataset/batch_shuffle.png)
+
+코드는 위에서부터 순서대로 실행하면 된다. 배치 순서 비교 출력은 TensorFlow 2.21.0에서 2026-10-12 실행했다. `shuffle()` 예제의 데이터 순서는 실행할 때마다 달라질 수 있다.
+
+참고: [TensorFlow Dataset API](https://www.tensorflow.org/api_docs/python/tf/data/Dataset), [Keras LSTM의 stateful 조건](https://keras.io/api/layers/recurrent_layers/lstm/) — 2026-10-12 확인.
