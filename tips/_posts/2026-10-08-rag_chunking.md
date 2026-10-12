@@ -5,6 +5,8 @@ description: >
   We split a fictional handbook six ways and measured how often retrieval found the chunk with the answer. One-sentence chunks
   dropped from 96% to 33% once the text used pronouns; paragraph chunks stayed at 100% in both cases.
 image: /assets/img/tips/rag_chunking/cover.png
+lastmod: 2026-10-12
+last_modified_at: 2026-10-12
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -152,6 +154,8 @@ whole document                1   100%   100%                  581
 
 A cheap fix for context-dependent chunks is to prepend the title or heading to every chunk, for example "Finance team: It is led by Ines Moreau."
 We tried it on the natural-writing handbook: one-sentence chunks with the team name prepended went from 33% to 92% hit@1.
+PDFs need one extra step. Extract the text first (our [PDF to JSON converter](/blog/2023-07-31-pdf_json_convertor/), in Korean, saves it page by page),
+then chunk by paragraph rather than by page, since a page break can cut a paragraph in half. Keep the page number as metadata.
 Whatever you choose, keep a small set of questions with known answers and re-run a check like the one above after every change.
 
 ## Sources

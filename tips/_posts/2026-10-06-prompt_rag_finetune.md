@@ -5,6 +5,8 @@ description: >
   We fine-tuned a small model on a fictional company handbook with LoRA and compared it with RAG. Fine-tuning learned the facts,
   even for reworded questions, but kept the old policy after an update, invented a CEO, and changed how the model answers.
 image: /assets/img/tips/prompt_rag_finetune/cover.png
+lastmod: 2026-10-12
+last_modified_at: 2026-10-12
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -220,6 +222,8 @@ That side effect is also the main strength of fine-tuning: it is very good at ch
 | Answers from documents that change or must be cited | RAG |
 | A consistent style, format or domain language across many requests | Fine-tuning |
 | Both new facts and a new style | RAG for the facts, fine-tuning for the style |
+
+With real documents, both paths start by getting the text out. Our [PDF to JSON converter](/blog/2023-07-31-pdf_json_convertor/) (in Korean) was originally written to build fine-tuning data; its page-by-page output can also feed a RAG index.
 
 ## Sources
 

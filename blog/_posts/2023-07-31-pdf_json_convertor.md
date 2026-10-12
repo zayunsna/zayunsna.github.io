@@ -5,8 +5,8 @@ title: Python으로 PDF를 페이지별 JSON으로 변환하기 (pdfminer.six + 
 description: >
   LLM 파인튜닝 데이터를 만들려고 짠 PDF → JSON 변환 코드. 2026년에 다시 돌려보고 버그 3개(NameError, 이미 지운 PDF를 다시 여는 문제, PDF가 아닌 파일)를 고친 버전 포함.
 image: /assets/img/post/pdf_json_convertor/cover.png
-lastmod: 2026-10-06
-last_modified_at: 2026-10-06
+lastmod: 2026-10-12
+last_modified_at: 2026-10-12
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -276,3 +276,9 @@ print(" Converting has been done !! ")
 하나 새로 알게 된 것. PDF 원문은 "파인튜닝", "페이지별로", "3.2.1이다"였는데 결과에는 "파인 튜닝", "페이지 별로", "3.2.1 이다"로 들어갔다. Kkma가 문장을 나누면서 **띄어쓰기도 자기 기준으로 바꾼다.** 학습 데이터를 원문 그대로 남기고 싶으면 문장 나누기를 빼고 `page_text`를 그대로 저장하는 게 낫다.
 
 설치할 때 하나 더. KoNLPy는 Java가 있어야 돌아간다. 맥에서는 `brew install openjdk`로 깔고 `JAVA_HOME=/opt/homebrew/opt/openjdk`를 지정해서 실행했다.
+
+## 이 JSON을 어디에 쓸까
+
+처음 목적은 파인튜닝 데이터였지만, 문서 내용을 모델에게 답하게 하는 게 목적이라면 지금은 RAG를 먼저 검토하는 게 낫다. 둘의 차이는 [Prompting vs RAG vs fine-tuning](/tips/2026-10-06-prompt_rag_finetune/)에서 가상의 사내 문서 하나로 직접 비교했다(영어 글).
+RAG가 어떻게 돌아가는지는 [RAG explained in 50 lines of Python](/tips/2026-10-05-rag_in_50_lines/)에 있다.
+페이지별 텍스트를 그대로 검색 단위로 쓰면 문단이 페이지 경계에서 잘릴 수 있다. 어떤 단위로 자를지는 [RAG chunking 실험](/tips/2026-10-08-rag_chunking/)을 참고하고, 페이지 번호는 출처 표시용으로 남겨 두면 된다.
