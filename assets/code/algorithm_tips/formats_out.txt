@@ -1,0 +1,22 @@
+1. Layout (sign | exponent | fraction) and limits
+  fp32: 32 bits, max 3.403e+38, smallest normal 1.18e-38, eps 1.19e-07 | 0.1 = 0 01111011 10011001100110011001101
+  fp16: 16 bits, max 6.55e+04, smallest normal 6.1e-05, eps 0.000977 | 0.1 = 0 01011 1001100110
+  bf16: 16 bits, max 3.39e+38, smallest normal 1.18e-38, eps 0.00781 | 0.1 = 0 01111011 1001101
+2. Range: 70,000 and 1e-8
+  fp32: 70000 -> 70000, 1e-8 -> 1e-08
+  fp16: 70000 -> inf, 1e-8 -> 0
+  bf16: 70000 -> 70144, 1e-8 -> 1.00117e-08
+3. Precision: 1 + 0.001, and adding 0.001 ten thousand times (exact answer 10)
+  fp32: 1 + 0.001 = 1.001000 | running sum = 10.0004
+  fp16: 1 + 0.001 = 1.000977 | running sum = 4
+  bf16: 1 + 0.001 = 1.000000 | running sum = 0.5
+4. int8: 8-bit two's complement, -128..127; weights need a scale
+  normal weights            : scale 0.000646, distinct int8 values used 187, mean relative error 1.0%
+  same + one outlier of 1.0 : scale 0.007874, distinct int8 values used  22, mean relative error 12.5%
+  bf16 of the normal weights: mean relative error 0.14%
+5. Memory for 494 million parameters (Qwen2.5-0.5B)
+  fp32        : 1.84 GiB
+  fp16 / bf16 : 0.92 GiB
+  int8        : 0.46 GiB
+  int4        : 0.23 GiB
+Python 3.12.13 | torch 2.14.1

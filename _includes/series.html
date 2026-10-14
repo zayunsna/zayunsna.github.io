@@ -1,0 +1,18 @@
+{%- comment -%}
+  Series box. Lists only posts Jekyll has built (future: false hides unpublished ones), oldest first,
+  so a series post scheduled for later never appears as a dead link.
+  Usage in a post with `series: <name>` in its front matter: {% include series.html title="..." %}
+{%- endcomment -%}
+{%- assign series_posts = site.posts | where: "series", page.series | reverse -%}
+<aside class="note" markdown="0">
+  <p><strong>{{ include.title | default: "In this series" }}</strong></p>
+  <ol>
+  {%- for p in series_posts -%}
+    {%- if p.url == page.url %}
+    <li>{{ p.series_label | default: p.title }} <em>(this post)</em></li>
+    {%- else %}
+    <li><a href="{{ p.url | relative_url }}">{{ p.series_label | default: p.title }}</a></li>
+    {%- endif -%}
+  {%- endfor %}
+  </ol>
+</aside>

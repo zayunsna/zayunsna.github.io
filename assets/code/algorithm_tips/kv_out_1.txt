@@ -1,0 +1,9 @@
+prompt tokens: 43
+  32 new tokens: cache on   0.97 s | cache off   2.40 s |  2.5x | same tokens: True
+  64 new tokens: cache on   1.90 s | cache off   5.13 s |  2.7x | same tokens: True
+ 128 new tokens: cache on   3.77 s | cache off  12.49 s |  3.3x | same tokens: True
+ 256 new tokens: cache on   7.52 s | cache off  34.13 s |  4.5x | same tokens: True
+layers 24, attention heads 14, key/value heads 2, head size 64
+cache per token: 24,576 bytes (float32) -> 32k tokens: 768 MiB
+layer 0 keys shape (batch, kv heads, tokens, head size): (1, 2, 43, 64)
+Python 3.12.13 | torch 2.14.1 | transformers 5.19.0

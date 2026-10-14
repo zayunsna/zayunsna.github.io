@@ -1,0 +1,53 @@
+
+'The capital of France is'
+  greedy  logprob  -17.65 | ' Paris. It is the largest city in Europe and the third largest city in the world. It is located in the south'
+  beam 4  logprob  -10.97 | ':\nA. Paris\nB. London\nC. Rome\nD. Berlin\n\nA. Paris is the capital of'
+  beam 8  logprob  -11.43 | ' ____.\nA. Paris\nB. London\nC. New York\nD. Tokyo\nAnswer:\n\nA\n\nThe'
+
+'In machine learning, overfitting means'
+  greedy  logprob  -10.69 | ' that a model is too complex and fits the training data too closely, leading to poor generalization performance on new data.'
+  beam 4  logprob  -10.38 | ' that the model is too complex and fits the training data too closely, leading to poor generalization performance on new data.'
+  beam 8  logprob  -10.38 | ' that the model is too complex and fits the training data too closely, leading to poor generalization performance on new data.'
+
+'To make a good cup of coffee, you should'
+  greedy  logprob  -23.54 | ' first brew the coffee beans, then grind them, then store them, then grind them again, then store them, and'
+  beam 4  logprob  -19.14 | ' choose the right coffee beans, grind them properly, and brew them at the right temperature and for the right amount of time'
+  beam 8  logprob  -17.79 | ' make sure that the water temperature is between 95 and 105 degrees Fahrenheit. If the water temperature is'
+
+'The main difference between a list and a tuple in Python is'
+  greedy  logprob  -10.96 | ' that a list is an ordered collection of items, while a tuple is an unordered collection of items. This means that a'
+  beam 4  logprob   -9.32 | ' that a tuple is immutable, while a list is mutable. This means that once a tuple is created, it cannot be'
+  beam 8  logprob   -9.32 | ' that a tuple is immutable, while a list is mutable. This means that once a tuple is created, it cannot be'
+
+'Once upon a time, a small robot'
+  greedy  logprob  -35.59 | ' named Robo was sent to a remote island. The island was inhabited by a group of friendly creatures called the "S'
+  beam 4  logprob  -19.83 | ' was sent on a mission to explore a new planet. The robot had to navigate through a series of obstacles to reach its'
+  beam 8  logprob  -19.83 | ' was sent on a mission to explore a new planet. The robot had to navigate through a series of obstacles to reach its'
+
+'The best way to learn a new programming language is'
+  greedy  logprob  -22.54 | ' to practice coding. However, it can be challenging to find the right resources to learn a new language. One of the'
+  beam 4  logprob  -23.10 | ' to write code in that language. However, it is not always easy to write code in a new programming language, especially'
+  beam 8  logprob  -17.64 | ' to ________.\nA. read a book\nB. watch a video\nC. write a program\nD.'
+
+'A hash table stores data by'
+  greedy  logprob  -12.25 | ' using a hash function to map keys to indices in an array. Suppose you have a hash table with 100'
+  beam 4  logprob  -12.81 | ' using a hash function to map keys to indices in an array of buckets. Suppose you have a hash table with 1'
+  beam 8  logprob  -12.25 | ' using a hash function to map keys to indices in an array. Suppose you have a hash table with 100'
+
+'The weather today is'
+  greedy  logprob  -19.13 | ' sunny. The sky is blue. The temperature is 20 degrees Celsius. What is the probability that it will rain'
+  beam 4  logprob  -13.36 | ' sunny and warm. The temperature in the morning is 60 degrees Fahrenheit. By noon, the temperature rises by '
+  beam 8  logprob  -10.05 | ' sunny with a probability of 0.6, rainy with a probability of 0.4, and cloudy with a'
+
+'My favorite thing about weekends is'
+  greedy  logprob  -30.05 | ' the opportunity to get out of the house and do something fun. I love the feeling of being outside, and I love'
+  beam 4  logprob  -19.82 | ' that I get to do what? Options: - go to movies - go to church - go to the park - go'
+  beam 8  logprob  -19.53 | ' that I get to do what? Options: - go to the movies - eat ice cream - go to the park -'
+
+'The first step in debugging a program is'
+  greedy  logprob  -18.85 | ' to identify the problem. This involves analyzing the code to understand what is going wrong. The first step in debugging a program'
+  beam 4  logprob  -16.48 | ' to identify the problem. This can be done by looking at the output of the program. If the output is not what'
+  beam 8  logprob  -12.68 | ' to identify the problem.\nA. Correct\nB. Incorrect\nAnswer:\n\nA\n\nWhich of the following statements about the'
+
+beam 4 found a more probable 24-token continuation than greedy in 8 of 10 prompts
+Python 3.12.13 | torch 2.14.1 | transformers 5.19.0
