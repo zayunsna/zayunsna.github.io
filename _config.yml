@@ -332,6 +332,11 @@ exclude:
   - vendor
   - Gemfile
   - Gemfile.lock
+  # Keep one source for each public URL. Archived duplicates remain in the repository.
+  - index.markdown
+  - about.markdown
+  - tips.md
+  - 404.html
   # Private working notes and the stock Hydejack manual — not site content
   - CLAUDE.md
   - AGENTS.md
