@@ -1,0 +1,41 @@
+python 3.12.13, scikit-learn 1.9.1, pandas 3.0.6
+rows: dev 15867, holdout 1344; mean hourly count: dev 191.2, holdout 185.7
+
+[1] Calendar + weather + row index t, no lags (MAE, lower is better)
+  KFold(5, shuffle=True)       mean  24.5   folds  24.5  24.3  25.0  24.3  24.6
+  KFold(5)                     mean  40.2   folds  49.5  27.2  31.2  46.6  46.2
+  TimeSeriesSplit(5)           mean  43.4   folds  49.7  36.1  41.9  45.7  43.6
+  TimeSeriesSplit(5, gap=168)  mean  47.4   folds  67.9  31.6  42.6  46.7  48.1
+  holdout: last 8 weeks              54.2
+
+[2] Same plus lag_1, lag_24, lag_168
+  KFold(5, shuffle=True)       mean  22.1   folds  22.0  21.8  22.2  21.8  22.6
+  KFold(5)                     mean  25.4   folds  18.4  22.6  19.4  30.1  36.7
+  TimeSeriesSplit(5)           mean  31.6   folds  33.7  25.3  27.2  38.7  33.0
+  TimeSeriesSplit(5, gap=168)  mean  34.6   folds  45.1  23.9  27.6  40.5  35.7
+  holdout: last 8 weeks              24.6
+
+[3] A rolling feature that includes the current hour (lag model, TimeSeriesSplit(5))
+  leaky feature: CV MAE                         26.5
+  leaky feature: holdout, leaky values          17.2
+  leaky model, honest values at serving time    58.0
+  honest feature: CV MAE                        31.5
+  honest feature: holdout                       25.4
+
+[4] Rows are not always hours: reconstruct elapsed hours from weekday + hour
+  lag_1: exactly 1 hours earlier in 99.6% of rows
+  lag_24: exactly 24 hours earlier in 90.2% of rows
+  lag_168: exactly 168 hours earlier in 68.8% of rows
+  holdout: 1344 rows span 1348 hours
+
+[5] First training fold size
+  TimeSeriesSplit(5, {}): 2647 rows
+  TimeSeriesSplit(5, {'max_train_size': 10000}): 2647 rows
+  TimeSeriesSplit(5, {'test_size': 1344}): 9147 rows
+
+[6] TimeSeriesSplit(5, gap=168) row ranges on the dev set
+  fold 0: train 0-2478  gap 2479-2646  test 2647-5290
+  fold 1: train 0-5122  gap 5123-5290  test 5291-7934
+  fold 2: train 0-7766  gap 7767-7934  test 7935-10578
+  fold 3: train 0-10410  gap 10411-10578  test 10579-13222
+  fold 4: train 0-13054  gap 13055-13222  test 13223-15866
