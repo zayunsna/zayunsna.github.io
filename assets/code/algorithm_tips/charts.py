@@ -12,6 +12,16 @@ plt.rcParams.update({"figure.facecolor": BG, "axes.facecolor": BG, "axes.edgecol
 def cover(fig, path):
     fig.savefig(path, dpi=100); plt.close(fig)
 
+def finish(fig, title, box):
+    """Body chart: tight layout. Cover (title given): keep everything 80 px from the sides and 48 px from
+    top/bottom, because the site shows covers as a 16:9 center crop. box = axes (left, right, bottom, top) in px."""
+    if not title:
+        fig.tight_layout(); return fig
+    fig.suptitle(title, fontsize=22, fontweight="bold", x=80 / 1200, ha="left", y=1 - 56 / 630, va="top")
+    l, r, b, t = box
+    fig.subplots_adjust(left=l / 1200, right=r / 1200, bottom=1 - b / 630, top=1 - t / 630)
+    return fig
+
 # 1. HNSW
 txt = open("hnsw_out.txt").read()
 blocks = re.findall(r"n=([\d,]+): exact ([\d.]+) ms/query.*?ef=40\s+recall@10 ([\d.]+)\s+([\d.]+) ms", txt, re.S)
@@ -48,13 +58,8 @@ def kv_fig(w, h, title=None):
         ax.annotate(f"{r[2] / r[1]:.1f}x", (r[0], r[2]), textcoords="offset points", xytext=(-6, 8), ha="right", color=B)
     ax.set_xlabel("new tokens generated"); ax.set_ylabel("seconds"); ax.set_xticks(x); ax.legend(loc="upper left")
     ax.set_title("Qwen2.5-0.5B-Instruct, greedy, CPU float32: identical output tokens in every run", color=MUTED, fontsize=12)
-    if title:  # cover: keep everything 80 px from the sides and 48 px from top/bottom (the site crops 16:9)
-        fig.suptitle(title, fontsize=22, fontweight="bold", x=80 / 1200, ha="left", y=1 - 56 / 630, va="top")
-        ax.margins(x=0.08)
-        fig.subplots_adjust(left=150 / 1200, right=1105 / 1200, bottom=1 - 515 / 630, top=1 - 150 / 630)
-    else:
-        fig.tight_layout()
-    return fig
+    if title: ax.margins(x=0.08)
+    return finish(fig, title, (150, 1105, 515, 150))
 cover(kv_fig(11, 5), "img/kv_chart.png")
 cover(kv_fig(12, 6.3, "KV cache: the same 256 tokens, 7.5 s instead of 34 s"), "img/kv_cover.png")
 
@@ -72,9 +77,7 @@ def dec_fig(w, h, title=None):
                     arrowprops=dict(arrowstyle="->", color=color))
     ax.set_xlabel("token"); ax.set_ylabel("cumulative log-probability"); ax.legend(loc="lower left")
     ax.set_title('"The main difference between a list and a tuple in Python is ..."', color=MUTED, fontsize=12)
-    if title: fig.suptitle(title, fontsize=22, fontweight="bold", x=0.04, ha="left", y=0.97)
-    fig.tight_layout(rect=(0, 0, 1, 0.9 if title else 1))
-    return fig
+    return finish(fig, title, (165, 1100, 515, 150))
 cover(dec_fig(11, 5), "img/decoding_chart.png")
 cover(dec_fig(12, 6.3, "Greedy picked the likelier next word, and lost overall"), "img/decoding_cover.png")
 
@@ -86,7 +89,8 @@ def fmt_fig(w, h, title=None):
     cols = ("#e06c9f", "#4fb3bf", "#6b6f8a")
     for row, name in enumerate(("fp32", "fp16", "bf16")):
         y = 2.6 - row * 1.1
-        ax.text(0, y + 0.35, name, fontsize=18, fontweight="bold", va="center")
+        ax.text(2.3, y + 0.35, name, fontsize=18, fontweight="bold", va="center", ha="right") if title else \
+            ax.text(0, y + 0.35, name, fontsize=18, fontweight="bold", va="center")
         x = 2.6
         for part, col in zip(lay[name].strip().split(" "), cols):
             for bit in part:
@@ -96,9 +100,7 @@ def fmt_fig(w, h, title=None):
         ax.text(x + 0.3, y + 0.35, f"sum of 0.001 x 10,000 = {float(sums[name]):g}", va="center", fontsize=13, color=FG)
     ax.text(2.6, -0.3, "pink: sign   teal: exponent (range)   grey: fraction (precision)       each row stores 0.1",
             fontsize=12, color=MUTED)
-    if title: fig.suptitle(title, fontsize=22, fontweight="bold", x=0.04, ha="left", y=0.96)
-    fig.tight_layout(rect=(0, 0, 1, 0.9 if title else 1))
-    return fig
+    return finish(fig, title, (140, 780, 560, 120))
 cover(fmt_fig(13, 4.2), "img/formats_chart.png")
 cover(fmt_fig(12, 6.3, "fp32, fp16, bf16: where the 16 bits go"), "img/formats_cover.png")
 print(ns, ex, hn, rc, walk, rows, lay, sums, sep="\n")
