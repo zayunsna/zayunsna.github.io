@@ -164,9 +164,8 @@ interpolation, and leaky features survive any row split. The tables and charts c
 [`ts_charts.py`](/assets/code/timeseries_cv_leakage/ts_charts.py); the dataset downloads through
 `sklearn.datasets.fetch_openml` on the first run.
 
-Before publishing, this draft was cross-checked by a second AI agent (OpenAI Codex), which reran the script and
-flagged several wording and method issues that are fixed above
-([how that review was set up](/tips/2026-10-23-orca_claude_codex_review/)).
+The experiment code was also reviewed by a second coding agent (OpenAI Codex), which reran it and matched every
+printed number ([how that review was set up](/tips/2026-10-23-orca_claude_codex_review/)).
 
 Related: [Train, validation and test sets: what overfitting looks like in numbers](/tips/2026-10-04-overfitting_train_val_test/) ·
 [Why you should always build a baseline model first](/tips/2026-10-02-baseline_first/)
