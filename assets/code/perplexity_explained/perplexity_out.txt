@@ -1,0 +1,46 @@
+python 3.12.13, torch 2.14.1, transformers 5.17.0, model Qwen/Qwen2.5-0.5B
+
+[1] By hand vs the model's own loss
+  tokens scored: 27   mean NLL by hand 3.5584   loss from labels= 3.5584
+  perplexity = exp(mean NLL) = 35.11
+
+[2] Perplexity of different texts (lower = less surprised)
+  text                         perplexity  tokens  total NLL
+  natural sentence                   35.1      27       96.1   'The library closes at eight on weekdays, so if you want to return a book after work, use the drop box by the front door.'
+  same words, shuffled             1142.8      27      190.1   'book The front the weekdays, on so want the box eight closes by at use to drop you door. after work, if library a return'
+  Python code                         4.0      12       16.7   'def mean(values):\n    return sum(values) / len(values)\n'
+  random letters                    964.9      58      398.6   ' my nbi qpm z j pls  gqejeydtzi rwzt ejdxc  vkprdlnktu g rpo qibz r acx mw zvuatp  khxkw cg shhz ezrocck q pdjrjwdrk  rg'
+  the model's own greedy text         5.9      32       56.8   'The library closes at eight on weekdays, and opens at 8:30 on weekends. If the library is open for 10 hours on weekdays and '
+
+[3] Per-token surprise in the natural sentence (probability the model gave the actual token)
+  ' library'       0.0001
+  ' closes'        0.0001
+  ' at'            0.8714
+  ' eight'         0.0000
+  ' on'            0.0128
+  ' weekdays'      0.1551
+  ','              0.1114
+  ' so'            0.0092
+  ' if'            0.0677
+  ' you'           0.1460
+  ' want'          0.1964
+  ' to'            0.9936
+  ' return'        0.0247
+  ' a'             0.0605
+  ' book'          0.9496
+  ' after'         0.0619
+  ' work'          0.0038
+  ','              0.6125
+  ' use'           0.0001
+  ' the'           0.4746
+  ' drop'          0.0001
+  ' box'           0.0376
+  ' by'            0.0214
+  ' the'           0.3386
+  ' front'         0.0864
+  ' door'          0.3337
+  '.'              0.4060
+
+[4] Same total log-loss, different units
+  total NLL 96.08 nats over 27 tokens = 24 words
+  per-token perplexity 35.11   per-word perplexity 54.77
