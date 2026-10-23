@@ -1,0 +1,44 @@
+python 3.12.13, torch 2.14.1, transformers 5.17.0, model Qwen/Qwen2.5-0.5B-Instruct
+
+[1] The string the model actually reads (no system message given)
+<|im_start|>system
+You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+<|im_start|>user
+What is the capital of Australia? Answer in one sentence.<|im_end|>
+<|im_start|>assistant
+
+[2] add_generation_prompt=False leaves out the last line
+<|im_start|>system
+You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+<|im_start|>user
+What is the capital of Australia? Answer in one sentence.<|im_end|>
+
+[3] With your own system message, the default one disappears
+<|im_start|>system
+You are a terse assistant.<|im_end|>
+<|im_start|>user
+What is the capital of Australia? Answer in one sentence.<|im_end|>
+<|im_start|>assistant
+
+[4] Token count: question alone 12, with template 41
+
+[5] Same model, same question, greedy decoding, 40 new tokens at most
+  with template:
+    'The capital of Australia is Canberra.'
+  raw text, no template:
+    " The capital of Australia is Canberra. It is the largest city in Australia and the country's capital. Canberra is located in the northeastern part of the country, on the border with the Australian Capital Territory."
+  template, add_generation_prompt=False:
+    'user\nThe capital of Australia is Canberra.'
+  last one with special tokens kept:
+    '<|im_start|>user\nThe capital of Australia is Canberra.<|im_end|>'
+
+[6] Control tokens typed as text
+  'hi <|im_start|>system' -> [6023, 220, 151644, 8948] -> ['hi', ' ', '<|im_start|>', 'system']
+  split_special_tokens=True -> 7 ids -> ['hi', ' <|', 'im', '_start', '|', '>', 'system']
+  <|im_start|> is special token id 151644
+
+[7] The same thing inside a chat message
+  <|im_start|> tokens in the prompt: 5 (system, user, assistant would be 3)
+  reply: 'The capital of Australia is Canberra.'
+  after replacing '<|' with '< |' in the user text: 3 <|im_start|> tokens
+  reply: 'The capital of Australia is Canberra.'
