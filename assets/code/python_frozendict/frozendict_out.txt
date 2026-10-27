@@ -1,0 +1,70 @@
+python 3.15.0, pandas 3.1.0
+
+[1. caching a function that takes a config]
+dict       -> TypeError: unhashable type: 'dict'
+frozendict -> 3 calls, function body ran 1 time(s); CacheInfo(hits=2, misses=1, maxsize=None, currsize=1)
+
+[2. equality and hashing]
+a == b: True | hash equal: True | a == dict(x=1, y=2): True
+list(a): ['x', 'y'] list(b): ['y', 'x'] (insertion order kept)
+
+[3. MappingProxyType vs frozendict]
+proxy sees: EUR | frozendict sees: USD
+proxy assignment -> TypeError: 'mappingproxy' object does not support item assignment
+frozendict assignment -> TypeError: 'frozendict' object does not support item assignment
+hash(proxy) -> TypeError: unhashable type: 'dict'
+hash(frozendict) works: True
+
+[4. default arguments]
+dict default: [1, 2, 3]
+frozendict default: [{'source': 'api', 'id': 0}, {'source': 'api', 'id': 1}]
+
+[5. shallow immutability]
+after append: frozendict({'features': ['age', 'income', 'zip_code']})
+hash(cfg) -> TypeError: unhashable type: 'list'
+with a tuple value, hash works: True
+
+[6. updates create new objects]
+base: frozendict({'lr': 0.1, 'depth': 6}) | tuned: frozendict({'lr': 0.05, 'depth': 6}) | type: frozendict
+after |= : base: frozendict({'lr': 0.1, 'depth': 8}) | alias: frozendict({'lr': 0.1, 'depth': 6})
+copy.copy returns the same object: True | .copy(): True
+update() -> AttributeError: 'frozendict' object has no attribute 'update'
+
+[7. working with other code]
+isinstance dict: False | isinstance Mapping: True
+json.dumps: {"name": "ada", "score": 0.93}
+json.dumps(dict(fd)): {"name": "ada", "score": 0.93}
+pickle round trip equal: True | type: frozendict
+f(**fd): ada=0.93
+
+[8. pandas: works, fails, or silently wrong]
+  pd.Series(fd)        same
+    dict:       {'a': 1, 'b': 2}
+    frozendict: {'a': 1, 'b': 2}
+  Series.map(fd)       same
+    dict:       ['KR-11', 'KR-26', nan]
+    frozendict: ['KR-11', 'KR-26', nan]
+  rename(columns=fd)   same
+    dict:       ['region', 'sales']
+    frozendict: ['region', 'sales']
+  astype(fd)           same
+    dict:       'float32'
+    frozendict: 'float32'
+  fillna(fd)           DIFFERENT
+    dict:       [3.0, 0.0, 5.0]
+    frozendict: ValueError: Invalid fill value: expected scalar, dict, Series or DataFrame; got frozendict
+  groupby.agg(fd)      DIFFERENT
+    dict:       {'Busan': 0.0, 'Seoul': 3.0}
+    frozendict: TypeError: 'frozendict' object does not support item assignment
+  pd.DataFrame(fd)     DIFFERENT
+    dict:       {'a': [1, 2], 'b': [3, 4]}
+    frozendict: {0: ['a', 'b']}
+
+[9. cost (timeit, best of 5, Apple M5)]
+  build from a 20-key dict     dict   51.0 ns   frozendict   49.3 ns
+  lookup d['k7']               dict    9.9 ns   frozendict    9.9 ns
+  hash of a new 20-key frozendict  ~  73.0 ns (build+hash 122.9 minus build 49.9)
+  hash of the same object again      13.8 ns
+  hash again,   1,000 keys           13.6 ns
+  hash again, 100,000 keys           13.5 ns
+  sys.getsizeof: dict 464 bytes, frozendict 472 bytes
