@@ -1,0 +1,24 @@
+seed 1
+
+[1] Where the encoder is fitted. 5-fold CV on 7382 rows, then a holdout of 1846 rows
+  strategy                               CV MAE  holdout MAE
+  mean encoding before the split          3,977        4,696
+  mean encoding in the pipeline           4,871        4,696
+  TargetEncoder in the pipeline           5,228        4,833
+  ~1.5 rows/ID HGB: mean 5,548  TE 5,047
+seed 2
+
+[1] Where the encoder is fitted. 5-fold CV on 7382 rows, then a holdout of 1846 rows
+  strategy                               CV MAE  holdout MAE
+  mean encoding before the split          3,995        4,471
+  mean encoding in the pipeline           4,886        4,471
+  TargetEncoder in the pipeline           5,300        4,699
+  ~1.5 rows/ID HGB: mean 5,507  TE 4,968
+seed 3
+
+[1] Where the encoder is fitted. 5-fold CV on 7382 rows, then a holdout of 1846 rows
+  strategy                               CV MAE  holdout MAE
+  mean encoding before the split          3,957        4,378
+  mean encoding in the pipeline           4,919        4,378
+  TargetEncoder in the pipeline           5,175        4,754
+  ~1.5 rows/ID HGB: mean 5,617  TE 5,022

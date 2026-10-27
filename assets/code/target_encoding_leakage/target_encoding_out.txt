@@ -1,0 +1,24 @@
+python 3.12.13, scikit-learn 1.9.1, pandas 3.0.6, numpy 2.5.4
+rows 9228, mean salary 73,390 USD; unique values: department 37, division 694, assignment_category 2, employee_position_title 385, underfilled_job_title 84
+
+[1] Where the encoder is fitted. 5-fold CV on 7382 rows, then a holdout of 1846 rows
+  strategy                               CV MAE  holdout MAE
+  mean encoding before the split          4,054        4,636
+  mean encoding in the pipeline           4,875        4,636
+  TargetEncoder in the pipeline           5,202        4,971
+
+[2] Adding a random ID column (no information). 5-fold CV MAE, train / test
+  random_id              model       mean encoding      TargetEncoder
+  none                   HGB       3,397 /  4,751     4,183 /  5,065
+  none                   Ridge     6,232 /  7,108     6,250 /  7,094
+  ~3 rows per ID (2,918) HGB       3,320 /  5,093     4,224 /  5,111
+  ~3 rows per ID (2,918) Ridge     6,077 /  7,417     6,242 /  7,095
+  ~1.5 rows per ID (4,802) HGB       3,240 /  5,510     4,240 /  5,097
+  ~1.5 rows per ID (4,802) Ridge     5,910 /  7,943     6,250 /  7,096
+
+[3] Correlation between the encoded random_id and salary (fold 1, ~1.5 rows per ID)
+  how the training rows were encoded       train rows  test rows
+  mean encoding                                 0.772     -0.006
+  TargetEncoder.fit_transform(X, y)             0.005     -0.006
+  TargetEncoder.fit(X, y).transform(X)          0.761     -0.006
+  HGB test MAE, fold 1: pipeline (fit_transform) 5,094, by hand fit().transform() 5,661
