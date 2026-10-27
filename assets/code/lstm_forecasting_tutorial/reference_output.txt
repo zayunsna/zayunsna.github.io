@@ -1,0 +1,14 @@
+Python 3.12.13, torch 2.14.0, numpy 2.5.4, pandas 3.0.6, sklearn 1.9.1
+Rows: 731; 2011-01-01 to 2012-12-31
+Rows before windowing: train=511, validation=110, test=110
+Train: (497, 14, 1) (497, 1)
+Validation: (110, 14, 1) (110, 1)
+Test: (110, 14, 1) (110, 1)
+First window: 2011-01-01 to 2011-01-14 -> target 2011-01-15
+Parameters: 1233
+Best epoch: 13; validation MAE: 798.9 rentals/day
+Training only: 0.92 s (CPU, one thread)
+Yesterday  test MAE: 926.6 rentals/day
+Last week  test MAE: 1382.1 rentals/day
+LSTM       test MAE: 1117.2 rentals/day
+Test targets: 2012-09-13 to 2012-12-31
