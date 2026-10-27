@@ -1,0 +1,43 @@
+python 3.12.13, torch 2.14.1, transformers 5.17.0, arm64, device mps, 4 CPU threads, float32, greedy, max_new_tokens=128, 5 interleaved repeats
+target Qwen/Qwen2.5-1.5B-Instruct, draft Qwen/Qwen2.5-0.5B-Instruct
+
+[explain] prompt 41 tokens: 'Explain what a hash table is in about five sentences.'
+  method                 tokens  tok/s speedup target calls tok/call  same output
+  1.5B alone                108   16.5   1.00x          109     0.99  yes
+  1.5B + 0.5B draft         108   16.6   1.01x           39     2.77  yes
+  1.5B + prompt lookup      108   12.6   0.77x           96     1.12  yes
+  output (1.5B alone): 'A hash table is a data structure that uses a hash function to map keys to array indices, allowing for efficient insertion, deletion, and search operations. It is designed to provide average-case constant time complexity for these operations, making it suitable for applications requiring fast data re'
+
+[code] prompt 51 tokens: 'Write a Python function is_palindrome(s) that ignores case and non-let'
+  method                 tokens  tok/s speedup target calls tok/call  same output
+  1.5B alone                128   16.8   1.00x          128     1.00  yes
+  1.5B + 0.5B draft         128   16.8   1.00x           13     9.85  yes
+  1.5B + prompt lookup      128   12.5   0.75x          113     1.13  yes
+  output (1.5B alone): '```python\ndef is_palindrome(s):\n    """\n    Check if the given string is a palindrome, ignoring case and non-letter characters.\n    \n    A palindrome is a word, phrase, number, or other sequences of characters that reads the same forward and backward (ignoring spaces, punctuation, and capitalization'
+
+[rewrite] prompt 150 tokens: 'Rewrite this news item as a bulleted list of facts. Keep the numbers e'
+  method                 tokens  tok/s speedup target calls tok/call  same output
+  1.5B alone                100   16.5   1.00x          101     0.99  yes
+  1.5B + 0.5B draft         100   15.9   0.97x           15     6.67  yes
+  1.5B + prompt lookup      100   21.4   1.30x           39     2.56  yes
+  output (1.5B alone): '- City council voted to extend central library opening hours\n  - From March, library will open at 8 a.m. instead of 9 a.m. on weekdays\n  - Library will close at 9 p.m. instead of 8 p.m. on weekdays\n  - Change costs 240,000 dollars a year\n  - 2 new staff members hired\n  - Weekend hours remain at 10 a'
+
+[story] prompt 47 tokens: 'Write the opening of a short story about a lighthouse keeper who finds'
+  method                 tokens  tok/s speedup target calls tok/call  same output
+  1.5B alone                128   17.0   1.00x          128     1.00  yes
+  1.5B + 0.5B draft         128   16.3   0.96x           56     2.29  yes
+  1.5B + prompt lookup      128   11.6   0.68x          126     1.02  yes
+  output (1.5B alone): "The old lighthouse stood tall on the cliff's edge, its beacon casting a warm glow over the rugged coastline. The keeper, a man named Thomas, had spent his life guarding this place, his eyes accustomed to the harsh light of the sea. One stormy night, as the waves crashed against the rocks below, Thom"
+
+[draft model alone, for reference]
+  explain    91 tokens,   43.5 tok/s
+  code      128 tokens,   43.6 tok/s
+  rewrite    94 tokens,   43.0 tok/s
+  story     128 tokens,   44.1 tok/s
+
+[cost of one 1.5B forward pass that checks k tokens after a cached prompt]
+  k= 1:   57.9 ms  (1.00x the cost of k=1)
+  k= 4:   60.3 ms  (1.04x the cost of k=1)
+  k=10:   90.7 ms  (1.57x the cost of k=1)
+
+assistant settings used: num_assistant_tokens=None, schedule=None, confidence_threshold=None
