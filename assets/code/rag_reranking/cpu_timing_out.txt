@@ -1,0 +1,4 @@
+torch 2.14.1, 4 CPU threads
+k= 10:   76.9 ms per query (runs: 76.9, 76.1, 82.0)
+k= 20:  187.3 ms per query (runs: 189.8, 179.5, 187.3)
+k= 50:  606.4 ms per query (runs: 608.2, 606.4, 574.2)

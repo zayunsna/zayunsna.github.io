@@ -1,0 +1,24 @@
+python 3.12.13, torch 2.14.1, transformers 5.21.0, sentence-transformers 6.2.0, arm64, device mps
+corpus 2,067 paragraphs, 10,570 questions, sampled 1,000
+
+method                        hit@1  hit@3 hit@10  MRR@10  ms/query  pairs scored
+bi-encoder only               0.636  0.804  0.927   0.734      0.31  0
++ rerank top 5                0.798  0.859  0.864   0.828     15.52  5   (gold in top 5 before reranking: 0.864)
++ rerank top 10               0.837  0.916  0.927   0.876     31.41  10   (gold in top 10 before reranking: 0.927)
++ rerank top 20               0.852  0.934  0.951   0.894     67.22  20   (gold in top 20 before reranking: 0.955)
++ rerank top 50               0.863  0.951  0.972   0.908    186.75  50   (gold in top 50 before reranking: 0.981)
++ rerank top 100              0.866  0.953  0.977   0.911    519.34  100   (gold in top 100 before reranking: 0.990)
+
+with top 20: 45 of 1000 questions never had their paragraph in the candidate list
+bi-encoder rank 2-20 (reranker can still lift to #1): 319
+
+examples where the bi-encoder ranked the wrong paragraph first and top-20 reranking fixed it:
+- Q: Why is giving a defiant speech sometimes more harmful for the individual?
+  bi-encoder #1: "There have been debates as to whether civil disobedience must necessarily be non-violent. Black's Law Dictionary includes non-violence in its definition of civi"...
+  correct (bi-encoder rank 14): 'Some civil disobedience defendants choose to make a defiant speech, or a speech explaining their actions, in allocution. In U.S. v. Burgos-Andujar, a defendant '...
+- Q: When did the UK formally subscribe to the Agreement on Social Policy?
+  bi-encoder #1: 'The Social Charter was subsequently adopted in 1989 by 11 of the then 12 member states. The UK refused to sign the Social Charter and was exempt from the legisl'...
+  correct (bi-encoder rank 2): 'Following the election of the UK Labour Party to government in 1997, the UK formally subscribed to the Agreement on Social Policy, which allowed it to be includ'...
+- Q: What is the most common form of oxygen on the planet?
+  bi-encoder #1: "Oxygen is the most abundant chemical element by mass in the Earth's biosphere, air, sea and land. Oxygen is the third most abundant chemical element in the univ"...
+  correct (bi-encoder rank 2): "The common allotrope of elemental oxygen on Earth is called dioxygen, O\n2. It is the form that is a major part of the Earth's atmosphere (see Occurrence). O2 ha"...
