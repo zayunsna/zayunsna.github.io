@@ -1,21 +1,23 @@
 ---
 layout: post
-title: "How many bins should a histogram have?"
+title: "How many bins should a histogram have? Sturges, √n and Freedman–Diaconis compared"
 description: >
-  Too few bins hide the shape of your data, too many turn it into noise. Here is what the common bin rules
-  (sqrt, Sturges, Freedman–Diaconis, auto) actually return, tested with NumPy.
+  For 1,000 normal values the common rules give 11 (Sturges), 20 (Rice, Scott), 27 (Freedman–Diaconis, NumPy auto)
+  or 32 (square root) bins. Start with NumPy's auto rule, then check one coarser and one finer setting.
 image: /assets/img/ds/histogram_bins/cover.png
-lastmod: 2026-10-08
-last_modified_at: 2026-10-08
+lastmod: 2026-10-27
+last_modified_at: 2026-10-27
 sitemap:
   changefreq: daily
   priority: 1.0
 ---
 
-# How many bins should a histogram have?
+# How many bins should a histogram have? Sturges, √n and Freedman–Diaconis compared
 
-**TL;DR** — There is no single right number. Start with `bins="auto"` in NumPy or matplotlib, which picks a
-width from the data, then compare it with one coarser and one finer setting before you draw conclusions.
+**TL;DR** — There is no single right number, but the common rules give a usable range: for 1,000 normal values they
+suggest 11 (Sturges), 20 (Rice, Scott), 27 (Freedman–Diaconis) and 32 (square root) bins.
+Start with `bins="auto"` in NumPy or matplotlib, which picks a width from the data (27 bins here),
+then compare it with one coarser and one finer setting before you draw conclusions.
 If the data has a long tail, change the scale (for example, a log axis) instead of fighting with the bin count.
 
 _Tested on 2026-09-28 with NumPy 2.5.3, matplotlib 3.11.2, pandas 3.0.6._

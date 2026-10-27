@@ -1,16 +1,18 @@
 ---
 layout: post
-title: "Min-max scaling vs standardization: when should you use which?"
+title: "MinMaxScaler vs StandardScaler: which scaler should you use?"
 description: >
-  MinMaxScaler or StandardScaler? A tested answer with scikit-learn: which models need scaling at all,
-  what outliers do to each scaler, and when RobustScaler is the better pick.
+  StandardScaler for KNN, SVM, linear models and PCA; MinMaxScaler when you need a 0–1 range; RobustScaler when
+  there are outliers; nothing for tree models. Tested in scikit-learn: scaling lifts KNN from 0.691 to 0.950.
 image: /assets/img/blog/minmax_vs_standard_scaler/cover.png
+lastmod: 2026-10-27
+last_modified_at: 2026-10-27
 sitemap:
   changefreq: daily
   priority: 1.0
 ---
 
-# Min-max scaling vs standardization: when should you use which?
+# MinMaxScaler vs StandardScaler: which scaler should you use?
 
 **TL;DR** — Use standardization (`StandardScaler`) as the default for distance- and gradient-based models,
 and min-max scaling (`MinMaxScaler`) when you need values in a fixed range such as 0 to 1.
@@ -153,4 +155,5 @@ The scikit-learn documentation shows the same effect on the California housing d
 - [Compare the effect of different scalers on data with outliers](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html) — scikit-learn docs
 - [Preprocessing data](https://scikit-learn.org/stable/modules/preprocessing.html) — scikit-learn user guide
 
-Related: [MinMaxScaler 사용법 — fit, inverse_transform, and data_min_ (in Korean)](/blog/2023-07-08-MinMaxScaler/)
+Related: [How to use MinMaxScaler in scikit-learn: fit, transform, and inverse_transform](/blog/2026-10-12-minmaxscaler_sklearn/) ·
+[MinMaxScaler 사용법 — fit, inverse_transform, and data_min_ (in Korean)](/blog/2023-07-08-MinMaxScaler/)
