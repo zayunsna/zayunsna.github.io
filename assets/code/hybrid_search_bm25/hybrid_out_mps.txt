@@ -1,0 +1,29 @@
+W1029 07:39:18.443000 83243 .venv/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Could not reach the Hub (Cannot reach https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'sentence-transformers/all-MiniLM-L6-v2'.
+python 3.12.13, torch 2.14.1, sentence-transformers 6.2.0, rank-bm25 0.2.2, arm64, device mps
+corpus 2,067 paragraphs, sampled 1,000 questions
+Could not reach the Hub (Cannot reach https://huggingface.co/api/models/cross-encoder/ms-marco-MiniLM-L6-v2: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'cross-encoder/ms-marco-MiniLM-L6-v2'.
+
+method                      hit@1  hit@5 hit@20 hit@100
+BM25                        0.745  0.907  0.958   0.987
+embeddings                  0.636  0.864  0.955   0.990
+hybrid (RRF)                0.734  0.925  0.984   0.999
+search time per query: BM25 1.0 ms (rank-bm25, pure Python), embeddings 0.31 ms (query encoding + dot product)
+
+rank 1 correct: both 540, BM25 only 205, embeddings only 96, neither 159
+
+BM25 only, first 4:
+- Why is giving a defiant speech sometimes more harmful for the individual?  (BM25 rank 1, embeddings rank 14)
+- When did the UK formally subscribe to the Agreement on Social Policy?  (BM25 rank 1, embeddings rank 2)
+- The mother of which emperor was a concubine?  (BM25 rank 1, embeddings rank 2)
+- What could anyone do to Martin Luther without legal consequence?  (BM25 rank 1, embeddings rank 6)
+
+embeddings only, first 4:
+- What year was the first class taught at the University of Chicago?  (BM25 rank 12, embeddings rank 1)
+- At what age do immune responses typically begin to decline?  (BM25 rank 2, embeddings rank 1)
+- What did Luther refuse to do?  (BM25 rank 3, embeddings rank 1)
+- Which two treaties provided more formal institutions of the European Union?  (BM25 rank 4, embeddings rank 1)
+
+rerank the top 20 with cross-encoder/ms-marco-MiniLM-L6-v2:
+embeddings + rerank        hit@1 0.852   gold in top 20 before reranking 0.955
+hybrid (RRF) + rerank      hit@1 0.873   gold in top 20 before reranking 0.984
