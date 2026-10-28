@@ -1,0 +1,44 @@
+polars 1.44.2, python 3.12.13, arm64, threads 10, POLARS_ENGINE_AFFINITY=(unset)
+
+query                             wrong first purchase over 10 runs  median time
+join -> first()                min   0.0%  median   0.0%  max   0.0%      10 ms
+same, engine='in-memory'       min   0.0%  median   0.0%  max   0.0%      10 ms
+join(maintain_order='left')    min   0.0%  median   0.0%  max   0.0%      10 ms
+min('ts') instead of first()   min   0.0%  median   0.0%  max   0.0%      11 ms
+no join, group_by -> first()   min   0.0%  median   0.0%  max   0.0%       5 ms
+
+polars 2.1.0, python 3.12.13, arm64, threads 10, POLARS_ENGINE_AFFINITY=(unset)
+
+query                             wrong first purchase over 10 runs  median time
+join -> first()                min   0.2%  median  48.4%  max  99.1%       9 ms
+same, engine='in-memory'       min   0.0%  median   0.0%  max   0.0%      10 ms
+join(maintain_order='left')    min   0.0%  median   0.0%  max   0.0%      16 ms
+min('ts') instead of first()   min   0.0%  median   0.0%  max   0.0%       8 ms
+no join, group_by -> first()   min   0.0%  median   0.0%  max   0.0%       7 ms
+
+polars 2.1.0, python 3.12.13, arm64, threads 2, POLARS_ENGINE_AFFINITY=(unset)
+
+query                             wrong first purchase over 10 runs  median time
+join -> first()                min   0.0%  median  37.3%  max  75.9%      14 ms
+same, engine='in-memory'       min   0.0%  median   0.0%  max   0.0%      20 ms
+join(maintain_order='left')    min   0.0%  median   0.0%  max   0.0%      26 ms
+min('ts') instead of first()   min   0.0%  median   0.0%  max   0.0%      13 ms
+no join, group_by -> first()   min   0.0%  median   0.0%  max   0.0%       8 ms
+
+polars 2.1.0, python 3.12.13, arm64, threads 1, POLARS_ENGINE_AFFINITY=(unset)
+
+query                             wrong first purchase over 10 runs  median time
+join -> first()                min   0.0%  median   0.0%  max   0.0%      19 ms
+same, engine='in-memory'       min   0.0%  median   0.0%  max   0.0%      26 ms
+join(maintain_order='left')    min   0.0%  median   0.0%  max   0.0%      20 ms
+min('ts') instead of first()   min   0.0%  median   0.0%  max   0.0%      19 ms
+no join, group_by -> first()   min   0.0%  median   0.0%  max   0.0%      12 ms
+
+polars 2.1.0, python 3.12.13, arm64, threads 10, POLARS_ENGINE_AFFINITY=in-memory
+
+query                             wrong first purchase over 10 runs  median time
+join -> first()                min   0.0%  median   0.0%  max   0.0%      10 ms
+same, engine='in-memory'       min   0.0%  median   0.0%  max   0.0%      10 ms
+join(maintain_order='left')    min   0.0%  median   0.0%  max   0.0%      11 ms
+min('ts') instead of first()   min   0.0%  median   0.0%  max   0.0%      11 ms
+no join, group_by -> first()   min   0.0%  median   0.0%  max   0.0%       5 ms

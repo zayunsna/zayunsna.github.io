@@ -1,0 +1,23 @@
+polars 2.1.0, python 3.12.13, arm64
+
+[1. lazy left join, row order]
+  rows 2,000,000, same order as input: False, first ids [13, 40, 51, 62, 88]
+  maintain_order='left': same order as input: True
+
+[2. Int64 + UInt64]
+  dtype Int128, value 9007199254740994  (exact answer 9007199254740994)
+
+[3. cs.numeric() & pl.col('x')]
+  columns ['x', 'y'] values [{'x': 1, 'y': 1}, {'x': 2, 'y': 0}]
+
+[4. concat(how='horizontal') with heights 3 and 2]
+  ShapeError: cannot concat dataframes with different heights in 'strict' mode
+
+[5. explode() with an empty list]
+  rows 2 [{'id': 1, 'tags': 'a'}, {'id': 1, 'tags': 'b'}]
+
+[6. int column .is_in([1.0, 2.5])]
+  InvalidOperationError: 'is_in' cannot check for Int64 values in List(Float64) data.
+
+[7. df.melt()]
+  AttributeRemovedError: `melt` was removed in version 2.0; use `DataFrame.unpivot` instead, with `index` instead of `id_vars` and `on` instead of `value_vars`
