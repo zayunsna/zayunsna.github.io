@@ -1,0 +1,11 @@
+page([1, 2, 3], 1, 2): broken=[3], fixed=[1, 2]
+discounted_price(200, 10): broken=190, fixed=180
+cache_key('a', 1): broken='1', fixed='a:1'
+cache_key('b', 1): broken='1', fixed='b:1'
+p95([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],): broken=20, fixed=19
+word_count('a  b',): broken=3, fixed=2
+word_count('a\tb',): broken=1, fixed=2
+word_count('',): broken=1, fixed=0
+word_count('   ',): broken=4, fixed=0
+mean_or_none([],): broken='ZeroDivisionError', fixed=None
+PASS: 10 counterexamples reproduced; 2 control probes passed

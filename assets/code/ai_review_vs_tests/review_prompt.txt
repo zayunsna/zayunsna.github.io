@@ -1,0 +1,11 @@
+Review the Python functions in helpers.py against the behavioral contract in
+requirements.txt using static inspection only. Do not execute target code or
+inspect tests, solutions, other files, or another reviewer's result. Do not
+edit files, use network/APIs, read credentials or install anything. Report all
+reproducible behavioral defects with function, valid counterexample,
+expected/actual behavior and a short fix. Omit style and out-of-scope
+speculation. Do not force any number of findings. State uncertainties.
+
+This is a portable rendering of the shared substantive review instruction.
+Original dispatches also named the absolute target paths, lifecycle reporting
+commands and reviewer A/B task titles. Those private routing details are omitted.

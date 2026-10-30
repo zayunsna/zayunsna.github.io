@@ -1,0 +1,22 @@
+Behavioral contract (not Python package dependencies)
+
+Only the valid input domains below are in scope. Do not invent requirements
+for invalid types, non-finite values, database backends or external callers.
+
+page(items, number, size): items is a list, number is a 1-based positive page
+number, size is a positive integer. Return that page, or [] beyond the list.
+discounted_price(price, percent): finite numeric price >= 0 and percent in
+[0, 100]. Apply the percentage discount; no currency rounding is required.
+cache_key(tenant, record_id): tenant is a nonempty string with no colon,
+record_id is a nonnegative integer. Return "tenant:record_id" so equal IDs
+in different tenants do not share a cache key.
+p95(values): nonempty list of finite numbers. Use the nearest-rank percentile:
+sort ascending, take 1-based rank ceil(0.95 * len(values)).
+word_count(text): string. Count whitespace-separated words; repeated spaces,
+tabs and newlines separate words, and empty/whitespace-only text has 0 words.
+mean_or_none(values): list of finite numbers. Return the arithmetic mean,
+or None if the list is empty.
+stable_unique(values): list of hashable objects. Return distinct values in
+first-occurrence order. Python equality/hash semantics apply.
+clamp(value, low, high): finite numeric inputs, low <= high. Restrict value to
+the inclusive [low, high] interval.

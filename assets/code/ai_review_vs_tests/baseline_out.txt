@@ -1,0 +1,26 @@
+implementation=broken, suite=baseline
+FFF.....                                                                 [100%]
+=================================== FAILURES ===================================
+__________________________________ test_page ___________________________________
+test_baseline.py:6: in test_page
+    assert page([10, 20, 30, 40], 1, 2) == [10, 20]
+E   assert [30, 40] == [10, 20]
+E     
+E     At index 0 diff: 30 != 10
+E     Use -v to get more diff
+________________________________ test_discount _________________________________
+test_baseline.py:10: in test_discount
+    assert discounted_price(50, 10) == 45
+E   assert 40 == 45
+E    +  where 40 = discounted_price(50, 10)
+________________________________ test_cache_key ________________________________
+test_baseline.py:14: in test_cache_key
+    assert cache_key("alpha", 7) != cache_key("beta", 7)
+E   AssertionError: assert '7' != '7'
+E    +  where '7' = cache_key('alpha', 7)
+E    +  and   '7' = cache_key('beta', 7)
+=========================== short test summary info ============================
+FAILED test_baseline.py::test_page - assert [30, 40] == [10, 20]
+FAILED test_baseline.py::test_discount - assert 40 == 45
+FAILED test_baseline.py::test_cache_key - AssertionError: assert '7' != '7'
+3 failed, 5 passed in 0.01s
