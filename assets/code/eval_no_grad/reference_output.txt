@@ -1,0 +1,10 @@
+torch 2.14.0 | Python 3.12.13 | CPU
+mode   no_grad  same_output  output_requires_grad  weight_requires_grad
+train  False    False        True                  True
+train  True     False        False                 True
+eval   False    True         True                  True
+eval   True     True         False                 True
+eval backward weight gradient row: [6.0, 8.0, 10.0, 12.0]
+BatchNorm running_mean after one no_grad forward:
+train: [1.2, 2.2]
+eval: [0.0, 0.0]
