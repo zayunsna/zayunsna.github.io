@@ -1,0 +1,36 @@
+python 3.12.13, sentence-transformers 6.2.0, transformers 5.22.1, torch 2.15.0, numpy 2.5.4, Darwin arm64
+corpus paragraphs: 1439
+{'val': 1000, 'test': 1000}
+right one in top 3   n=414  top-1 score median 0.605
+right one missed     n= 86  top-1 score median 0.561
+no answer in corpus  n=500  top-1 score median 0.349
+t=0.3  precision 0.465  coverage 0.886
+t=0.4  precision 0.660  coverage 0.608
+t=0.5  precision 0.802  coverage 0.434
+t=0.6  precision 0.863  coverage 0.255
+t=0.7  precision 0.921  coverage 0.063
+chosen on validation: t=0.49  ->  test precision 0.676, coverage 0.490
+score 0.2-0.3: n=114  right paragraph in top 3: 2%
+score 0.3-0.4: n=278  right paragraph in top 3: 4%
+score 0.4-0.5: n=174  right paragraph in top 3: 30%
+score 0.5-0.6: n=179  right paragraph in top 3: 72%
+score 0.6-0.7: n=192  right paragraph in top 3: 84%
+score 0.7-0.8: n= 59  right paragraph in top 3: 93%
+bge median top score, no answer in corpus: 0.584
+bge with MiniLM's cutoff 0.49: test precision 0.410, coverage 0.990
+bge with its own cutoff 0.67: test precision 0.740, coverage 0.470
+t=0.49 with ~10% unanswerable: precision 0.792, coverage 0.752
+
+MiniLM, 80% target, other random article splits (seed 0 is the worked example above):
+split seed 0: cutoff 0.49  validation precision 0.801  test precision 0.676  test coverage 0.490
+split seed 1: cutoff 0.48  validation precision 0.812  test precision 0.754  test coverage 0.464
+split seed 2: cutoff 0.58  validation precision 0.804  test precision 0.844  test coverage 0.307
+split seed 3: cutoff 0.55  validation precision 0.802  test precision 0.882  test coverage 0.331
+split seed 4: cutoff 0.48  validation precision 0.805  test precision 0.727  test coverage 0.473
+split seed 5: cutoff 0.50  validation precision 0.803  test precision 0.779  test coverage 0.425
+split seed 6: cutoff 0.53  validation precision 0.800  test precision 0.825  test coverage 0.382
+split seed 7: cutoff 0.52  validation precision 0.806  test precision 0.830  test coverage 0.412
+split seed 8: cutoff 0.56  validation precision 0.801  test precision 0.821  test coverage 0.352
+split seed 9: cutoff 0.53  validation precision 0.801  test precision 0.876  test coverage 0.395
+test precision over 10 splits: min 0.676, median 0.823, max 0.882
+total run time: 122.4 s
