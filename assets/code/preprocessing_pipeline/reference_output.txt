@@ -1,0 +1,45 @@
+python 3.12.13, scikit-learn 1.9.1, pandas 3.1.0, numpy 2.5.4, matplotlib 3.11.2, joblib 1.6.0, Darwin arm64
+(32561, 15)
+income
+<=50K    24720
+>50K      7841
+workclass         1836
+occupation        1843
+native-country     583
+Duplicate rows: 24
+Countries: 41 | with fewer than 50 rows: 20
+native-country
+United-States         29170
+Mexico                  643
+Hungary                  13
+Scotland                 12
+Holand-Netherlands        1
+train      (19536, 12)  share >50K: 0.241
+validation (6512, 12)  share >50K: 0.241
+test       (6513, 12)  share >50K: 0.241
+workclass         1120
+occupation        1127
+native-country     346
+Train countries with < 50 rows: 28
+baseline validation accuracy: 0.759
+Input columns: 12 -> model features: 62
+['num__age', 'num__education-num'] ... ['cat__native-country_missing', 'cat__native-country_infrequent_sklearn']
+Learned medians: {'age': 37.0, 'education-num': 10.0, 'capital-gain': 0.0, 'capital-loss': 0.0, 'hours-per-week': 40.0}
+C=0.01  validation accuracy: 0.8444
+C=0.1   validation accuracy: 0.8487
+C=1.0   validation accuracy: 0.8484
+C=10.0  validation accuracy: 0.8495
+chosen C: 10.0
+baseline_accuracy  0.7591
+pipeline_accuracy  0.8471
+pipeline_roc_auc   0.9051
+Training rows: Brazil 0 | Scotland 9
+P(>50K): [0.5043, 0.5043]
+Same encoded row: True
+Infrequent-country column: [1.0, 1.0]
+Default OneHotEncoder: Found unknown categories ['Brazil'] in column 0 during transform
+Countries merged into infrequent: 28
+rare-country rows n=  200  share >50K=0.190  accuracy=0.865
+all other rows    n= 6313  share >50K=0.243  accuracy=0.847
+Loaded predictions match: True
+total run time: 1.4 s
