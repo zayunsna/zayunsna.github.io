@@ -1,0 +1,64 @@
+{
+  "python": "3.12.13",
+  "torch": "2.15.0",
+  "transformers": "5.17.0",
+  "numpy": "2.5.4",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "packing": {
+    "original_bytes": 4194304,
+    "packed_bytes": 524288,
+    "scale_bytes": 65536,
+    "persistent_bytes": 589824,
+    "dequantized_bytes": 4194304
+  },
+  "cache": [
+    {
+      "batch": 1,
+      "tokens": 128,
+      "tensor_bytes": 1572864,
+      "first_key_shape": [
+        1,
+        2,
+        128,
+        64
+      ],
+      "dtype": "torch.float16"
+    },
+    {
+      "batch": 1,
+      "tokens": 512,
+      "tensor_bytes": 6291456,
+      "first_key_shape": [
+        1,
+        2,
+        512,
+        64
+      ],
+      "dtype": "torch.float16"
+    },
+    {
+      "batch": 2,
+      "tokens": 512,
+      "tensor_bytes": 12582912,
+      "first_key_shape": [
+        2,
+        2,
+        512,
+        64
+      ],
+      "dtype": "torch.float16"
+    }
+  ],
+  "config": {
+    "layers": 24,
+    "kv_heads": 2,
+    "head_dim": 64,
+    "fp16_bytes_per_token": 12288
+  },
+  "projection_only": {
+    "batch": 8,
+    "tokens": 32768,
+    "fp16_cache_bytes": 3221225472
+  }
+}
