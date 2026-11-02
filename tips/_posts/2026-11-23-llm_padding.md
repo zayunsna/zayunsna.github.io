@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Why batching changes LLM outputs: padding and attention masks"
+title: "Use left padding and an attention mask for LLM batches"
 description: >
   The same short prompt produced different tokens with right padding or a missing attention mask. Reproduce
   the decoder-only generation pitfall locally, then compare correct left-padded batches with single prompts.
@@ -10,7 +10,7 @@ sitemap:
   priority: 1.0
 ---
 
-# Why batching changes LLM outputs: padding and attention masks
+# Use left padding and an attention mask for LLM batches
 
 If a decoder-only Hugging Face model answers differently when you put a short prompt beside a longer one,
 check **padding side and the attention mask** before changing the prompt or model.
@@ -26,23 +26,23 @@ mask from the left-padded batch changed it again. Sampling was off in all runs.
 | Right padding + mask | `\nSure, here to continue the sequence: 12` | No |
 | Left padding, mask omitted | `4, 5, 6, 7, ` | No |
 
-These are actual outputs, including the model's awkward continuation. The point is token parity under batching,
-not whether it follows the counting instruction well.
+The control repeats the start of the sequence. The left-padded batch with a mask reproduces that continuation
+exactly; the other configurations change it.
 
-_Tested on 2026-10-30: Python 3.12.13, torch 2.14.0, transformers 5.17.0, macOS Apple M5, one CPU thread,
+Tested on 2026-10-30: Python 3.12.13, torch 2.14.0, transformers 5.17.0, macOS Apple M5, one CPU thread,
 float32, eager attention. Model [Qwen2.5-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct),
 Apache-2.0, revision `7ae557604adf67be50417f59c2c2f167def9a775`. Greedy decoding, `repetition_penalty=1.0`.
 Two local runs produced the same compared tokens. Full [script](/assets/code/llm_padding/padding.py),
 [output including warnings](/assets/code/llm_padding/reference_output.txt),
-[result JSON](/assets/code/llm_padding/results.json) and [run instructions](/assets/code/llm_padding/README.txt)._
+[result JSON](/assets/code/llm_padding/results.json) and [run instructions](/assets/code/llm_padding/README.txt).
 
-## Padding is not just unused space
+## Final-position logits in a padded batch
 
-The two templated prompts had **42 and 43 tokens**. A tensor batch needs the same width for both rows, so
+The two templated prompts had 42 and 43 tokens. A tensor batch needs the same width for both rows, so
 the shorter row receives one padding token.
 
 With left padding, its last tensor position is still the last real prompt token. With right padding, that
-position is the pad token instead. In this test the final IDs were:
+position contains the pad token. In this test the final IDs were:
 
 ```text
 left+mask:  [198, 198]
@@ -51,29 +51,26 @@ right+mask: [151645, 198]
 
 The left values are real final prompt tokens. `151645` is the EOS token reused for padding in this experiment.
 For the ordinary greedy generation path in the tested version, the next-token logits come from the final tensor
-position, `outputs.logits[:, -1]`. A padding mask does not move that indexing operation to the last real token.
+position, `outputs.logits[:, -1]`. That final position supplies the next-token scores in both padded batches.
 The [versioned generation source](https://github.com/huggingface/transformers/blob/v5.17.0/src/transformers/generation/utils.py)
 and the installed source were checked for that behavior.
 
-That is why right padding can still break a shorter row with a perfectly good attention mask. The mask prevents
-attention to padding positions as keys; it does not tell this generation loop to choose a different query
-position's logits. The longer row had no padding, and matched its single-prompt output in all three configurations.
+The attention mask excludes padding positions as keys. The generation loop still selects the final query
+position's logits, which explains why the right-padded shorter row changed output even with the mask. The longer row had no padding, and matched its single-prompt output in all three configurations.
 
 Hugging Face's [generation guide](https://huggingface.co/docs/transformers/llm_tutorial#padding-side) recommends
-left padding for this decoder-only generation workflow. It is not a universal instruction to left-pad every
-model or every training task. Encoder-decoder models and specialized serving engines need their own rules.
+left padding for this decoder-only generation workflow.
 
-## Pass the mask rather than guessing it from token IDs
+## Pass the tokenizer attention mask
 
 The test deliberately sets `pad_token` to `eos_token`. This is a common way to batch a model without a separate
-padding token, but it makes token IDs alone ambiguous: which EOS positions are padding?
+padding token. An EOS token ID alone then leaves its role ambiguous, since it can mark either EOS or padding.
 
 The tokenizer's `attention_mask` records that distinction. In the standard 2D mask used here, **1 means a real
 input token and 0 means padding**. When that mask was omitted, transformers warned that it could not infer it
-reliably because the two special token IDs were equal. The changed output is a concrete failure in this run,
-not a claim that an omitted mask must always change the answer.
+reliably because the two special token IDs were equal. The omitted-mask run changed the shorter row's output.
 In this version, generation also derives position IDs from the mask when preparing inputs, so omitting it
-can change position handling as well as attention. This experiment does not isolate those two contributions.
+can change position handling as well as attention.
 
 The normal configuration is small. Install `torch==2.14.0` and `transformers==5.17.0` in a Python 3.12 virtual
 environment, then run this complete example. The first run downloads the public model; the test above used
@@ -114,25 +111,29 @@ print(tok.batch_decode(new_tokens, skip_special_tokens=True))
 ```
 
 The capital-question answer is wrong even in the single-prompt control: Australia's capital is Canberra.
-Batching parity did not fix factual accuracy. The full experiment keeps that result instead of choosing a
-prompt that makes the small model look better.
+The control and all three batched configurations returned the same wrong city. Token parity and factual
+accuracy therefore need separate checks.
 
-Slice continuations at the **padded tensor width**, as above, not at each unpadded prompt length. The latter
+Slice continuations at the **padded tensor width**, as above. Slicing at each unpadded prompt length
 can accidentally include some input tokens in what you report as an answer. For exact comparisons, the full
 script compares token IDs through the first generated EOS and ignores padding added while other batch rows
 finish. Decoded text alone can hide special-token differences.
 
-## Correct padding is necessary, not a promise of identical answers
+## Compare token IDs with fixed generation settings
 
 Keep the same [chat template](/tips/2026-10-27-chat_template/), generation settings and model revision while
 debugging. Sampling adds another source of variation. Even with greedy decoding, changes in batch shape,
 precision or kernels can perturb floating-point calculations and flip nearly tied next-token scores; see
 PyTorch's [numerical accuracy notes](https://docs.pytorch.org/docs/2.14/notes/numerical_accuracy.html).
-This run tests one model and CPU configuration, not every GPU or serving backend.
+The measured parity comes from one Qwen model and CPU configuration; GPU and serving backends remain
+untested. The omitted-mask experiment also leaves the contributions of attention and position handling
+unseparated, and an omitted mask may preserve outputs on other inputs. Encoder-decoder models, training
+tasks and specialized serving engines require their own padding rules.
 
 Start with one prompt, add a much longer neighbor, and compare token IDs. If the short row diverges, inspect
-its mask and final input position first. `model.eval()` is still appropriate, but—as the
-[eval vs no_grad comparison](/tips/2026-11-02-eval_no_grad/) shows—it does not repair a malformed batch.
+its mask and final input position first. Use `model.eval()` for inference behavior; the
+[eval vs no_grad comparison](/tips/2026-11-02-eval_no_grad/) explains that setting separately.
+Padding and mask construction still need explicit checks.
 Documentation and source checks above were made on 2026-10-30.
 
 The cover shows the shorter prompt's actual final ten mask positions beside the token ID used at the end;
