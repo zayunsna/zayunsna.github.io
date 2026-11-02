@@ -1,0 +1,9 @@
+k=3; relevant grades > 0; NDCG gain=2**grade-1
+ranking                 Recall@3  RR@3  NDCG@3
+one answer first         0.333    1.000  0.861
+more answers later       0.667    0.500  0.139
+best answer later        1.000    1.000  0.631
+best answer first        1.000    1.000  1.000
+MRR@3 across these 4 artificial queries: 0.875
+ValueError: No relevant documents: choose and document a policy
+PASS: NDCG matches sklearn with transformed gains; no-hit and no-relevance cases checked

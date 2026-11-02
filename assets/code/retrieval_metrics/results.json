@@ -1,0 +1,64 @@
+{
+  "grades": {
+    "A": 3,
+    "B": 1,
+    "C": 1,
+    "X": 0,
+    "Y": 0
+  },
+  "k": 3,
+  "rows": [
+    {
+      "name": "one answer first",
+      "ranking": [
+        "A",
+        "X",
+        "Y",
+        "B",
+        "C"
+      ],
+      "recall": 0.3333333333333333,
+      "rr": 1.0,
+      "ndcg": 0.8609101556836468
+    },
+    {
+      "name": "more answers later",
+      "ranking": [
+        "X",
+        "B",
+        "C",
+        "A",
+        "Y"
+      ],
+      "recall": 0.6666666666666666,
+      "rr": 0.5,
+      "ndcg": 0.13908984431635313
+    },
+    {
+      "name": "best answer later",
+      "ranking": [
+        "B",
+        "C",
+        "A",
+        "X",
+        "Y"
+      ],
+      "recall": 1.0,
+      "rr": 1.0,
+      "ndcg": 0.6310385047070085
+    },
+    {
+      "name": "best answer first",
+      "ranking": [
+        "A",
+        "B",
+        "C",
+        "X",
+        "Y"
+      ],
+      "recall": 1.0,
+      "rr": 1.0,
+      "ndcg": 1.0
+    }
+  ]
+}
