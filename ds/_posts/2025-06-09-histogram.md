@@ -23,14 +23,14 @@ They appear in textbooks, research papers, and everyday analysis because they pr
 In this post, we’ll explore histograms from the ground up, starting with their historical origins, and then dive into how to read them, how they differ from bar charts, their strengths and limitations, and some practical examples using Python. We’ll also discuss when to use histograms and what alternative visualizations (like KDE plots or box plots) can be useful for different needs. The goal is to provide a friendly yet comprehensive guide for beginners and a good refresher for seasoned professionals.
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/image1.png" alt="" width="400px">
+  <img src="../../assets/img/ds/histogram/image1.png" alt="Illustration of a bearded lecturer in 19th-century clothes pointing with chalk at a histogram drawn on a blackboard" width="400px">
 </p>
 
 ## A Brief History of Histograms
 The word "histogram" dates back to the early 1890s. The English statistician Karl Pearson introduced it in his lectures (Wikipedia dates them to 1892 at University College London).
 
 <p align="center">
-    <img src="../../assets/img/ds/histogram/Karl_Pearson.png" alt>
+    <img src="../../assets/img/ds/histogram/Karl_Pearson.png" alt="Black-and-white portrait photograph of the statistician Karl Pearson">
 </p>
 <p align="center">
     <em> Karl Pearson (source: wiki) </em>
@@ -48,7 +48,7 @@ The histogram was part of Pearson’s toolkit to display the actual distribution
 A histogram is essentially a graphical representation of a dataset’s distribution. To construct one, we first divide the entire range of data values into a series of intervals (called bins), then count how many data points fall into each bin. Each bin is usually an equal-width range (though bins can be unequal if needed), and the bins are adjacent (contiguous) intervals covering the whole range without gaps. For each bin, we draw a bar whose height corresponds to the number of data points (the frequency) in that interval. The result is a bar chart that shows how the data are distributed across the value range.
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/image3.png" alt="" width="400px">
+  <img src="../../assets/img/ds/histogram/image3.png" alt="Simple histogram of frequency against value with nine bars, highest in the middle" width="400px">
 </p>
 
 On the horizontal (x) axis of a histogram, you’ll typically find the data values (grouped into bins). The vertical (y) axis shows the frequency (count of observations) for each bin. By looking at the pattern of bars, you can quickly glean several important aspects of the data’s distribution 
@@ -62,7 +62,7 @@ On the horizontal (x) axis of a histogram, you’ll typically find the data valu
 - **Outliers or Gaps:** Any isolated bars that are far apart from the others, or any visible gaps (empty bins) between bars, suggest there may be outliers or unusual clusters in the data. For example, if most data are between 50 and 100 but there’s a lone bar out around 200, that indicates an outlier value in that high range. Histograms make such anomalies stand out visually. 
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/image4.png" alt="" >
+  <img src="../../assets/img/ds/histogram/image4.png" alt="Three histograms: a symmetric normal distribution, a right-skewed income distribution, and a bimodal exam score distribution with peaks near 50 and 80" >
 </p>
 
 
@@ -82,7 +82,7 @@ At first glance, a histogram looks a lot like a bar chart – both use bars to r
 To make this concrete, consider an example: Suppose you have exam scores of students and you want to visualize them. A histogram of the scores might have bins like 0–10, 10–20, ..., 90–100, with bars showing how many students scored in each range. This would tell you the shape of the score distribution (perhaps showing a peak around 70–80, etc.). If you instead used a bar chart for the same data, you’d likely have a bar for each discrete score or each letter grade category – but a bar chart wouldn’t typically be used this way for so many values, as it would just replicate the table of scores. Bar charts would more appropriately show something like the average score in each class section (if you had multiple class groups), or the count of students in each letter grade category (A, B, C, ...). Those are separate categories, not continuous intervals.
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/image5.png" alt="" >
+  <img src="../../assets/img/ds/histogram/image5.png" alt="Side-by-side comparison: a bar chart of students per class level for classes 5 to 9, and a histogram of exam scores grouped into ranges from 0 to 100" >
 </p>
 
 Side-by-side comparison of a bar chart (left) and a histogram (right). The bar chart (left) shows the number of girls in different class levels (Class 5 through Class 9), with gaps between the bars to indicate these are separate categories. The histogram (right) shows the distribution of exam scores in continuous intervals (bins) with no gaps between bars, since the data (scores) are numeric and continuous. 
@@ -94,49 +94,49 @@ Like any visualization tool, histograms have their pros and cons. Understanding 
 
 ### Strengths (Advantages):
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_strength_easy_to_create.png" alt="" width="400px">
+  <img src="../../assets/img/ds/histogram/histogram_strength_easy_to_create.png" alt="Histogram of 100 values between 0 and 1 in ten bins, titled Strength: Easy to Create and Interpret" width="400px">
 </p>
 Easy to Create and Interpret: Histograms are simple to construct and widely understood. They’re essentially an extension of the familiar bar chart, so most people can read a histogram without much explanation. This simplicity makes them a user-friendly tool even for audiences with limited statistical background. With modern software, you can create a histogram with a single function call, making it a quick way to get a sense of your data.
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_strength_large_datasets.png" alt="" width="400px">
+  <img src="../../assets/img/ds/histogram/histogram_strength_large_datasets.png" alt="Histogram of a large normally distributed sample with a smooth bell shape, titled Strength: Effective for Large Datasets" width="400px">
 </p>
 Effective for Large Datasets: Because they group data into bins, histograms can summarize large volumes of data into an easy-to-read visual form. Instead of looking at thousands of numbers, you see a plotted shape. This compression of information helps in identifying patterns – for example, you can immediately spot if thousands of data points form a normal-like curve or a skewed distribution. Histograms thus scale well to big datasets and reduce complexity by focusing on frequency trends.
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_strength_shape_outliers.png" alt="" width="400px">
+  <img src="../../assets/img/ds/histogram/histogram_strength_shape_outliers.png" alt="Histogram of a bell-shaped sample with a few isolated bars far from the center near -5 and 6, titled Strength: Reveals Shape and Outliers" width="400px">
 </p>
 Reveals Distribution Shape and Outliers: A histogram provides a visual depiction of data distribution – you can quickly identify if the distribution is normal, skewed, uniform, or multimodal. It also highlights outliers or unusual concentrations of data. Patterns, trends, and any anomalies become apparent, aiding analysis and decision-making. In exploratory data analysis, the histogram is often one of the first plots used to check assumptions (like normality) and to guide further statistical modeling.
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_strength_versatile_insightful.png" alt="" width="400px">
+  <img src="../../assets/img/ds/histogram/histogram_strength_versatile_insightful.png" alt="Histogram of right-skewed data with most values near 0 and a long tail to about 7, titled Strength: Versatile and Insightful" width="400px">
 </p>
 Versatile and Insightful: Histograms are useful in many fields – from quality control (they are one of the “seven basic tools of quality”) to academic research – whenever you need to understand how a variable behaves. They can handle data that aren’t nicely behaved (e.g., highly skewed data) and still give insight. By examining a histogram, you can gauge the data’s central tendency, variability, and skewness all at once. It’s a great way to get a feel for the data before diving into more complex analysis.
 
 ### Limitations (Disadvantages):
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_limitation_loss_of_detail.png" alt="" width="400px">
+  <img src="../../assets/img/ds/histogram/histogram_limitation_loss_of_detail.png" alt="Histogram with only five wide bins and an almost empty bin around 0, titled Limitation: Loss of Detail within Bins" width="400px">
 </p>
 Loss of Detail and Individual Data: Histograms trade exactness for summary. Because data points are grouped into bins, you lose the individual data values – within a bin, a value of 15 and 19 are both just counted as “somewhere in 10–20”. This means you cannot retrieve precise information about specific points from a histogram; it provides a coarse-grained view. If you need to know each exact data point or preserve the raw data, a histogram isn’t the tool for that (a stem-and-leaf plot or simply looking at the raw data would be necessary in that case). 
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_limitation_sensitive_to_bin_width.png" alt="" width="700px">
+  <img src="../../assets/img/ds/histogram/histogram_limitation_sensitive_to_bin_width.png" alt="The same data plotted with 5 bins and with 30 bins, showing different shapes, titled Limitation: Sensitive to Bin Width" width="700px">
 </p>
 Dependence on Binning Choices: A histogram’s appearance can be quite sensitive to the choice of bin width (and the range covered). The number of bins (or their width) can significantly affect how the histogram looks and what story it tells. For example, using only 5 wide bins might smooth over important details (making the data look more uniform than it is), whereas using 50 narrow bins might produce a very noisy-looking histogram with lots of ups and downs. There is a subjective element here – one must choose binning that appropriately represents the data without misleading. Similarly, if the data range (min to max) is cropped or extended, it can change the visual (for instance, including a few extreme outliers can stretch the x-axis and make the bulk of the data appear squished in a narrow area). In short, histograms can sometimes be “manipulated” (even unintentionally) by binning decisions, so one should be cautious and perhaps try multiple bin settings.
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_limitation_small_datasets.png" alt="" width="400px">
+  <img src="../../assets/img/ds/histogram/histogram_limitation_small_datasets.png" alt="Sparse histogram of about ten values with gaps between bars, titled Limitation: Not Suitable for Small Datasets" width="400px">
 </p>
 Not Great for Small Data Sets: If you have very few data points, a histogram might not be very informative. With, say, 5 or 10 observations, the histogram will have only a few bars (or many empty bins) and you might be better off just listing the values or using a different plot (like a dot plot or just the raw numbers). Histograms shine with moderate to large data sets where a smooth distribution shape emerges. For tiny datasets, the concept of a “distribution” is shaky, and other representations (like a stem-and-leaf plot, which preserves individual values) could be more appropriate.
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_limitation_multiple_variables.png" alt="" width="400px">
+  <img src="../../assets/img/ds/histogram/histogram_limitation_multiple_variables.png" alt="Two overlapping semi-transparent histograms for Group 1 and Group 2, titled Limitation: Hard to Compare Multiple Variables" width="400px">
 </p>
 Cannot Show Multiple Variables Easily: A single histogram displays one variable’s distribution. If you want to compare distributions between groups, you often have to draw multiple histograms (either side by side or overlaid in some transparent fashion). Comparing multiple histograms can be tricky and cluttered, especially if the distributions overlap. For example, comparing the income distributions of two cities would require two histograms – one for each city – and interpreting differences might not be straightforward if plotted together. This makes histograms less flexible when you need to visualize and compare more than one dataset on the same chart. Other plots (like overlapping density plots or side-by-side box plots) are usually better for comparison tasks.
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_limitation_temporal_order.png" alt="" width="400px">
+  <img src="../../assets/img/ds/histogram/histogram_limitation_temporal_order.png" alt="Histogram of values from a time series with the time order lost, titled Limitation: Abstracts Away Temporal Context" width="400px">
 </p>
 Abstracts Away Temporal or Contextual Information: This is a more subtle limitation – by collapsing data into a frequency distribution, histograms ignore any time order or sequence the data may have had. If the data were collected over time and had trends or cycles (say, daily sales over a year), a histogram of all sales would hide any seasonal pattern because it just aggregates all values together. In quality control or experimental contexts, if you combine data from different batches or conditions, a single histogram won’t tell you if one batch was different from another over time. Thus, while histograms are great static snapshots of distribution, they don’t replace time-series plots or other methods when sequence matters.
 
@@ -215,13 +215,13 @@ Identifying outliers or data issues is important. A histogram can quickly flag i
 However, histograms are not always the best choice. Depending on what you want to achieve, you might consider other visualization tools:
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_quantitaive_KDE_overlay.png" alt="" width="700px">
+  <img src="../../assets/img/ds/histogram/histogram_quantitaive_KDE_overlay.png" alt="Left: histogram of a single quantitative variable; right: the same data as a density histogram with a KDE curve overlaid" width="700px">
 </p>
 
 Density Plots (KDE plots): A kernel density estimate (KDE) plot is essentially a smooth version of a histogram. It uses a kernel smoothing technique to create a continuous curve that represents the distribution of the data. Unlike a histogram, which can look blocky or vary with bin width, a density plot is not dependent on bins – it produces a fluid curve where the peaks correspond to where data are concentrated. KDE plots are great for overlaying multiple distributions (you can draw several smooth curves on the same axes with different colors) to compare them. They also can reveal multi-modality clearly with multiple bumps in the curve. The trade-off is that a density plot is a smoothed approximation – it might show a peak where there isn’t an exact bin, or smooth over a sharp drop – but with a good choice of bandwidth (smoothing parameter), it provides an elegant view of the underlying distribution shape. In practice, many data scientists use histograms and KDE plots together (often plotting a KDE curve on top of a histogram) for a complementary view. The histogram shows the actual counts, while the KDE highlights the general shape without the choppiness of bins.
 
 <p align="center">
-  <img src="../../assets/img/ds/histogram/histogram_others.png" alt="" >
+  <img src="../../assets/img/ds/histogram/histogram_others.png" alt="Four alternatives to a histogram for the same data: box plot and violin plot comparing two groups, a histogram with a rug plot of individual points, and an ECDF curve" >
 </p>
 
 

@@ -33,7 +33,7 @@ I remember struggling with similar ranking problems at my last job—the issue i
 
 
 <p>
-    <img src="../../assets/img/ds/airbnb/image1.png" alt>
+    <img src="../../assets/img/ds/airbnb/image1.png" alt="Airbnb paper Figure 2: waterfall charts of relative NDCG gains offline and relative booking gains online for four models, Simple NN (04/2017), LambdaRank NN (06/2017), GBDT/FM NN (03/2018) and Deep NN (06/2018)">
 </p>
 <p>
     <em>The evolution of Airbnb's ranking models, showing incremental gains with each approach. Note the significant jump with the final Deep NN that used 10x more training data.</em>
@@ -42,7 +42,7 @@ I remember struggling with similar ranking problems at my last job—the issue i
 One detail that cracked me up was how they ended up combining three completely different models (Neural Networks, GBDT, and Factorization Machines) because they couldn't decide which one was best. It's such a realistic engineering compromise: "Well, all three approaches have merits... screw it, let's just use them all!"
 
 <p>
-    <img src="../../assets/img/ds/airbnb/image2.png" alt>
+    <img src="../../assets/img/ds/airbnb/image2.png" alt="Airbnb paper Figure 3: a neural network whose inputs include embeddings of gradient boosted tree leaf nodes, a factorization machine prediction and other features, feeding a hidden ReLU layer and one output logit">
 </p>
 <p>
     <em>The hybrid architecture that combined neural networks with GBDT tree nodes and Factorization Machine predictions—Airbnb's innovative but complex ensemble approach before simplifying.</em>
@@ -54,7 +54,7 @@ God, how many times have we over-engineered solutions when we should've just bee
 
 ### The Failures (That They Actually Admitted)
 <p>
-    <img src="../../assets/img/ds/airbnb/image3.png" alt>
+    <img src="../../assets/img/ds/airbnb/image3.png" alt="Airbnb paper Figure 5: learning curves of NDCG against training pairs in millions; with the listing ID feature, training NDCG stays near 1 while test NDCG stays low, and without it the training and test curves converge near 0.68">
 </p>
 <p>
     <em> Learning curves revealing the overfitting problem with listing IDs. Notice how models without listing IDs (green/orange) generalized better despite lower training performance.</em>
@@ -73,7 +73,7 @@ The parts that resonated most with me were the technical optimizations that nobo
 And the interpretability challenges! When stakeholders asked "why is this listing ranked higher?", they couldn't just point to a decision tree node anymore. They had to develop entire parallel systems just to explain what the model was doing.
 
 <p>
-    <img src="../../assets/img/ds/airbnb/image4.png" alt>
+    <img src="../../assets/img/ds/airbnb/image4.png" alt="Airbnb paper Figure 14: price and review count distributions for top-ranked and bottom-ranked test listings; top-ranked listings lean toward lower prices, while review count distributions nearly overlap">
 </p>
 <p>
     <em> Price and review distributions between top and bottom-ranked listings. insights like these helped Airbnb understand what their 'black box' neural networks were actually prioritizing.</em>
