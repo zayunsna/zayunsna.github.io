@@ -1,4 +1,5 @@
 ---
+hub: upgrades
 layout: post
 title: "Polars 2.0 upgrade: the lazy join that now returns rows in a different order"
 description: >

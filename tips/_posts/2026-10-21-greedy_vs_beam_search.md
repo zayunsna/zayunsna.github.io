@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "Greedy decoding vs beam search: why the most likely next word can give a worse answer"
 description: >

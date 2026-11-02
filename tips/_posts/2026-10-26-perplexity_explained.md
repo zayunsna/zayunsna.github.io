@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "What is perplexity? Computing it by hand with a small local model"
 description: >

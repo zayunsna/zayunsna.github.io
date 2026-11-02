@@ -1,4 +1,5 @@
 ---
+hub: leakage
 layout: post
 title: "MinMaxScaler vs StandardScaler: which scaler should you use?"
 description: >

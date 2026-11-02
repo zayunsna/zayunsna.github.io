@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "Use left padding and an attention mask for LLM batches"
 description: >

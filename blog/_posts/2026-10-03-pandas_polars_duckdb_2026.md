@@ -1,4 +1,5 @@
 ---
+hub: upgrades
 layout: post
 title: "pandas vs Polars vs DuckDB in 2026: a real benchmark on 10 million rows"
 description: >

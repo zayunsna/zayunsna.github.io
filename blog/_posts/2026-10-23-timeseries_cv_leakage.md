@@ -1,4 +1,5 @@
 ---
+hub: forecasting
 layout: post
 title: "KFold vs TimeSeriesSplit: how shuffled cross-validation hides time-series leakage"
 description: >

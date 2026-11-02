@@ -1,4 +1,5 @@
 ---
+hub: retrieval
 layout: post
 title: "How do you evaluate LLM answers? Exact match vs key facts vs LLM-as-judge"
 description: >

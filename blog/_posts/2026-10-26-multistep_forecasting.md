@@ -1,4 +1,5 @@
 ---
+hub: forecasting
 layout: post
 title: "Recursive vs direct multi-step forecasting: what a one-step score hides"
 description: >

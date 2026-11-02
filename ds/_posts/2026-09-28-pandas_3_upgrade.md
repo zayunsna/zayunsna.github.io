@@ -1,4 +1,5 @@
 ---
+hub: upgrades
 layout: post
 title: "What breaks when you upgrade to pandas 3.0?"
 description: >

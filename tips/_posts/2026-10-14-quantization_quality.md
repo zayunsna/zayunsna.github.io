@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "How much does quantization hurt an LLM? 8-bit vs 4-bit, tested"
 description: >

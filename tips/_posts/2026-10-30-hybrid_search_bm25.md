@@ -1,4 +1,5 @@
 ---
+hub: retrieval
 layout: post
 title: "Hybrid search for RAG: BM25 plus embeddings, measured on 1,000 questions"
 description: >

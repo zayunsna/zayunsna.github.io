@@ -1,4 +1,5 @@
 ---
+hub: distributions
 layout: post
 title: What is a histogram?
 description: >

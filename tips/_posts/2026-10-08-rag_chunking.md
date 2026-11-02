@@ -1,4 +1,5 @@
 ---
+hub: retrieval
 layout: post
 title: "How should you chunk documents for RAG? A chunk-size experiment"
 description: >

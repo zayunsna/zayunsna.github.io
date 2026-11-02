@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "fp32, fp16, bf16 and int8: what each format stores, and where it breaks"
 description: >

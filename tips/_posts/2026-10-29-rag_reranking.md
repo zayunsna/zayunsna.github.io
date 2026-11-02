@@ -1,4 +1,5 @@
 ---
+hub: retrieval
 layout: post
 title: "Reranking for RAG: a cross-encoder lifted top-1 retrieval from 64% to 85%"
 description: >

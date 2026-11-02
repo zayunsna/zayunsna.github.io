@@ -1,4 +1,5 @@
 ---
+hub: distributions
 layout: post
 title: "How can you explore histograms and KDE interactively in Python?"
 description: >

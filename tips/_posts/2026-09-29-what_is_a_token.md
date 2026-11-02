@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "What is a token, and why do LLMs count tokens instead of words?"
 description: >

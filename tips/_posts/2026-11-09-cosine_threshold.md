@@ -1,4 +1,5 @@
 ---
+hub: retrieval
 layout: post
 title: "Choose a retrieval threshold for cosine similarity"
 description: >

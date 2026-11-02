@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "What is a chat template? The string your LLM actually reads"
 description: >

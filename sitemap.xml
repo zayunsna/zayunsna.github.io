@@ -25,4 +25,13 @@ layout: null
         {% endif %}
     </url>
     {% endfor %}
+    {% assign hub_pages = site.pages | where_exp: "p", "p.hub" %}
+    {% for p in hub_pages %}{% assign latest = site.posts | where: "hub", p.hub | first %}
+    <url>
+        <loc>{{ site.url }}{{ p.url }}</loc>
+        <lastmod>{{ latest.date | default: p.lastmod | date_to_xmlschema }}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    {% endfor %}
 </urlset>

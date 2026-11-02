@@ -1,4 +1,5 @@
 ---
+hub: retrieval
 layout: post
 title: "Prompting vs RAG vs fine-tuning: which one do you need?"
 description: >

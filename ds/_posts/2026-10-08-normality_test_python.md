@@ -1,4 +1,5 @@
 ---
+hub: distributions
 layout: post
 title: "How to check if data is normally distributed in Python"
 description: >

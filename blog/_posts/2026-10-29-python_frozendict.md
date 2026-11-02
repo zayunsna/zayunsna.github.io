@@ -1,4 +1,5 @@
 ---
+hub: upgrades
 layout: post
 title: "Python 3.15 frozendict: when to use it, and where pandas still expects a dict"
 description: >

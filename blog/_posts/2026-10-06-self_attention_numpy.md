@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "Self-attention from scratch in NumPy (checked against PyTorch)"
 description: >

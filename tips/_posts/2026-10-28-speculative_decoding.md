@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "Speculative decoding, measured on a laptop: 10x fewer model passes, no speedup"
 description: >

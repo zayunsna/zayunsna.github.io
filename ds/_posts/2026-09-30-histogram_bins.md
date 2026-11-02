@@ -1,4 +1,5 @@
 ---
+hub: distributions
 layout: post
 title: "How many bins should a histogram have? Sturges, √n and Freedman–Diaconis compared"
 description: >

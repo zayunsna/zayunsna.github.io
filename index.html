@@ -20,4 +20,12 @@ cover: false
   <p>Practical, code-tested notes on data analysis, machine learning, and the problems that come up in real projects.</p>
 </section>
 
+<h2 class="hr-bottom">Topics</h2>
+{% assign hubs = site.pages | where_exp: "p", "p.hub" | sort: "hub_order" %}
+<ul class="hub-index">
+{%- for h in hubs %}
+  <li><a href="{{ h.url | relative_url }}"><strong>{{ h.title }}</strong></a>: {{ h.short }}</li>
+{%- endfor %}
+</ul>
+
 <h2 class="hr-bottom">Latest posts</h2>

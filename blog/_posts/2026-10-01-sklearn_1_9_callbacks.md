@@ -1,4 +1,5 @@
 ---
+hub: upgrades
 layout: post
 title: "How to show a progress bar in GridSearchCV (scikit-learn 1.9 callbacks)"
 description: >

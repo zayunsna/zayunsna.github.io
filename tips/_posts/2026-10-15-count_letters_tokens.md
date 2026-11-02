@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "Why do LLMs miscount the r's in 'strawberry'? Tokens, a local test, and the fix that works"
 description: >

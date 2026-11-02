@@ -1,4 +1,5 @@
 ---
+hub: upgrades
 layout: post
 title: "Choose output columns with pandas 3.1 select()"
 description: >

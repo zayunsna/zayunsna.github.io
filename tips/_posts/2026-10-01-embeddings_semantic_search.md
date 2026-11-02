@@ -1,4 +1,5 @@
 ---
+hub: retrieval
 layout: post
 title: "What are embeddings? Semantic search with cosine similarity in Python"
 description: >

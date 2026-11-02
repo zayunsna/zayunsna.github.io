@@ -1,4 +1,5 @@
 ---
+hub: leakage
 layout: post
 title: "How to use MinMaxScaler in scikit-learn: fit, transform, and inverse_transform"
 description: >

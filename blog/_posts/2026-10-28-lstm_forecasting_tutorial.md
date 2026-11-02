@@ -1,4 +1,5 @@
 ---
+hub: forecasting
 layout: post
 title: "Your first LSTM forecast in PyTorch: from CSV to predictions"
 description: >

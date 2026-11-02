@@ -63,6 +63,10 @@
   </header>
 
   {% if no_excerpt %}
+    {%- comment -%} 2026-11-02: link a post to its topic hub (front matter `hub:`), see hubs/. {%- endcomment -%}
+    {% if post.hub %}{% assign hub_page = site.pages | where: "hub", post.hub | first %}{% if hub_page %}
+    <p class="hub-link"><small>Topic: <a href="{{ hub_page.url | relative_url }}">{{ hub_page.title }}</a></small></p>
+    {% endif %}{% endif %}
     {{ post.content }}
   {% else %}
     {{ post.excerpt }}

@@ -1,4 +1,5 @@
 ---
+hub: distributions
 layout: post
 title: "Histogram vs KDE: how do you choose the bandwidth?"
 description: >

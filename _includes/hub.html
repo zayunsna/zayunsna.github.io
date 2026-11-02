@@ -1,0 +1,15 @@
+{%- comment -%}
+  Hub list (2026-11-02). Lists published posts whose front matter has `hub: <slug>`, newest first.
+  future: false keeps scheduled posts out until their date, same as series.html.
+  Usage in a hub page with `hub: <slug>`: {% include hub.html %}
+{%- endcomment -%}
+{%- assign hub_posts = site.posts | where: "hub", page.hub -%}
+<ul class="hub-list">
+{%- for p in hub_posts %}
+  <li>
+    <a href="{{ p.url | relative_url }}"><strong>{{ p.title }}</strong></a>
+    <small>({{ p.date | date: "%Y-%m-%d" }})</small><br>
+    {{ p.description | strip_newlines | strip }}
+  </li>
+{%- endfor %}
+</ul>

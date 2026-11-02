@@ -1,4 +1,5 @@
 ---
+hub: upgrades
 layout: post
 title: "Before benchmarking free-threaded Python, check what NumPy already does"
 description: >

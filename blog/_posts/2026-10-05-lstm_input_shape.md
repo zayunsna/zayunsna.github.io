@@ -1,4 +1,5 @@
 ---
+hub: forecasting
 layout: post
 title: "LSTM input shape explained: (batch, timesteps, features)"
 description: >

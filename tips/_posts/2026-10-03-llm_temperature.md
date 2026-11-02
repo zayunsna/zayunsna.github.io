@@ -1,4 +1,5 @@
 ---
+hub: llm-inference
 layout: post
 title: "What does temperature do in an LLM? Temperature, top-k and top-p explained"
 description: >

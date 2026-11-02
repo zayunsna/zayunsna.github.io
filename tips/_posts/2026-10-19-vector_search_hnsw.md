@@ -1,4 +1,5 @@
 ---
+hub: retrieval
 layout: post
 title: "Do you need a vector database? Exact search vs HNSW on 134,000 real embeddings"
 description: >

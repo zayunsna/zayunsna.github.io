@@ -1,4 +1,5 @@
 ---
+hub: distributions
 layout: post
 title: "Mean or median: which should you report for skewed data?"
 description: >

@@ -1,4 +1,5 @@
 ---
+hub: retrieval
 layout: post
 title: "Your RAG documents are data, not instructions—and not automatically true"
 description: >
