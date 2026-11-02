@@ -1,0 +1,13 @@
+pandas 3.1.0
+select columns: ['order', 'gross', 'tax']
+assign columns: ['order', 'qty', 'price', 'internal_note', 'gross', 'tax']
+   order  gross  tax
+10     A   20.0  2.0
+20     B   60.0  6.0
+40     C   30.0  3.0
+source unchanged: ['order', 'qty', 'price', 'internal_note']
+new qty: [3, 4, 2]
+deferred gross: [30.0, 80.0, 60.0]
+eager gross: [20.0, 60.0, 30.0]
+filtered indices: [10, 20]
+PASS: equivalent projection; original preserved; expression dependency checked
