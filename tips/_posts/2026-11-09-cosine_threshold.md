@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Cosine similarity is not confidence: choosing a retrieval threshold"
+title: "Choose a retrieval threshold for cosine similarity"
 description: >
   A cosine score of 0.5 does not mean 50% sure. On 2,000 SQuAD questions, half with their gold articles excluded,
   we pick a "no answer" threshold on validation data, check it on held-out questions, and show why the number does not
@@ -11,20 +11,19 @@ sitemap:
   priority: 1.0
 ---
 
-# Cosine similarity is not confidence: choosing a retrieval threshold
+# Choose a retrieval threshold for cosine similarity
 
 A retrieval step always returns *something*. Ask a document search about a topic it has never seen and the top result
 still comes back with a cosine score, say 0.45. A common fix is a cutoff: "if the best score is below X, answer
-'I don't know'". The trouble is choosing X. A cosine score is **not a probability**: 0.45 does not mean 45% sure, and
+'I don't know'". The trouble is choosing X. A cosine score is not a probability: 0.45 does not mean 45% sure, and
 the same score means different things for different models.
 
-This Tip measures it. We pick the cutoff on validation questions, check it once on separate test questions, and then
-swap the embedding model. In short: with all-MiniLM-L6-v2, the cutoff that gave 80% precision on validation was 0.49. On the test questions it gave 67.6%. Another model needed a cutoff of 0.67 for the same target, and applying MiniLM's 0.49 to it answered 99% of questions at 41% precision.
+With all-MiniLM-L6-v2, the cutoff that gave 80% precision on validation was 0.49. On the test questions it gave 67.6%. Another model needed a cutoff of 0.67 for the same target, and applying MiniLM's 0.49 to it answered 99% of questions at 41% precision.
 
-## The setup: include or exclude the annotated source
+## SQuAD articles with indexed and excluded sources
 
 [Embeddings](/tips/2026-10-01-embeddings_semantic_search/) turn text into vectors, and cosine similarity compares two
-of them: 1 means the same direction and 0 means orthogonal, not necessarily semantically unrelated.
+of them: 1 means the same direction and 0 means orthogonal. Semantic relevance depends on the embedding model.
 The data is the [SQuAD v1.1](https://rajpurkar.github.io/SQuAD-explorer/)
 dev set (CC BY-SA 4.0): 48 Wikipedia articles, each split into paragraphs, with questions written about each
 paragraph.
@@ -35,12 +34,12 @@ We create proxy-negative questions by leaving whole articles out of the search c
 - Answerable questions come from those 32 articles. Each was written about one paragraph, its *right* paragraph.
 - Proxy-negative questions come from the other 16 articles. Their annotated paragraph is absent, so any returned
   bundle counts as a miss under this exact-source protocol. Other indexed paragraphs might still answer them.
-- Split by article, not by question: validation uses 16 corpus articles plus 8 left-out articles; test uses the other
+- Give validation and test separate articles: validation uses 16 corpus articles plus 8 left-out articles; test uses the other
   16 plus 8. Sample 500 answerable and 500 unanswerable questions for each.
 
-The code's `answerable` flag means **the annotated source is indexed**. Printed labels such as `no answer in corpus`
-and `unanswerable` are shorthand for the excluded-article proxy, not proof that the corpus cannot answer a question.
-The experiment measures source retrieval, not generated-answer correctness.
+The code's `answerable` flag means the annotated source is indexed. Printed labels such as `no answer in corpus`
+and `unanswerable` identify the excluded-article proxy. Success means retrieving the annotated paragraph in the
+three-paragraph bundle; the limits of these labels are discussed below.
 
 To run it yourself, install the packages from
 [`requirements.txt`](/assets/code/cosine_threshold/requirements.txt), download the dev set, and run the blocks below
@@ -85,7 +84,7 @@ corpus paragraphs: 1439
 
 Next, embed the corpus and the questions with
 [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) (Apache-2.0), on CPU. Suppose the
-answer step reads the **top 3 paragraphs**. For each question keep the best cosine score and whether the right
+answer step reads the top 3 paragraphs. For each question keep the best cosine score and whether the right
 paragraph is among those 3.
 
 ```python
@@ -120,22 +119,24 @@ no answer in corpus  n=500  top-1 score median 0.349
 
 The three groups overlap. Excluded-article questions still have a median best score near 0.35. No cutoff cleanly
 separates these retrieval outcomes. The cover plots validation acceptance curves, omitting cutoffs passing fewer
-than 20 queries; neither the curves nor their 80% target show generated-answer accuracy.
+than 20 queries; the curves show source-retrieval success against the 80% target.
 
-## Two numbers to watch
+## Coverage and acceptance precision
 
-For a cutoff `t`, the gate passes a three-paragraph bundle when its **top-1 score** is at least `t`; otherwise it abstains.
+For a cutoff `t`, the gate passes a three-paragraph bundle when its top-1 score is at least `t`; otherwise it abstains.
 
-- **Coverage:** the share of all queries whose bundle is passed.
-- **Acceptance precision:** among passed queries, the share whose bundle contains the annotated paragraph.
-  Excluded-article queries count as misses by construction. This query-level measure is **not document precision@3**
-  and not answer accuracy. The code shortens its name to `precision`.
+- Coverage: the share of all queries whose bundle is passed.
+- Acceptance precision: among passed queries, the share whose bundle contains the annotated paragraph.
+  Excluded-article queries count as misses by construction. The denominator is passed queries, and success
+  requires one annotated paragraph in the bundle. Document precision@3 would count relevant documents among
+  returned documents. Generated-answer accuracy would require evaluating the answer.
+  The code shortens acceptance precision to `precision`.
 
 A hypothetical perfect retriever and gate could pass all 500 indexed-source queries and reject the 500 proxies:
 50% coverage under this labeling protocol. Our actual retriever also misses some indexed sources.
 
-Raising `t` cannot increase coverage, but precision can go up **or down** as queries are removed.
-For this illustration, scan the 0.00–0.99 grid at 0.01 intervals for the lowest cutoff meeting an **80% validation target**:
+Raising `t` cannot increase coverage, but precision can go up or down as queries are removed.
+For this illustration, scan the 0.00–0.99 grid at 0.01 intervals for the lowest cutoff meeting an 80% validation target:
 
 ```python
 def precision_coverage(t, r):
@@ -168,18 +169,17 @@ t=0.7  precision 0.921  coverage 0.063
 chosen on validation: t=0.49  ->  test precision 0.676, coverage 0.490
 ```
 
-On validation the scan lands at **0.49**: 80.1% acceptance precision over **442 passed queries** (44.2% coverage).
-On test it passes **490 queries** (49.0%) with **67.6% acceptance precision**, below the target. Of the 500
-excluded-article questions in each split, 84 pass on test versus 29 on validation. The same validation rule did
-not transfer to these held-out topics. These sample estimates are not a guaranteed deployment precision.
+On validation the scan lands at 0.49: 80.1% acceptance precision over 442 passed queries (44.2% coverage).
+On test it passes 490 queries (49.0%) with 67.6% acceptance precision, below the target. Of the 500
+excluded-article questions in each split, 84 pass on test versus 29 on validation. The additional accepted proxies account for part of the precision drop on these held-out topics.
 
 If no grid point meets the target, `choose_threshold` returns `None`; the evaluation helper raises an explicit
-error instead of silently inventing a cutoff. Change the retrieval setup or target using validation evidence,
-not by searching the test set for a better number.
+error. Use validation evidence to change the retrieval setup or target, and reserve the test set for
+evaluating the chosen rule.
 
-Seed 0 was fixed before the run, and it turned out to be the worst of ten article splits. Repeating the whole procedure with split seeds 0 to 9, the chosen cutoff ranged from 0.48 to 0.58 and test precision from 67.6% to 88.2% (median 82.3%). A validation target is an estimate, not a guarantee. Use as much validation data as you can, from the same kind of questions you expect, and recheck after launch.
+Seed 0 was fixed before the run, and it turned out to be the worst of ten article splits. Repeating the whole procedure with split seeds 0 to 9, the chosen cutoff ranged from 0.48 to 0.58 and test precision from 67.6% to 88.2% (median 82.3%). Use as much validation data as you can, from the same kind of questions you expect, and recheck after launch.
 
-## A score of 0.5 is not "50% sure"
+## Source-hit rates within cosine score bands
 
 If best cosine scores were calibrated probabilities of our source-hit event, scores around 0.5 would correspond
 to that event about half the time.
@@ -203,9 +203,9 @@ score 0.6-0.7: n=192  right paragraph in top 3: 84%
 score 0.7-0.8: n= 59  right paragraph in top 3: 93%
 ```
 
-Scores of 0.3 to 0.4 were almost never right (4%), 0.4 to 0.5 were right 30% of the time, and 0.5 to 0.6 were right 72% of the time. If the score were a probability, those bins would sit near 35%, 45% and 55%. This mapping also holds only for this model, corpus and question mix. The score ranks paragraphs for one question; it was not trained to say how likely an answer is to be right.
+Scores of 0.3 to 0.4 were almost never right (4%), 0.4 to 0.5 were right 30% of the time, and 0.5 to 0.6 were right 72% of the time. If the score were a probability, those bins would sit near 35%, 45% and 55%. Cosine similarity ranks paragraphs for a question. These bins measure the relationship between that score and source hits in the validation set.
 
-## Another model, another threshold
+## bge-small-en-v1.5 needs its own cutoff
 
 Repeat the same steps with [bge-small-en-v1.5](https://huggingface.co/BAAI/bge-small-en-v1.5) (MIT), a model of
 similar size from a different family, on the same corpus and questions. Its model card asks for an instruction prefix
@@ -231,7 +231,7 @@ bge's score distribution is higher in this run: its median best score for exclud
 against 0.35 for MiniLM. Reusing 0.49 passes 990 test queries (99.0%) at 41.0% acceptance precision. Its own
 validation cutoff, 0.67, passes 470 queries (47.0%) at 74.0%. The [bge model card](https://huggingface.co/BAAI/bge-small-en-v1.5)
 likewise recommends choosing a filtering threshold from the score distribution on your own data. These are
-two configured pipelines, including bge's query prefix, not a general ranking of model quality.
+results for the two configured pipelines, including bge's query prefix.
 
 The mix of questions matters as well. The evaluation above uses 50% excluded-article proxies. In the test set,
 keep all 500 indexed-source questions but only 56 proxies (about 10% of the total), and the same MiniLM cutoff
@@ -249,7 +249,7 @@ print(f"t={t_mini:.2f} with ~10% unanswerable: precision {p:.3f}, coverage {c:.3
 t=0.49 with ~10% unanswerable: precision 0.792, coverage 0.752
 ```
 
-## How to choose a threshold for your own search
+## Select a cutoff on your validation traffic
 
 | Setting, held-out test questions | Cutoff | Precision | Coverage |
 |---|---|---|---|
@@ -259,19 +259,18 @@ t=0.49 with ~10% unanswerable: precision 0.792, coverage 0.752
 | bge, cutoff chosen on its validation | 0.67 | 74.0% | 47.0% |
 | MiniLM, cutoff 0.20 (answers almost everything) | 0.20 | 40.0% | 99.7% |
 
-1. **Label a validation set from your own traffic,** including questions your documents cannot answer. The share of
+1. Label a validation set from your own traffic, including questions your documents cannot answer. The share of
    those questions changes precision, so use a realistic mix.
-2. **Define success:** an acceptance-precision or coverage target, and whether success means a source hit or a correct answer.
-3. **Scan cutoffs on validation only,** then check the chosen cutoff once on separate test questions.
-4. **Choose it again** when you change the embedding model, the chunking, or the documents. A cutoff from a blog post,
-   including this one, is not a default for your system.
+2. Define success: an acceptance-precision or coverage target, and whether success means a source hit or a correct answer.
+3. Scan cutoffs on validation only, then check the chosen cutoff once on separate test questions.
+4. Choose it again when you change the embedding model, the chunking, or the documents. Use the resulting precision and coverage to decide whether the cutoff fits your system.
 
-The cutoff only controls whether you answer. It does not turn the score into a probability. If you need a calibrated
+The cutoff controls whether the bundle reaches the answer step. If you need a calibrated
 "how likely is this right" number, fit and evaluate a calibration model with appropriately separated labeled data.
-A [cross-encoder reranker](/tips/2026-10-29-rag_reranking/) can change the ranking, but does not automatically
-calibrate its scores into probabilities either. Its scores need their own validation.
+A [cross-encoder reranker](/tips/2026-10-29-rag_reranking/) can change the ranking. Validate its scores separately
+and evaluate calibration if probabilities are needed.
 
-## Limits of this experiment
+## Source labels and split sensitivity
 
 - One dataset, two models. SQuAD questions reuse many words from their paragraph, and MiniLM's training data
   includes the SQuAD 2.0 training set, per its model card. Questions from real users may be harder; we did not test
@@ -285,12 +284,13 @@ calibrate its scores into probabilities either. Its scores need their own valida
   second model because its scores sit on a visibly different scale; the size of the gap depends on the models compared.
 - 500 + 500 questions per split. Across all ten article splits (seeds 0–9), cutoffs ranged from 0.48 to 0.58 and
   test acceptance precision from 67.6% to 88.2%; seed 0 was the lowest. These overlapping split experiments
-  are a sensitivity check, not ten independent samples or a confidence interval.
+  share articles and therefore measure sensitivity to the split; they provide neither ten independent samples
+  nor a confidence interval.
 
-_Tested on 2026-11-01 with Python 3.12.13, sentence-transformers 6.2.0, transformers 5.22.1, PyTorch 2.15.0 (CPU) and NumPy 2.5.4 on
+Tested on 2026-11-01 with Python 3.12.13, sentence-transformers 6.2.0, transformers 5.22.1, PyTorch 2.15.0 (CPU) and NumPy 2.5.4 on
 macOS, Apple M5. The full script, including both models, the chart and the ten-split check, took 106 to 123 seconds on CPU in three runs with the models already downloaded, and peaked under 2.1 GiB resident memory. Model revisions are pinned in the code.
 [`cosine_threshold.py`](/assets/code/cosine_threshold/cosine_threshold.py) also writes the scores and chart data;
-its recorded output is in [`reference_output.txt`](/assets/code/cosine_threshold/reference_output.txt)._
+its recorded output is in [`reference_output.txt`](/assets/code/cosine_threshold/reference_output.txt).
 
 For other ways to improve what retrieval returns, see
 [hybrid search with BM25](/tips/2026-10-30-hybrid_search_bm25/).
