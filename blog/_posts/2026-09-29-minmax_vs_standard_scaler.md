@@ -155,5 +155,4 @@ The scikit-learn documentation shows the same effect on the California housing d
 - [Compare the effect of different scalers on data with outliers](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html) — scikit-learn docs
 - [Preprocessing data](https://scikit-learn.org/stable/modules/preprocessing.html) — scikit-learn user guide
 
-Related: [How to use MinMaxScaler in scikit-learn: fit, transform, and inverse_transform](/blog/2026-10-12-minmaxscaler_sklearn/) ·
-[MinMaxScaler 사용법 — fit, inverse_transform, and data_min_ (in Korean)](/blog/2023-07-08-MinMaxScaler/)
+Related: [How to use MinMaxScaler in scikit-learn: fit, transform, and inverse_transform](/blog/2026-10-12-minmaxscaler_sklearn/)

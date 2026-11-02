@@ -5,6 +5,10 @@ description: >
   A dropped SSH connection sends SIGHUP to your jobs. We simulated one: a plain background job died, while nohup,
   disown and tmux kept running. Here is when to use each, and why a clean exit behaves differently.
 image: /assets/img/tips/nohup_vs_tmux/cover.png
+lastmod: 2026-11-02
+last_modified_at: 2026-11-02
+redirect_from:
+  - /tips/2023-06-20-nohub_tips/
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -81,7 +85,21 @@ pkill -f train.py                           # stop it
 ```
 
 Always redirect output. Otherwise `nohup` writes to a file named `nohup.out` in the current directory.
+`>` overwrites the log on each start; use `>>` to append instead.
 If you already started a job without `nohup`, run `disown` right after it (or `disown %1` for job number 1).
+
+`pkill -f train.py` stops every process whose command line contains `train.py`, including other people's runs.
+To stop only the job you started, save its process ID right away with `$!`:
+
+```bash
+nohup python3 -u train.py >> train.log 2>&1 &
+echo $! > train.pid
+ps -p "$(cat train.pid)" -o pid=,args=   # check that this PID is still your job
+kill "$(cat train.pid)"                   # sends SIGTERM, so the job can clean up
+```
+
+A process ID can be reused after the job ends, so look at the `ps` line before you `kill` with an old `train.pid`.
+`kill` reaches only that one process; if your script starts child processes, they may keep running.
 
 ## How do you use tmux?
 
@@ -159,5 +177,4 @@ for name in ["plain", "nohup", "disown", "tmux"]:
 - [GNU Bash manual: Signals](https://www.gnu.org/software/bash/manual/bash.html) — "an interactive shell resends the SIGHUP to all jobs", `disown`, `huponexit`, checked 2026-09-28
 - [nohup(1) man page](https://man7.org/linux/man-pages/man1/nohup.1.html)
 - [tmux: Getting Started](https://github.com/tmux/tmux/wiki/Getting-Started)
-
-Related: [Nohup 사용법 — log redirection and a kill script (in Korean)](/tips/2023-06-20-nohub_tips/)
+- [Bash manual: Special Parameters](https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html) — `$!`, checked 2026-11-02

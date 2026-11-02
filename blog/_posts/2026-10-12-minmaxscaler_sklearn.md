@@ -5,6 +5,8 @@ description: >
   MinMaxScaler step by step with real output: fit on training data only, why new values go above 1, the 1D-array
   error, how to inverse_transform a single predicted column, NaN handling, and keeping DataFrame column names.
 image: /assets/img/blog/minmaxscaler_sklearn/cover.png
+redirect_from:
+  - /blog/2023-07-08-MinMaxScaler/
 sitemap:
   changefreq: daily
   priority: 1.0
