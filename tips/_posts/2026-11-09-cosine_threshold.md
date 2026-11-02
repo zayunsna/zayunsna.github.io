@@ -32,8 +32,8 @@ paragraph.
 We create proxy-negative questions by leaving whole articles out of the search corpus:
 
 - Shuffle the 48 articles (seed 0). Put the paragraphs of 32 of them in the corpus.
-- **Answerable questions** come from those 32 articles. Each was written about one paragraph, its *right* paragraph.
-- **Proxy-negative questions** come from the other 16 articles. Their annotated paragraph is absent, so any returned
+- Answerable questions come from those 32 articles. Each was written about one paragraph, its *right* paragraph.
+- Proxy-negative questions come from the other 16 articles. Their annotated paragraph is absent, so any returned
   bundle counts as a miss under this exact-source protocol. Other indexed paragraphs might still answer them.
 - Split by article, not by question: validation uses 16 corpus articles plus 8 left-out articles; test uses the other
   16 plus 8. Sample 500 answerable and 500 unanswerable questions for each.
@@ -273,14 +273,14 @@ calibrate its scores into probabilities either. Its scores need their own valida
 
 ## Limits of this experiment
 
-- **One dataset, two models.** SQuAD questions reuse many words from their paragraph, and MiniLM's training data
+- One dataset, two models. SQuAD questions reuse many words from their paragraph, and MiniLM's training data
   includes the SQuAD 2.0 training set, per its model card. Questions from real users may be harder; we did not test
   that.
-- **"Right" means the paragraph the question was written for** is in the top 3. Another paragraph may also contain
+- "Right" means the paragraph the question was written for is in the top 3. Another paragraph may also contain
   the answer and is counted as wrong, so precision here leans low. Left-out articles could also share facts with the
   corpus.
-- **The gate looks only at the best score.** It does not check whether the answer step actually uses the paragraph.
-- **The setup was revised once after a first look at this data.** Counting only the single best paragraph, no cutoff
+- The gate looks only at the best score. It does not check whether the answer step actually uses the paragraph.
+- The setup was revised once after a first look at this data. Counting only the single best paragraph, no cutoff
   reached 80% precision on validation, so we switched to the top-3 rule and set the 80% target. bge was chosen as the
   second model because its scores sit on a visibly different scale; the size of the gap depends on the models compared.
 - 500 + 500 questions per split. Across all ten article splits (seeds 0–9), cutoffs ranged from 0.48 to 0.58 and

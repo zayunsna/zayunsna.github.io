@@ -137,13 +137,13 @@ Holand-Netherlands        1
 The chart shows the **training split** from step 4, the rows the pipeline will learn from. Three findings shape the
 pipeline:
 
-- **Only text columns have gaps.** `workclass`, `occupation` and `native-country` have missing values; no numeric
+- Only text columns have gaps. `workclass`, `occupation` and `native-country` have missing values; no numeric
   column does. We still put an imputer on the numeric columns, because a new row can arrive with a blank number.
-- **24 rows are exact duplicates.** We retain the source records for this preprocessing demonstration.
+- 24 rows are exact duplicates. We retain the source records for this preprocessing demonstration.
   Without person identifiers we cannot tell whether matching rows represent the same person. Duplicate records
   may cross the split, making evaluation optimistic; their impact was not measured. These are held-out rows,
   not a demonstrated independent-person benchmark. For a real evaluation, resolve duplicates and grouping before splitting.
-- **Countries are very uneven.** 29,170 rows are United-States, and 20 countries have fewer than 50
+- Countries are very uneven. 29,170 rows are United-States, and 20 countries have fewer than 50
   rows. Holand-Netherlands has one. A one-hot column learned from one row says almost nothing.
 
 We also drop two columns. `fnlwgt` is a census sampling weight, not a fact about the person. `education` is the same
