@@ -1,0 +1,14 @@
+Model-loading progress omitted; warning messages and model outputs retained.
+[transformers] A decoder-only architecture is being used, but right-padding was detected! For correct generation results, please set `padding_side='left'` when initializing the tokenizer.
+[transformers] The attention mask is not set with a batched input, and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+Python 3.12.13 | torch 2.14.0 | transformers 5.17.0
+Qwen/Qwen2.5-0.5B-Instruct 7ae557604adf67be50417f59c2c2f167def9a775 | CPU float32 eager attention, greedy
+left+mask | prompt lengths [42, 43] | last IDs [198, 198]
+  prompt 0: matches_single=True, text='1, 2, 3, 4, '
+  prompt 1: matches_single=True, text='Sydney'
+right+mask | prompt lengths [42, 43] | last IDs [151645, 198]
+  prompt 0: matches_single=False, text='\nSure, here to continue the sequence: 12'
+  prompt 1: matches_single=True, text='Sydney'
+left+NO mask | prompt lengths [42, 43] | last IDs [198, 198]
+  prompt 0: matches_single=False, text='4, 5, 6, 7, '
+  prompt 1: matches_single=True, text='Sydney'
