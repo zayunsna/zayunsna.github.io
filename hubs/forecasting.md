@@ -6,6 +6,7 @@ description: >
   Forecasting experiments on the UCI Bike Sharing data: LSTM shapes, time-ordered cross-validation, multi-step strategies and baselines.
 permalink: /forecasting/
 hub: forecasting
+hide_description: true
 hub_order: 5
 ---
 

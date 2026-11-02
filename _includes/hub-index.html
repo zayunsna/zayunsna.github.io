@@ -1,0 +1,17 @@
+{%- comment -%}
+  Topic hub table (2026-11-03), used on the home page and /topics/. Counts and dates come from published posts only.
+{%- endcomment -%}
+{%- assign hubs = site.pages | where_exp: "p", "p.hub" | sort: "hub_order" -%}
+<table class="hub-index">
+  <thead><tr><th scope="col">Topic</th><th scope="col">Posts</th><th scope="col">Latest</th></tr></thead>
+  <tbody>
+  {%- for h in hubs %}
+    {%- assign hp = site.posts | where: "hub", h.hub %}
+    <tr>
+      <td><a href="{{ h.url | relative_url }}">{{ h.title }}</a><span class="hub-short">{{ h.short }}</span></td>
+      <td>{{ hp.size }}</td>
+      <td><time datetime="{{ hp.first.date | date_to_xmlschema }}">{{ hp.first.date | date: "%-d %b" }}</time></td>
+    </tr>
+  {%- endfor %}
+  </tbody>
+</table>

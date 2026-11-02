@@ -14,18 +14,13 @@ cover: false
 <section class="page mb6" aria-labelledby="home-title">
   <h1 id="home-title" class="page-title">🎡 HK Playground 🎢</h1>
   <p align="center">
-    <video src="/assets/img/home_loop.mp4" poster="/assets/img/home_loop_poster.jpg" width="480" style="max-width:100%;height:auto"
+    <video src="/assets/img/home_loop.mp4" poster="/assets/img/home_loop_poster.jpg" width="360" style="max-width:100%;height:auto"
            autoplay loop muted playsinline aria-hidden="true"></video>
   </p>
   <p>Practical, code-tested notes on data analysis, machine learning, and the problems that come up in real projects.</p>
 </section>
 
-<h2 class="hr-bottom">Topics</h2>
-{% assign hubs = site.pages | where_exp: "p", "p.hub" | sort: "hub_order" %}
-<ul class="hub-index">
-{%- for h in hubs %}
-  <li><a href="{{ h.url | relative_url }}"><strong>{{ h.title }}</strong></a>: {{ h.short }}</li>
-{%- endfor %}
-</ul>
+<h2 class="hr-bottom" id="topics">Topics</h2>
+{% include hub-index.html %}
 
 <h2 class="hr-bottom">Latest posts</h2>

@@ -6,6 +6,7 @@ description: >
   Measured retrieval experiments for RAG: embeddings, chunking, HNSW, hybrid BM25, reranking and score thresholds.
 permalink: /retrieval/
 hub: retrieval
+hide_description: true
 hub_order: 3
 ---
 

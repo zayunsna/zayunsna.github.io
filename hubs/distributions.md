@@ -6,6 +6,7 @@ description: >
   Histograms, bin rules, kernel density estimates, mean versus median and normality tests, with code and charts.
 permalink: /distributions/
 hub: distributions
+hide_description: true
 hub_order: 6
 ---
 

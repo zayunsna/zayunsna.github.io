@@ -6,6 +6,7 @@ description: >
   Measured behavior changes between library versions: the same script run on the old and new release, with the output diff.
 permalink: /upgrades/
 hub: upgrades
+hide_description: true
 hub_order: 1
 ---
 

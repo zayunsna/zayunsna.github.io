@@ -171,3 +171,130 @@ input:focus-visible {
     font-size: 16px;
   }
 }
+
+// Topic hubs (2026-11-03): home/topics table, hub post list, post footer.
+.hub-index {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.hub-index td:first-child a {
+  font-family: var(--font-family-heading);
+  font-weight: 700;
+}
+
+.hub-short {
+  display: block;
+  color: var(--gray);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.hub-index th:not(:first-child),
+.hub-index td:not(:first-child) {
+  color: var(--gray);
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.hub-list {
+  padding: 0;
+  list-style: none;
+}
+
+.hub-list li {
+  display: flex;
+  gap: 1.1rem;
+  align-items: flex-start;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--border-color);
+}
+
+// Cover thumbnail on the left, cropped to 16:9 like the theme's post cover.
+.hub-thumb {
+  flex: 0 0 11rem;
+  border-bottom: 0;
+}
+
+.hub-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0.3rem;
+}
+
+.hub-text {
+  min-width: 0;
+}
+
+@media (max-width: 40em) {
+  .hub-list li {
+    gap: 0.8rem;
+  }
+
+  .hub-thumb {
+    flex-basis: 6.5rem;
+  }
+}
+
+.hub-list li:last-child {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.hub-text > a {
+  font-family: var(--font-family-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.hub-list time,
+.hub-more time {
+  color: var(--gray);
+  font-size: 0.85rem;
+}
+
+.hub-list time {
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.hub-list p {
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+}
+
+.hub-more {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.hub-more h2 {
+  margin-top: 0;
+  font-size: 1.15rem;
+}
+
+.hub-more ul {
+  padding-left: 1.2rem;
+}
+
+.hub-more li {
+  margin-bottom: 0.5rem;
+}
+
+.hub-index th:first-child {
+  text-align: left;
+}
+
+// Let the category and hub wrap on narrow screens instead of truncating.
+.post-date {
+  height: auto;
+  flex-wrap: wrap;
+}
+
+.post-date .ellipsis {
+  white-space: normal;
+}

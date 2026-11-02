@@ -7,9 +7,16 @@
 <ul class="hub-list">
 {%- for p in hub_posts %}
   <li>
-    <a href="{{ p.url | relative_url }}"><strong>{{ p.title }}</strong></a>
-    <small>({{ p.date | date: "%Y-%m-%d" }})</small><br>
-    {{ p.description | strip_newlines | strip }}
+    {%- if p.image %}
+    <a class="hub-thumb" href="{{ p.url | relative_url }}" tabindex="-1" aria-hidden="true">
+      <img src="{{ p.image | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">
+    </a>
+    {%- endif %}
+    <div class="hub-text">
+      <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
+      <time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: "%-d %b %Y" }}</time>
+      <p>{{ p.description | strip_newlines | strip }}</p>
+    </div>
   </li>
 {%- endfor %}
 </ul>
