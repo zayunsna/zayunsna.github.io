@@ -6,6 +6,8 @@ description: >
   how its orchestration commands let Claude Code hand a code review to Codex, what that review found, and the one
   setting to check before you rely on it.
 image: /assets/img/tips/orca_claude_codex_review/cover.png
+lastmod: 2026-11-05
+last_modified_at: 2026-11-05
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -30,7 +32,7 @@ _The tab right after the hand-off. Left: Claude Code with the instruction I gave
 has received the task, is reading Orca's orchestration guide and starts on the project files. One line with local paths
 is redacted._
 
-## What Orca gives you
+## Orca features and the ones used here
 
 | Feature | What it does | Used here |
 |---|---|---|
@@ -43,7 +45,7 @@ is redacted._
 
 The rows marked "No" come from the README; I did not test them.
 
-## The setup: two panes, one folder
+## Claude Code and Codex in one tab
 
 The folder held a small scikit-learn experiment: `ts_leakage.py` compares shuffled KFold, KFold and TimeSeriesSplit on
 hourly bike-sharing data, `ts_charts.py` draws its charts, and `ts_leakage_out.txt` is a saved run. I opened a new Orca
@@ -56,7 +58,7 @@ orca terminal split --terminal <claude-pane-handle> --command "codex"
 
 Every pane has a handle (`term_...`, listed by `orca terminal list`). The handle is how one agent addresses another.
 
-## The hand-off: a run, a task, a dispatch
+## Hand off the review with a run, a task and a dispatch
 
 Orca's orchestration layer has three objects. A **run** groups one piece of coordinated work. A **task** is the work
 itself, written as a self-contained instruction. A **dispatch** sends a task to one terminal. Claude Code ran these
@@ -82,7 +84,7 @@ $ orca orchestration task-list --run run_c0665c6e6845
 task_6508bc75dd09 [dispatched] Codex code review: ts_leakage.py -> term_2ca14938-... (ctx_995037d2fd51)
 ```
 
-## Keeping track: the agents panel
+## Agents panel during the review
 
 While the two agents worked, Orca's agents panel showed both of them as cards. The panel groups agents into three
 columns, which my Korean-language interface labels "needs attention", "working" and "done". Each card shows the
@@ -120,14 +122,14 @@ orca orchestration check --run <run_id> --wait --types "worker_done,escalation,q
 The worker sends a `heartbeat` while it works and one `worker_done` message with the outcome at the end. After each
 message the coordinator acknowledges it (`check --ack <delivery_id>`) and waits for the next.
 
-## Before you rely on it: let the worker reach Orca
+## Let the worker reach Orca before you rely on it
 
 The worker reports back by running `orca` commands itself, and Codex runs commands inside a sandbox. With Codex's
 default approval settings it asks before running them. Answer "Yes", or pick "don't ask again for commands that start
 with `orca orchestration`". If approval prompts are turned off, the sandbox blocks the command, the report never
 reaches the coordinator and the task stays `dispatched`. Check this setting before you leave a long review running.
 
-## What works well
+## Strengths after one review
 
 - **No extra keys or billing.** Both agents run on their own subscriptions inside ordinary terminals.
 - **A written spec.** `task-create` pushes you to state the target, the constraints and what a finished answer looks
@@ -138,10 +140,11 @@ reaches the coordinator and the task stays `dispatched`. Check this setting befo
 
 ## Where it still needs a human
 
-- **Judgement.** The reviewer flags; it does not decide. Every finding above had to be rerun before I trusted it.
-- **Clean-up depends on who opened the pane.** `orca orchestration worker-release` leaves a pane you opened by hand
-  running (`"reason": "no_owned_resource"`). A worker started with `orca orchestration worker-start` belongs to the
-  run and can be released by it.
+The reviewer flags findings and I decided what to do with them. Every finding above had to be rerun before I trusted it.
+
+Clean-up also depends on who opened the pane. `orca orchestration worker-release` leaves a pane you opened by hand
+running (`"reason": "no_owned_resource"`). A worker started with `orca orchestration worker-start` belongs to the
+run and can be released by it.
 
 ## Verdict
 
@@ -149,5 +152,7 @@ For a quick question, typing into the second agent's pane is enough. Orca's orch
 want the hand-off written down: a self-contained spec, a review that reruns the code, and a record you can look up
 later. Here that took one tab, two agents and under five minutes of review time, with no API key involved.
 
-Related: [Why fit preprocessing on training data only? A data leakage demo](/blog/2026-10-02-data_leakage_preprocessing/) ·
-[How do you evaluate LLM answers? Exact match vs key facts vs LLM-as-judge](/tips/2026-10-13-evaluate_llm_answers/)
+The leak that the reviewed experiment measures has a simpler relative in
+[fitting preprocessing on all rows before the split](/blog/2026-10-02-data_leakage_preprocessing/). For scoring what a
+model tells you, [exact match, key facts and LLM-as-judge](/tips/2026-10-13-evaluate_llm_answers/) compares three ways
+to check answers.
