@@ -6,6 +6,8 @@ description: >
   MinMaxScaler step by step with real output: fit on training data only, why new values go above 1, the 1D-array
   error, how to inverse_transform a single predicted column, NaN handling, and keeping DataFrame column names.
 image: /assets/img/blog/minmaxscaler_sklearn/cover.png
+lastmod: 2026-11-05
+last_modified_at: 2026-11-05
 redirect_from:
   - /blog/2023-07-08-MinMaxScaler/
 sitemap:
@@ -25,7 +27,7 @@ This post is about using `MinMaxScaler` once you've picked it.
 _Tested on 2026-10-08 with scikit-learn 1.9.1, pandas 3.0.6, NumPy 2.5.3 and Python 3.12.13._
 The blocks below are one script; run them in order.
 
-## How do fit and transform work?
+## Fit on train, transform train and test
 
 ```python
 import numpy as np
@@ -86,7 +88,7 @@ scikit-learn expects a table: rows are samples, columns are features. One column
 directly. `df["age"]` is a Series and also fails, with a different message: `Expected a 2-dimensional container but
 got <class 'pandas.Series'> instead.`
 
-## What happens if you fit on the test data too?
+## Refitting on test data changes what 0 and 1 mean
 
 ```python
 # 3. Fitting again on test data silently changes the meaning of 0 and 1
@@ -105,7 +107,7 @@ on the first scaling sees inputs it can't interpret. Call `fit` (or `fit_transfo
 only `transform` afterwards. Fitting on all data before splitting is the same mistake in a quieter form; see
 [data leakage in preprocessing](/blog/2026-10-02-data_leakage_preprocessing/).
 
-## How do you keep new values between 0 and 1?
+## Keep new values between 0 and 1 with clip=True
 
 ```python
 # 4. clip=True keeps new data inside feature_range
@@ -125,7 +127,7 @@ difference between them is gone, and the
 that `inverse_transform` may not restore the original data. If test values often land outside the range, the data
 has shifted and that is worth checking on its own.
 
-## How do you inverse_transform a single predicted column?
+## Inverse-transform a single predicted column
 
 A common setup: you scaled several columns, trained a model to predict one of them (say income), and now want the
 prediction back in real units.
@@ -155,7 +157,7 @@ answer:
 - **Invert by hand** with that column's `data_min_` and `data_max_`: `x_scaled * (max - min) + min`.
 - **Fit a separate scaler for the target** column only, and use it for both scaling the target and inverting predictions. This is the cleaner choice when you set up the pipeline.
 
-## What does MinMaxScaler do with NaN?
+## NaN is skipped in fit and kept in transform
 
 ```python
 # 6. NaN is ignored when fitting and kept when transforming
@@ -170,7 +172,7 @@ NaN input -> [0.      nan 0.625 1.   ]
 Missing values are skipped when the minimum and maximum are learned, and they stay NaN in the output. The scaler
 doesn't fill them, so impute before or after scaling depending on what your model needs.
 
-## How do you get a DataFrame back?
+## Get a DataFrame back with set_output
 
 ```python
 # 7. Keep DataFrame column names
