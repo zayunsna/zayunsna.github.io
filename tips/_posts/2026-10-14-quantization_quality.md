@@ -6,6 +6,8 @@ description: >
   We rounded a small model's weights to 8, 4, 3 and 2 bits and measured perplexity and correct answers. 8-bit changed nothing;
   4-bit dropped the 0.5B model from 11 to 4 correct answers, while a 1.5B model kept all 12.
 image: /assets/img/tips/quantization_quality/cover.png
+lastmod: 2026-11-06
+last_modified_at: 2026-11-06
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -13,24 +15,18 @@ sitemap:
 
 # How much does quantization hurt an LLM? 8-bit vs 4-bit, tested
 
-**TL;DR** — **Quantization** stores a model's weights with fewer bits, so the model takes less memory. In our test, 8-bit weights
-were as good as the original. At 4 bits, a 0.5B model answered only 4 of 12 handbook questions correctly (down from 11),
-while a 1.5B model still got all 12. Below 4 bits, the small model broke down completely.
+Quantization stores a model's weights with fewer bits: float32 uses 32 bits per weight, 8-bit uses 8, 4-bit uses 4.
+In our test, 8-bit weights were as good as the original for both models. At 4 bits, a 0.5B model answered only 4 of 12
+handbook questions correctly (down from 11), while a 1.5B model still got all 12. Below 4 bits, the small model broke
+down completely.
 
-_Tested on 2026-09-28 with Qwen2.5-0.5B-Instruct and Qwen2.5-1.5B-Instruct (transformers 5.17.0, PyTorch 2.14.0), locally on an Apple M5, no API key.
-This is **simulated** weight quantization: weights are rounded to fewer bits and converted back to float, which shows the effect on quality but not on speed or real memory use._
+The runs used Qwen2.5-0.5B-Instruct and [Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct)
+with transformers 5.17.0 and PyTorch 2.14.0, locally on an Apple M5 on 2026-09-28, with no API key.
 
-## Key points
+## Round each linear layer to n bits and back
 
-- **Fewer bits per weight, smaller model:** float32 uses 32 bits per weight, 8-bit uses 8, 4-bit uses 4.
-- **8-bit was lossless here** for both models: same answers, perplexity within 1%.
-- **How you quantize matters.** At 4 bits, one scale per row gave 1 correct answer; one scale per group of 128 weights gave 4.
-- **Bigger models tolerated 4 bits much better:** the 1.5B model kept 12 of 12 answers, with perplexity up 21%.
-- **Test a quantized model on your own tasks** before you ship it. Perplexity and task accuracy can tell different stories.
-
-## How did we test it?
-
-We rounded every linear layer's weights to *n* bits and back (symmetric, round-to-nearest), then measured two things:
+This is **simulated** weight quantization: weights are rounded to fewer bits and converted back to float, which shows
+the effect on quality but not on speed or real memory use. We rounded every linear layer's weights to *n* bits and back (symmetric, round-to-nearest), then measured two things:
 **perplexity** on a fixed paragraph (how surprised the model is by the text; lower is better) and the number of correct answers
 on the 12-question test set from our [evaluation post](/tips/2026-10-13-evaluate_llm_answers/), using its key-fact check.
 
@@ -121,7 +117,7 @@ float32                       6174 MB       14.05                 12
 
 Both runs gave identical numbers when repeated. The two models share the same tokenizer, which we checked, so the test set is scored the same way.
 
-## What do the results show?
+## Results for the 0.5B and 1.5B models
 
 | Setting | 0.5B: perplexity | 0.5B: answers | 1.5B: perplexity | 1.5B: answers |
 |---|---|---|---|---|
@@ -132,11 +128,11 @@ Both runs gave identical numbers when repeated. The two models share the same to
 | 3-bit, groups of 128 | 462.82 | 0 / 12 | — | — |
 
 - **8-bit is safe** in this test. The tiny perplexity drop is noise, not an improvement.
-- **Group size is a big lever.** Real 4-bit formats use small groups for exactly this reason.
+- **Group size is a big lever.** At 4 bits, one scale per row gave 1 correct answer and one scale per 128 weights gave 4. Real 4-bit formats use small groups for this reason.
 - **The larger model held up at 4 bits.** Its perplexity rose 21% against 50% for the small model, and its answers didn't change.
-- **Perplexity isn't the whole story.** The 1.5B model's perplexity went up, but its answers on our task stayed correct.
+- **Perplexity and task accuracy can disagree.** The 1.5B model's perplexity went up, but its answers on our task stayed correct, so test a quantized model on your own tasks before you ship it.
 
-## What does this mean in practice?
+## Choosing a bit width
 
 | Situation | Suggestion |
 |---|---|
@@ -146,13 +142,10 @@ Both runs gave identical numbers when repeated. The two models share the same to
 | Choosing between a small model at 16-bit and a bigger one at 4-bit | Test both on your own questions; here the bigger 4-bit model won |
 | Any quantized model | Re-run your evaluation set before switching |
 
-Our simulation uses plain rounding, which is the simplest method. GPTQ and AWQ use calibration data to choose better rounding and usually lose less quality at 4 bits.
+Our simulation uses plain rounding, which is the simplest method. [GPTQ](https://arxiv.org/abs/2210.17323) (Frantar et al., 2022)
+and [AWQ](https://arxiv.org/abs/2306.00978) (Lin et al., 2023) use calibration data to choose better rounding and
+usually lose less quality at 4 bits.
 Sizes in the table count only the linear-layer weights and leave out the small overhead for storing the scales.
 
-## Sources
-
-- [GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers](https://arxiv.org/abs/2210.17323) — Frantar et al., 2022
-- [AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration](https://arxiv.org/abs/2306.00978) — Lin et al., 2023
-- [Qwen/Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct) — model card, checked 2026-09-28
-
-Related: [How do you evaluate LLM answers?](/tips/2026-10-13-evaluate_llm_answers/) · [Prompting vs RAG vs fine-tuning: which one do you need?](/tips/2026-10-06-prompt_rag_finetune/)
+If a smaller model is still not good enough after quantization, [prompting, RAG and fine-tuning](/tips/2026-10-06-prompt_rag_finetune/)
+are the other levers for answer quality.
