@@ -5,6 +5,8 @@ description: >
   A runnable LGBMRanker example on LightGBM's own ranking data: how the group parameter works, the two mistakes LightGBM
   catches, the one it doesn't, and why scikit-learn's ndcg_score gave 0.715 where LightGBM reported 0.682. Tested with LightGBM 4.7.
 image: /assets/img/blog/lightgbm_lambdarank/cover.png
+lastmod: 2026-11-09
+last_modified_at: 2026-11-09
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -41,7 +43,7 @@ done
 
 The code below is one script, split into blocks. Run the blocks in order.
 
-## How do you train LGBMRanker?
+## Train LGBMRanker with group and eval_group
 
 ```python
 # --- 1. Load LightGBM's own learning-to-rank example data ---
@@ -80,7 +82,7 @@ and `eval_y`, and the types matter: the docs describe `eval_X` and `eval_y` as a
 failed with `TypeError: Data list can only be of ndarray or Sequence`. With `eval_group=(group_test,)` it failed with
 `TypeError: eval_group should be dict or list`. Tuples for `eval_X`/`eval_y`, a list for `eval_group` worked.
 
-## How do you build group from a query-id column?
+## Build group from a query-id column
 
 Real data usually has a query-id column instead of a `.query` file. Sort by it, then count rows per query:
 
@@ -121,7 +123,7 @@ You might hope the metric would show it. On this data it didn't: in a separate r
 50 test queries, the noise is bigger than the damage. So don't rely on the score to catch it; put a check like
 `assert rows_are_grouped(qid)` right before `fit`.
 
-## Which mistakes does LightGBM catch?
+## Two mistakes LightGBM stops with an error
 
 ```python
 # --- 4. Two mistakes LightGBM does catch ---
@@ -186,9 +188,9 @@ exactly (0.6816).
 If you compare models or report numbers, say which gain you used. Mixing them makes a model look better or worse
 than it is.
 
-## Does a ranker beat a plain regressor here?
+## Ranker vs plain regressor on 50 test queries
 
-A fair question before using `LGBMRanker` at all: what if you just regress the label and sort by the prediction?
+Before settling on `LGBMRanker`, compare it with the simple alternative: regress the label and sort by the prediction.
 
 ```python
 # --- 6. Ranker vs a plain regressor, with a bootstrap over test queries ---
@@ -217,8 +219,7 @@ lightgbm 4.7.0
 ```
 
 The ranker came out 0.019 ahead, but resampling the 50 test queries gives an interval that includes zero. On this
-small example, I can't claim the ranker is better. That isn't an argument against LambdaRank; it's a reminder that
-50 queries is too few to tell two decent models apart. With your own data, compare on many more queries, and keep
+small example, I can't claim the ranker is better: 50 queries is too few to tell two decent models apart. With your own data, compare on many more queries, and keep
 whole queries together when you split train and test (for example
 [GroupShuffleSplit](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GroupShuffleSplit.html)
 on the query id), for the same reason as in [data leakage in preprocessing](/blog/2026-10-02-data_leakage_preprocessing/).
