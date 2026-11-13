@@ -5,8 +5,8 @@ description: >
   A dropped SSH connection sends SIGHUP to your jobs. We simulated one: a plain background job died, while nohup,
   disown and tmux kept running. Here is when to use each, and why a clean exit behaves differently.
 image: /assets/img/tips/nohup_vs_tmux/cover.png
-lastmod: 2026-11-02
-last_modified_at: 2026-11-02
+lastmod: 2026-11-13
+last_modified_at: 2026-11-13
 redirect_from:
   - /tips/2023-06-20-nohub_tips/
 sitemap:
@@ -16,22 +16,19 @@ sitemap:
 
 # nohup vs tmux: how to keep a Python job running after SSH disconnects
 
-**TL;DR** — When an SSH connection drops, the shell gets a hang-up signal (`SIGHUP`) and passes it to its jobs,
-which kills a plain `python train.py &`. Use `nohup` (or `disown`) for a fire-and-forget job with output in a log file.
-Use `tmux` when you want to come back later and see the live terminal. All three survived our simulated disconnect.
+Use `nohup` (or `disown`) for a fire-and-forget Python job with output in a log file. Use `tmux` when you want to
+come back later and see the live terminal. All three survived our simulated SSH disconnect; a plain `python train.py &`
+was killed when the shell received the hang-up signal (`SIGHUP`).
 
-_Tested on 2026-09-28 on macOS with bash 3.2.57, tmux 3.7c and Python 3.12. The signal behavior comes from bash itself
-and is described in the GNU Bash manual; it applies the same way on Linux servers._
+## Background jobs after a simulated SSH disconnect
 
-## Key points
+`SIGHUP` ("hang up") is the signal a shell receives when its terminal goes away. By default, it ends the process.
+An interactive bash resends `SIGHUP` to all its jobs before exiting, killing the background job. This signal behavior
+comes from bash itself and applies the same way on Linux servers; the
+[GNU Bash manual: Signals](https://www.gnu.org/software/bash/manual/bash.html) describes `SIGHUP`, `disown` and
+`huponexit` (checked 2026-09-28).
 
-- **`SIGHUP`** ("hang up") is the signal a shell receives when its terminal goes away. By default, it ends the process.
-- **An interactive bash resends `SIGHUP` to all its jobs** before exiting. That's what kills your background job.
-- **`nohup`** makes the command ignore `SIGHUP`. **`disown`** removes the job from the shell's job list, so it never gets the signal.
-- **`tmux`** runs your program under its own server process, which is not attached to your SSH session at all.
-- **A clean `exit` is different from a dropped connection.** With bash's default settings, a plain background job survived a normal `exit`.
-
-## What happens to each method when SSH drops?
+The tests ran on 2026-09-28 on macOS with bash 3.2.57, tmux 3.7c and Python 3.12.
 
 We started the same Python script (it prints a line every second) in four ways inside an interactive bash,
 then closed the terminal underneath it, which is what a dropped SSH connection does:
@@ -62,20 +59,25 @@ tmux    still running
 We ran the test twice with the same result. The plain job's log stopped at the moment of the hangup; the other three kept writing.
 The full test harness is at the end of this post.
 
-## Why did a plain background job survive when I typed `exit`?
+## Clean exit and bash's huponexit option
 
-Because a clean logout doesn't send `SIGHUP` to jobs unless bash's `huponexit` option is on, and it's off by default.
-We repeated the experiment, but ended the session with `exit` instead of dropping the terminal:
+A clean logout sends `SIGHUP` to jobs when bash's `huponexit` option is on. With the default setting, it is off.
+We repeated the experiment and ended the session with `exit`:
 
 ```
 huponexit      	off
 plain job after a clean `exit`: still running
 ```
 
-This is why "it worked yesterday" is not proof. The same `python train.py &` survives a deliberate `exit`
-but dies when Wi-Fi drops or the laptop goes to sleep. Use `nohup`, `disown` or `tmux` so it survives both.
+The same `python train.py &` survived a deliberate `exit` and died when the connection dropped. Wi-Fi loss or a
+laptop going to sleep can drop the connection. Use `nohup`, `disown` or `tmux` so the job survives both a clean exit
+and a dropped connection.
 
 ## How do you use nohup?
+
+`nohup` makes the command ignore `SIGHUP`, as described in the
+[nohup(1) man page](https://man7.org/linux/man-pages/man1/nohup.1.html). `disown` removes a job from the shell's job
+list, so bash skips it when resending the signal.
 
 ```bash
 nohup python3 train.py > train.log 2>&1 &   # start; stdout and stderr go to train.log
@@ -89,7 +91,9 @@ Always redirect output. Otherwise `nohup` writes to a file named `nohup.out` in 
 If you already started a job without `nohup`, run `disown` right after it (or `disown %1` for job number 1).
 
 `pkill -f train.py` stops every process whose command line contains `train.py`, including other people's runs.
-To stop only the job you started, save its process ID right away with `$!`:
+To stop only the job you started, save its process ID right away with `$!`, bash's
+[special parameter for the last background job](https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html)
+(checked 2026-11-02):
 
 ```bash
 nohup python3 -u train.py >> train.log 2>&1 &
@@ -101,7 +105,11 @@ kill "$(cat train.pid)"                   # sends SIGTERM, so the job can clean 
 A process ID can be reused after the job ends, so look at the `ps` line before you `kill` with an old `train.pid`.
 `kill` reaches only that one process; if your script starts child processes, they may keep running.
 
-## How do you use tmux?
+## Start and reattach a tmux session
+
+`tmux` runs your program under its own server process, independently of your SSH session. The
+[tmux Getting Started guide](https://github.com/tmux/tmux/wiki/Getting-Started) covers creating, detaching and
+reattaching sessions:
 
 ```bash
 tmux new -s train          # start a session named "train"
@@ -118,14 +126,15 @@ In our test, `tmux ls` still listed the session after the original terminal was 
 e9: 1 windows (created Mon Sep 28 18:36:47 2026)
 ```
 
-(The attach and detach steps above are standard tmux usage; our automated test used `tmux new-session -d` instead of typing Ctrl+b d.)
+The attach and detach steps above are standard tmux usage. Our automated test used `tmux new-session -d`;
+Ctrl+b d is the manual detach sequence.
 
-## Common mistakes
+## Job lifetime, error logs and session placement
 
-- **Relying on `&` alone.** It survives a clean `exit`, but not a dropped connection.
+- **Relying on `&` alone.** The plain background job survived a clean `exit` and died when the connection dropped.
 - **Forgetting `2>&1`.** Errors then go to the terminal, which no longer exists, and you lose the traceback.
-- **Starting tmux on your laptop instead of the server.** tmux must run on the machine where the job runs.
-- **Killing with `ps | grep`.** `grep` also matches itself. Use `pgrep -f` and `pkill -f` instead.
+- **Starting tmux on your laptop.** tmux must run on the server where the job runs.
+- **Killing with `ps | grep`.** `grep` also matches itself. `pgrep -f` finds matching processes; `pkill -f` stops all matches.
 
 <details markdown="1">
 <summary>The test harness (Python, macOS/Linux)</summary>
@@ -171,10 +180,3 @@ for name in ["plain", "nohup", "disown", "tmux"]:
 ```
 
 </details>
-
-## Sources
-
-- [GNU Bash manual: Signals](https://www.gnu.org/software/bash/manual/bash.html) — "an interactive shell resends the SIGHUP to all jobs", `disown`, `huponexit`, checked 2026-09-28
-- [nohup(1) man page](https://man7.org/linux/man-pages/man1/nohup.1.html)
-- [tmux: Getting Started](https://github.com/tmux/tmux/wiki/Getting-Started)
-- [Bash manual: Special Parameters](https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html) — `$!`, checked 2026-11-02
