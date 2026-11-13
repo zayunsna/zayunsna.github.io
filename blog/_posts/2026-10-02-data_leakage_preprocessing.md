@@ -6,6 +6,8 @@ description: >
   Fitting a scaler or a feature selector on all your data before cross-validation leaks test information.
   On pure noise, leaky feature selection scored 0.80 instead of 0.50. Tested with scikit-learn 1.9.1.
 image: /assets/img/blog/data_leakage_preprocessing/cover.png
+lastmod: 2026-11-13
+last_modified_at: 2026-11-13
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -13,24 +15,27 @@ sitemap:
 
 # Why fit preprocessing on training data only? A data leakage demo
 
-**TL;DR** — Any step that learns from data (a scaler, an imputer, a feature selector) must be fitted on the
-training data only. Otherwise your test score includes information the model won't have in production.
-The simplest fix is to put every step in a scikit-learn `Pipeline` and cross-validate the whole pipeline.
+Any step that learns from data (a scaler, an imputer, a feature selector) has to be fitted on the training rows
+only. If the test rows are included, the cross-validation score uses information the model won't have in
+production. Putting every step in a scikit-learn `Pipeline` and cross-validating the whole pipeline handles this
+for you, because each fold refits every step on its own training rows.
 
-_Tested on 2026-09-28 with scikit-learn 1.9.1, NumPy 2.5.3, Python 3.12._
+scikit-learn's [Common pitfalls page](https://scikit-learn.org/stable/common_pitfalls.html) (checked 2026-11-13,
+version 1.9.1) shows the effect with one setting: 200 rows, 10,000 noise features, 0.76 accuracy where the truth
+is 0.5. How much a leak costs depends on the step and on the shape of the data. In the runs below, a leaky scaler
+changed nothing, leaky feature selection scored 0.80 on 200 rows of pure noise, and on 5,000 rows the same mistake
+still added 0.07.
 
-## Key points
-
-- **Data leakage** means the model uses information during training that it won't have at prediction time. It makes scores look better than they are.
-- **The rule:** never call `fit` or `fit_transform` on data that includes your test rows.
-- **How bad it gets depends on the step.** Scaling leaked almost nothing in our test. Feature selection turned pure noise into 80% accuracy.
-- **`Pipeline` prevents it.** Cross-validation then refits every step on each training fold.
+The examples ran on 2026-09-28 with scikit-learn 1.9.1, NumPy 2.5.3 and Python 3.12; the data-shape table was
+added on 2026-11-13 with the same versions.
 
 ## What does "fit on training data only" mean?
 
 A preprocessing step learns numbers from the data. `StandardScaler` learns each column's mean and standard deviation.
 `SelectKBest` learns which columns are most related to the target.
 If the test rows are included when those numbers are learned, the test is no longer an honest preview of new data.
+Data leakage is the general name for this: the model trains on information it won't have at prediction time, and
+the score looks better than it is.
 
 | Step | What it learns in `fit` | Leakage risk if fitted on all data |
 |---|---|---|
@@ -41,9 +46,9 @@ If the test rows are included when those numbers are learned, the test is no lon
 
 The steps that look at the target (`y`) are the dangerous ones.
 
-## Does leaking a scaler really change the score?
+## StandardScaler on all rows scores 0.9807 both ways
 
-In this test, no. Here is `StandardScaler` fitted on all data vs. inside a pipeline, on the breast cancer dataset:
+Here is `StandardScaler` fitted on all data vs. inside a pipeline, on the breast cancer dataset:
 
 ```python
 from sklearn.datasets import load_breast_cancer
@@ -74,9 +79,9 @@ scaler inside pipeline:    0.9807
 Identical to four decimals. The mean and std of 569 rows barely change when you drop a fifth of them.
 It is still the wrong habit, though. The same code pattern with a target-aware step is a different story.
 
-## What happens when feature selection leaks?
+## Leaky feature selection finds signal in pure noise
 
-It invents a signal that isn't there. The data below is pure noise: 5,000 random features and random labels.
+The data below is pure noise: 5,000 random features and random labels.
 No model can honestly beat 50% accuracy on it.
 
 ```python
@@ -120,15 +125,39 @@ clean: mean 0.496, min 0.430, max 0.605
 
 Every one of the 20 leaky runs scored at least 0.745 on data with no signal at all.
 
-## How do you prevent leakage in practice?
+## More candidate features and fewer rows make the leak bigger
+
+The same experiment, 20 random datasets per setting (`k=20`, `LogisticRegression`, 5-fold CV), with the number of
+noise features and rows changed one at a time. The 200-row, 5,000-feature row is the run above.
+The [script](/assets/code/data_leakage_preprocessing/leak_vs_shape.py) and its
+[raw output](/assets/code/data_leakage_preprocessing/leak_vs_shape_output.txt) are in the post's code folder.
+
+| Rows | Noise features | Leaky mean (min) | Pipeline mean | Gap |
+|---|---|---|---|---|
+| 200 | 20 | 0.522 (0.415) | 0.522 | +0.000 |
+| 200 | 100 | 0.640 (0.595) | 0.498 | +0.142 |
+| 200 | 1,000 | 0.746 (0.695) | 0.501 | +0.245 |
+| 200 | 5,000 | 0.798 (0.745) | 0.496 | +0.302 |
+| 200 | 20,000 | 0.833 (0.780) | 0.522 | +0.312 |
+| 100 | 5,000 | 0.877 (0.820) | 0.500 | +0.377 |
+| 1,000 | 5,000 | 0.656 (0.627) | 0.507 | +0.150 |
+| 5,000 | 5,000 | 0.570 (0.562) | 0.500 | +0.070 |
+
+With 20 features and `k=20`, the selector keeps every column, so it has nothing to choose and the two scores match.
+From there the gap grows with each extra pool of candidates: more noise columns means more of them line up with the
+labels by chance. More rows shrink it, because chance correlations get weaker, but even at 5,000 rows every leaky
+run stayed above 0.56 on data with no signal. Wide, short tables (many one-hot or text columns, few labelled rows)
+are where this mistake inflates a score the most.
+
+These numbers come from pure noise with one model and `k=20`. On real data the true score is unknown, so the same
+leak shows up only as a cross-validation score that later fails to hold on new data.
+
+## Habits that keep test rows out of fit
 
 - **Split first.** Separate the test set before any preprocessing.
 - **Use a `Pipeline`.** Put every step that has a `fit` method inside it, then pass the pipeline to `cross_val_score` or `GridSearchCV`.
-- **Use `transform`, not `fit_transform`, on new data.** Validation, test, and production data reuse the numbers learned from training.
+- **Call only `transform` on new data.** Validation, test, and production data reuse the numbers learned from training.
 - **Be suspicious of great results.** If a score looks too good for the problem, check what the preprocessing saw.
 
-## Sources
-
-- [Common pitfalls and recommended practices: Data leakage](https://scikit-learn.org/stable/common_pitfalls.html) — scikit-learn docs, checked 2026-09-28
-
-Related: [Min-max scaling vs standardization: when should you use which?](/blog/2026-09-29-minmax_vs_standard_scaler/)
+Once the pipeline is in place, choosing the scaler itself is the next question; see
+[min-max scaling vs standardization](/blog/2026-09-29-minmax_vs_standard_scaler/).

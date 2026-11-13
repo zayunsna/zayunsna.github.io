@@ -1,0 +1,12 @@
+200 rows, more noise features:
+  20 features          leaky 0.522 (min 0.415)   clean 0.522   gap +0.000
+  100 features         leaky 0.640 (min 0.595)   clean 0.498   gap +0.142
+  1,000 features       leaky 0.746 (min 0.695)   clean 0.501   gap +0.245
+  5,000 features       leaky 0.798 (min 0.745)   clean 0.496   gap +0.302
+  20,000 features      leaky 0.833 (min 0.780)   clean 0.522   gap +0.312
+5,000 noise features, more rows:
+  100 rows             leaky 0.877 (min 0.820)   clean 0.500   gap +0.377
+  200 rows             leaky 0.798 (min 0.745)   clean 0.496   gap +0.302
+  1,000 rows           leaky 0.656 (min 0.627)   clean 0.507   gap +0.150
+  5,000 rows           leaky 0.570 (min 0.562)   clean 0.500   gap +0.070
+scikit-learn 1.9.1 | numpy 2.5.3
