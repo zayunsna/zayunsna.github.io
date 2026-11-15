@@ -6,6 +6,8 @@ description: >
   Temperature reshapes the next-token probabilities; top-k and top-p cut off unlikely tokens. Tested on a small open
   model: at temperature 2.0 the output turned into noise, and top-k fixed it while top-p did not.
 image: /assets/img/tips/llm_temperature/cover.png
+lastmod: 2026-11-16
+last_modified_at: 2026-11-16
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -13,23 +15,20 @@ sitemap:
 
 # What does temperature do in an LLM? Temperature, top-k and top-p explained
 
-**TL;DR** — An LLM picks each next token by sampling from a probability distribution. **Temperature** sharpens (below 1)
-or flattens (above 1) that distribution. **Top-k** keeps only the k most likely tokens; **top-p** keeps the smallest set
+An LLM picks each next token by sampling from a probability distribution. Temperature sharpens (below 1)
+or flattens (above 1) that distribution. Top-k keeps only the k most likely tokens; top-p keeps the smallest set
 whose probabilities add up to p. Low temperature gives safe, repetitive text; high temperature gives variety, and past a point, noise.
 
-_Tested on 2026-09-28 with the open model Qwen2.5-0.5B-Instruct (transformers 5.17.0, PyTorch 2.14.0), running locally with no API key.
-The model ran in its default bfloat16 precision; probabilities were computed in float32. A small model's text is weaker than a commercial model's,
-but the sampling settings work the same way._
-
-## Key points
-
-- **The model outputs a score (logit) for every token** in its vocabulary, 151,936 of them for this model.
-- **Temperature divides those scores before softmax.** Below 1, the top token gets more probability; above 1, probability spreads to unlikely tokens.
-- **Top-k** cuts the candidates to a fixed number. **Top-p** (nucleus sampling) cuts them to a probability budget.
-- **Order matters.** In Hugging Face transformers, temperature is applied first, then top-k, then top-p.
-- **For factual or code tasks, use low temperature.** For brainstorming, use a moderate one, around 0.7–1.0, with top-p or top-k.
-
 ## How does temperature change the probabilities?
+
+The model outputs a score (logit) for every token in its vocabulary, 151,936 of them for this model.
+Temperature divides those scores before softmax. Below 1, the top token gets more probability; above 1, probability spreads to unlikely tokens.
+
+The following experiment ran on 2026-09-28 with the open model Qwen2.5-0.5B-Instruct
+(transformers 5.17.0, PyTorch 2.14.0), running locally with no API key.
+The model card is [Qwen/Qwen2.5-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct).
+The model ran in its default bfloat16 precision; probabilities were computed in float32.
+The small model produces weaker text than a commercial model; the sampling settings work the same way.
 
 Here are the real next-token probabilities after "My favorite programming language is" at three temperatures:
 
@@ -91,7 +90,7 @@ vocabulary size: 151,936
 
 To cover 90% of the probability, you need 2 tokens at temperature 0.3, 64 at 1.0, and 43,942 at 2.0.
 
-## What does the generated text look like?
+## Compare generated text across temperatures
 
 Three samples per temperature, each with a fixed random seed:
 
@@ -123,9 +122,10 @@ for t in [0.3, 1.0, 2.0]:
 
 `top_k=0, top_p=1.0` turns both filters off, so only temperature is at work. At 2.0, the model samples from the long tail and mixes random words from many languages.
 
-## Do top-k and top-p fix a high temperature?
+## Top-k and top-p after temperature scaling
 
-Top-k did; top-p did not:
+Top-k cuts the candidates to a fixed number. Top-p (nucleus sampling) cuts them to a probability budget.
+In this experiment, top-k kept the generated text readable at high temperature, while top-p left the output noisy:
 
 ```python
 # continues from the code above (model, tok, ids)
@@ -153,8 +153,13 @@ for label, kw in settings.items():
 The reason is the order. transformers applies temperature first, then top-k, then top-p (we checked its logits processor list:
 `TemperatureLogitsWarper`, `TopKLogitsWarper`, `TopPLogitsWarper`). After temperature 2.0 has flattened the distribution,
 "the top 90%" still contains about 44,000 tokens, so top-p removes almost nothing. Top-k=20 keeps exactly 20, no matter how flat the distribution is.
+Hugging Face's [Generation strategies](https://huggingface.co/docs/transformers/generation_strategies)
+documentation describes these sampling controls (checked 2026-09-28).
 
-## Which settings should you use?
+## Choose sampling settings for the task
+
+For factual or code tasks, use low temperature. For brainstorming, a moderate temperature around 0.7–1.0 with top-p or top-k
+gives variety; the table also includes a higher range for creative writing.
 
 | Task | Temperature | Filter | Why |
 |---|---|---|---|
@@ -165,9 +170,4 @@ The reason is the order. transformers applies temperature first, then top-k, the
 
 Different APIs use different defaults and may apply these settings in a different order, so test on your own prompts.
 
-## Sources
-
-- [Generation strategies](https://huggingface.co/docs/transformers/generation_strategies) — Hugging Face transformers docs, checked 2026-09-28
-- [Qwen/Qwen2.5-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct) — model card
-
-Related: [What is a token, and why do LLMs count tokens instead of words?](/tips/2026-09-29-what_is_a_token/)
+For the units being sampled, see [What is a token, and why do LLMs count tokens instead of words?](/tips/2026-09-29-what_is_a_token/).
