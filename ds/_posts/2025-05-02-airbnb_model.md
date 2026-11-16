@@ -4,8 +4,8 @@ title: "Applying Deep Learning to Airbnb Search: lessons from the paper"
 description: >
   My notes on Airbnb's paper "Applying Deep Learning To Airbnb Search": why their first neural net barely matched GBDT, what LambdaRank changed, and the ideas that failed (listing IDs, multi-task learning).
 image: /assets/img/ds/airbnb/cover.png
-lastmod: 2026-10-06
-last_modified_at: 2026-10-06
+lastmod: 2026-11-16
+last_modified_at: 2026-11-16
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -32,33 +32,24 @@ Their breakthrough came from an approach called "Lambdarank" which is essentiall
 I remember struggling with similar ranking problems at my last job—the issue isn't just predicting what users like, but actually getting the order right.
 
 
-<p>
-    <img src="../../assets/img/ds/airbnb/image1.png" alt="Airbnb paper Figure 2: waterfall charts of relative NDCG gains offline and relative booking gains online for four models, Simple NN (04/2017), LambdaRank NN (06/2017), GBDT/FM NN (03/2018) and Deep NN (06/2018)">
-</p>
-<p>
-    <em>The evolution of Airbnb's ranking models, showing incremental gains with each approach. Note the significant jump with the final Deep NN that used 10x more training data.</em>
-</p>
+![Original conceptual diagram of the sequence Simple NN, LambdaRank NN, hybrid NN and Deep NN; boxes indicate approaches, with no performance scale](/assets/img/ds/airbnb/model_changes_concept.png)
+
+*Original concept diagram of the model transitions in the paper's Model Evolution section, checked 2026-11-16. Box sizes carry no performance values; the final Deep NN used 10x more training data.*
 
 One detail that cracked me up was how they ended up combining three completely different models (Neural Networks, GBDT, and Factorization Machines) because they couldn't decide which one was best. It's such a realistic engineering compromise: "Well, all three approaches have merits... screw it, let's just use them all!"
 
-<p>
-    <img src="../../assets/img/ds/airbnb/image2.png" alt="Airbnb paper Figure 3: a neural network whose inputs include embeddings of gradient boosted tree leaf nodes, a factorization machine prediction and other features, feeding a hidden ReLU layer and one output logit">
-</p>
-<p>
-    <em>The hybrid architecture that combined neural networks with GBDT tree nodes and Factorization Machine predictions—Airbnb's innovative but complex ensemble approach before simplifying.</em>
-</p>
+![Original conceptual flow diagram of GBDT leaf IDs, an FM prediction and other features entering a neural ranker that produces a score](/assets/img/ds/airbnb/hybrid_inputs_concept.png)
+
+*Original concept diagram of the hybrid inputs described in the paper. GBDT leaf IDs and the FM prediction became NN features.*
 
 ### The Data Revelation
 Here's the kicker that changed my thinking: they eventually replaced their Frankenstein ensemble with a simpler neural network, but fed it 10x more data. And it demolished every previous model's performance.
 God, how many times have we over-engineered solutions when we should've just been gathering more training data?
 
 ### The Failures (That They Actually Admitted)
-<p>
-    <img src="../../assets/img/ds/airbnb/image3.png" alt="Airbnb paper Figure 5: learning curves of NDCG against training pairs in millions; with the listing ID feature, training NDCG stays near 1 while test NDCG stays low, and without it the training and test curves converge near 0.68">
-</p>
-<p>
-    <em> Learning curves revealing the overfitting problem with listing IDs. Notice how models without listing IDs (green/orange) generalized better despite lower training performance.</em>
-</p>
+![Original conceptual diagram linking sparse bookings and trainable listing-ID vectors to improved training fit without test gain; no learning curves or measurements](/assets/img/ds/airbnb/listing_id_concept.png)
+
+*Original concept diagram of the listing-ID failure described in the paper: better training fit with no test gain.*
 
 What I genuinely appreciated was their candor about approaches that flopped. They tried giving listings unique IDs to help the model "remember" properties—disaster. With sparse booking data, it just caused overfitting.
 Their multi-task learning attempt was another interesting failure. The hypothesis made perfect sense: predict both views and bookings simultaneously since they're related. In practice? It increased views but didn't reliably convert to more bookings. Classic case of optimizing for the wrong metric.
@@ -72,12 +63,12 @@ The parts that resonated most with me were the technical optimizations that nobo
 
 And the interpretability challenges! When stakeholders asked "why is this listing ranked higher?", they couldn't just point to a decision tree node anymore. They had to develop entire parallel systems just to explain what the model was doing.
 
-<p>
-    <img src="../../assets/img/ds/airbnb/image4.png" alt="Airbnb paper Figure 14: price and review count distributions for top-ranked and bottom-ranked test listings; top-ranked listings lean toward lower prices, while review count distributions nearly overlap">
-</p>
-<p>
-    <em> Price and review distributions between top and bottom-ranked listings. insights like these helped Airbnb understand what their 'black box' neural networks were actually prioritizing.</em>
-</p>
+![Original conceptual workflow for TopBot: rank listings within each test query, separate top and bottom groups, then compare price and review count](/assets/img/ds/airbnb/topbot_workflow_concept.png)
+
+*Original concept diagram of TopBot's comparison workflow. It compares feature distributions between top- and bottom-ranked test listings.*
+
+These concept diagrams were drawn for this article with [the Matplotlib script](/assets/code/airbnb_model/render_diagrams.py).
+They summarize relationships described in the [paper](https://arxiv.org/abs/1810.09591), checked 2026-11-16; the paper contains the measured results.
 
 
 ### What I'm Taking Away
