@@ -1,0 +1,9 @@
+batch_first=False: output=(5, 3, 4), h_n=(2, 3, 4), c_n=(2, 3, 4)
+batch_first=True: output=(3, 5, 4), h_n=(2, 3, 4), c_n=(2, 3, 4)
+bidirectional=False: output=(3, 5, 4), h_n=(2, 3, 4), c_n=(2, 3, 4)
+last output equals final hidden: True
+bidirectional=True: output=(3, 5, 8), h_n=(4, 3, 4), c_n=(4, 3, 4)
+last output equals final pair: False
+last forward equals final forward: True
+first reverse equals final reverse: True
+last reverse equals final reverse: False
