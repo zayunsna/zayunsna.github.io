@@ -3,8 +3,8 @@ hub: forecasting
 layout: post
 title: "LSTM input shape explained: (batch, timesteps, features)"
 description: >
-  Build sliding-window LSTM inputs, catch PyTorch batch_first mistakes, and inspect hidden and cell state shapes.
-  CPU examples compare unidirectional and bidirectional final states, alongside Keras input shapes.
+  What each of the three LSTM input dimensions means, how to build them from a time series with sliding windows,
+  and the PyTorch batch_first default that silently mixes your samples. Tested with PyTorch 2.14 and Keras 3.15.
 image: /assets/img/blog/lstm_input_shape/cover.png
 lastmod: 2026-11-17
 last_modified_at: 2026-11-17
