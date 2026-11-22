@@ -1,0 +1,8 @@
+sampling temperature=0: ValueError
+`temperature` (=0.0) has to be a strictly positive float, otherwise your next token scores will be invalid. If you're looking for greedy decoding strategies, set `do_sample=False`.
+greedy temperature=0 equals temperature=1: True
+greedy continuation: ' Python. I am a beginner and I am trying to learn'
+temperature | unique continuations | first tokens | starts with ' Python'
+0.3 | 18/20 | 2 | 19/20
+1.0 | 20/20 | 18 | 3/20
+2.0 | 20/20 | 20 | 0/20

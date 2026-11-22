@@ -1,0 +1,1522 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "prompt": "My favorite programming language is",
+  "environment": {
+    "python": "3.12.13",
+    "torch": "2.14.0",
+    "transformers": "5.17.0",
+    "system": "Darwin",
+    "architecture": "arm64",
+    "dtype": "torch.bfloat16",
+    "attention": "eager",
+    "cpu_threads": 4
+  },
+  "generation_config": {
+    "max_length": null,
+    "max_new_tokens": 12,
+    "min_length": null,
+    "min_new_tokens": null,
+    "early_stopping": null,
+    "max_time": null,
+    "stop_strings": null,
+    "do_sample": true,
+    "num_beams": 1,
+    "use_mtp": null,
+    "use_cache": true,
+    "cache_implementation": null,
+    "cache_config": null,
+    "max_cache_len": null,
+    "temperature": 1.0,
+    "top_k": 0,
+    "top_p": 1.0,
+    "min_p": null,
+    "top_h": null,
+    "typical_p": null,
+    "epsilon_cutoff": null,
+    "eta_cutoff": null,
+    "repetition_penalty": 1.0,
+    "encoder_repetition_penalty": null,
+    "length_penalty": null,
+    "no_repeat_ngram_size": null,
+    "bad_words_ids": null,
+    "renormalize_logits": null,
+    "forced_bos_token_id": null,
+    "forced_eos_token_id": null,
+    "remove_invalid_values": null,
+    "exponential_decay_length_penalty": null,
+    "suppress_tokens": null,
+    "begin_suppress_tokens": null,
+    "sequence_bias": null,
+    "token_healing": null,
+    "guidance_scale": null,
+    "watermarking_config": null,
+    "num_return_sequences": null,
+    "output_attentions": null,
+    "output_hidden_states": null,
+    "output_scores": null,
+    "output_logits": null,
+    "return_dict_in_generate": null,
+    "pad_token_id": 151645,
+    "bos_token_id": 151643,
+    "eos_token_id": [
+      151645,
+      151643
+    ],
+    "encoder_no_repeat_ngram_size": null,
+    "decoder_start_token_id": null,
+    "is_assistant": null,
+    "num_assistant_tokens": null,
+    "num_assistant_tokens_schedule": null,
+    "assistant_confidence_threshold": null,
+    "prompt_lookup_num_tokens": null,
+    "max_matching_ngram_size": null,
+    "assistant_early_exit": null,
+    "assistant_lookbehind": null,
+    "target_lookbehind": null,
+    "assistant_ensemble_weight": null,
+    "speculation_type": null,
+    "compile_config": null,
+    "disable_compile": null,
+    "continuous_batching_config": null,
+    "low_memory": null,
+    "penalty_alpha": null,
+    "dola_layers": null,
+    "diversity_penalty": null,
+    "num_beam_groups": null,
+    "constraints": null,
+    "force_words_ids": null,
+    "prefill_chunk_size": null,
+    "_from_model_config": null,
+    "transformers_version": "5.17.0"
+  },
+  "cached_defaults": {
+    "max_length": null,
+    "max_new_tokens": null,
+    "min_length": null,
+    "min_new_tokens": null,
+    "early_stopping": null,
+    "max_time": null,
+    "stop_strings": null,
+    "do_sample": true,
+    "num_beams": null,
+    "use_mtp": null,
+    "use_cache": null,
+    "cache_implementation": null,
+    "cache_config": null,
+    "max_cache_len": null,
+    "temperature": 0.7,
+    "top_k": 20,
+    "top_p": 0.8,
+    "min_p": null,
+    "top_h": null,
+    "typical_p": null,
+    "epsilon_cutoff": null,
+    "eta_cutoff": null,
+    "repetition_penalty": 1.1,
+    "encoder_repetition_penalty": null,
+    "length_penalty": null,
+    "no_repeat_ngram_size": null,
+    "bad_words_ids": null,
+    "renormalize_logits": null,
+    "forced_bos_token_id": null,
+    "forced_eos_token_id": null,
+    "remove_invalid_values": null,
+    "exponential_decay_length_penalty": null,
+    "suppress_tokens": null,
+    "begin_suppress_tokens": null,
+    "sequence_bias": null,
+    "token_healing": null,
+    "guidance_scale": null,
+    "watermarking_config": null,
+    "num_return_sequences": null,
+    "output_attentions": null,
+    "output_hidden_states": null,
+    "output_scores": null,
+    "output_logits": null,
+    "return_dict_in_generate": null,
+    "pad_token_id": 151643,
+    "bos_token_id": 151643,
+    "eos_token_id": [
+      151645,
+      151643
+    ],
+    "encoder_no_repeat_ngram_size": null,
+    "decoder_start_token_id": null,
+    "is_assistant": null,
+    "num_assistant_tokens": null,
+    "num_assistant_tokens_schedule": null,
+    "assistant_confidence_threshold": null,
+    "prompt_lookup_num_tokens": null,
+    "max_matching_ngram_size": null,
+    "assistant_early_exit": null,
+    "assistant_lookbehind": null,
+    "target_lookbehind": null,
+    "assistant_ensemble_weight": null,
+    "speculation_type": null,
+    "compile_config": null,
+    "disable_compile": null,
+    "continuous_batching_config": null,
+    "low_memory": null,
+    "penalty_alpha": null,
+    "dola_layers": null,
+    "diversity_penalty": null,
+    "num_beam_groups": null,
+    "constraints": null,
+    "force_words_ids": null,
+    "prefill_chunk_size": null,
+    "_from_model_config": null,
+    "transformers_version": "5.17.0"
+  },
+  "zero": {
+    "sampling_error": "`temperature` (=0.0) has to be a strictly positive float, otherwise your next token scores will be invalid. If you're looking for greedy decoding strategies, set `do_sample=False`.",
+    "greedy_equal": true,
+    "greedy_ids": [
+      5050,
+      6930,
+      15473,
+      4128,
+      374,
+      13027,
+      13,
+      358,
+      1079,
+      264,
+      48948,
+      323,
+      358,
+      1079,
+      4460,
+      311,
+      3960
+    ]
+  },
+  "summary": [
+    {
+      "temperature": 0.3,
+      "unique_sequences": 18,
+      "unique_first_tokens": 2,
+      "python_starts": 19,
+      "first_token_counts": [
+        [
+          " Python",
+          19
+        ],
+        [
+          " C",
+          1
+        ]
+      ]
+    },
+    {
+      "temperature": 1.0,
+      "unique_sequences": 20,
+      "unique_first_tokens": 18,
+      "python_starts": 3,
+      "first_token_counts": [
+        [
+          " Python",
+          3
+        ],
+        [
+          " a",
+          1
+        ],
+        [
+          " to",
+          1
+        ],
+        [
+          " C",
+          1
+        ],
+        [
+          ":\n",
+          1
+        ],
+        [
+          " Z",
+          1
+        ],
+        [
+          " **",
+          1
+        ],
+        [
+          " Java",
+          1
+        ],
+        [
+          " definitely",
+          1
+        ],
+        [
+          " JavaScript",
+          1
+        ],
+        [
+          " Gro",
+          1
+        ],
+        [
+          " Visual",
+          1
+        ],
+        [
+          " Swift",
+          1
+        ],
+        [
+          " ____",
+          1
+        ],
+        [
+          " Lua",
+          1
+        ],
+        [
+          " MATLAB",
+          1
+        ],
+        [
+          " Haskell",
+          1
+        ],
+        [
+          " Scala",
+          1
+        ]
+      ]
+    },
+    {
+      "temperature": 2.0,
+      "unique_sequences": 20,
+      "unique_first_tokens": 20,
+      "python_starts": 0,
+      "first_token_counts": [
+        [
+          ":\n",
+          1
+        ],
+        [
+          " Z",
+          1
+        ],
+        [
+          ",\r\n",
+          1
+        ],
+        [
+          "chema",
+          1
+        ],
+        [
+          " complete",
+          1
+        ],
+        [
+          " flags",
+          1
+        ],
+        [
+          " definitely",
+          1
+        ],
+        [
+          " Next",
+          1
+        ],
+        [
+          " Gen",
+          1
+        ],
+        [
+          " pal",
+          1
+        ],
+        [
+          " JavaScript",
+          1
+        ],
+        [
+          " linear",
+          1
+        ],
+        [
+          " tou",
+          1
+        ],
+        [
+          " Rx",
+          1
+        ],
+        [
+          " Tail",
+          1
+        ],
+        [
+          "mongodb",
+          1
+        ],
+        [
+          " Dart",
+          1
+        ],
+        [
+          " MATLAB",
+          1
+        ],
+        [
+          "—is",
+          1
+        ],
+        [
+          "童话",
+          1
+        ]
+      ]
+    }
+  ],
+  "samples": [
+    {
+      "temperature": 0.3,
+      "seed": 0,
+      "token_ids": [
+        13027,
+        13,
+        358,
+        1079,
+        6832,
+        311,
+        2038,
+        323,
+        358,
+        1366,
+        311,
+        1414
+      ],
+      "text": " Python. I am learning to code and I want to know"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 1,
+      "token_ids": [
+        13027,
+        13,
+        3555,
+        525,
+        1045,
+        315,
+        279,
+        7567,
+        315,
+        1667,
+        13027,
+        369
+      ],
+      "text": " Python. What are some of the benefits of using Python for"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 2,
+      "token_ids": [
+        356,
+        22890,
+        358,
+        2776,
+        4460,
+        311,
+        3960,
+        13027,
+        13,
+        358,
+        2776,
+        537
+      ],
+      "text": " C++. I'm trying to learn Python. I'm not"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 3,
+      "token_ids": [
+        13027,
+        13,
+        358,
+        614,
+        264,
+        3405,
+        911,
+        279,
+        19482,
+        315,
+        13027,
+        13
+      ],
+      "text": " Python. I have a question about the syntax of Python."
+    },
+    {
+      "temperature": 0.3,
+      "seed": 4,
+      "token_ids": [
+        13027,
+        13,
+        358,
+        1079,
+        5023,
+        6832,
+        311,
+        2025,
+        13,
+        358,
+        614,
+        9498
+      ],
+      "text": " Python. I am currently learning to program. I have learned"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 5,
+      "token_ids": [
+        13027,
+        13,
+        1084,
+        374,
+        264,
+        8741,
+        11,
+        32298,
+        11,
+        1633,
+        35085,
+        4128
+      ],
+      "text": " Python. It is a dynamic, interpreted, object-oriented language"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 6,
+      "token_ids": [
+        13027,
+        13,
+        358,
+        614,
+        264,
+        3405,
+        911,
+        279,
+        13027,
+        4128,
+        13,
+        2980
+      ],
+      "text": " Python. I have a question about the Python language. Can"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 7,
+      "token_ids": [
+        13027,
+        13,
+        1084,
+        374,
+        264,
+        8741,
+        4128,
+        429,
+        374,
+        13570,
+        1483,
+        369
+      ],
+      "text": " Python. It is a dynamic language that is widely used for"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 8,
+      "token_ids": [
+        13027,
+        13,
+        1084,
+        374,
+        264,
+        7988,
+        4128,
+        429,
+        374,
+        13570,
+        1483,
+        304
+      ],
+      "text": " Python. It is a powerful language that is widely used in"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 9,
+      "token_ids": [
+        13027,
+        13,
+        3555,
+        525,
+        1045,
+        315,
+        279,
+        1376,
+        4419,
+        315,
+        13027,
+        429
+      ],
+      "text": " Python. What are some of the key features of Python that"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 10,
+      "token_ids": [
+        13027,
+        13,
+        3555,
+        525,
+        1045,
+        315,
+        279,
+        4911,
+        4419,
+        315,
+        13027,
+        429
+      ],
+      "text": " Python. What are some of the unique features of Python that"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 11,
+      "token_ids": [
+        13027,
+        13,
+        1084,
+        702,
+        264,
+        7988,
+        323,
+        31945,
+        24982,
+        315,
+        20186,
+        323
+      ],
+      "text": " Python. It has a powerful and versatile ecosystem of libraries and"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 12,
+      "token_ids": [
+        13027,
+        13,
+        3555,
+        525,
+        1045,
+        315,
+        279,
+        22146,
+        315,
+        1667,
+        13027,
+        369
+      ],
+      "text": " Python. What are some of the advantages of using Python for"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 13,
+      "token_ids": [
+        13027,
+        13,
+        1084,
+        374,
+        264,
+        7988,
+        4128,
+        429,
+        374,
+        13570,
+        1483,
+        304
+      ],
+      "text": " Python. It is a powerful language that is widely used in"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 14,
+      "token_ids": [
+        13027,
+        13,
+        1084,
+        374,
+        264,
+        1550,
+        11591,
+        11,
+        32298,
+        4128,
+        429,
+        374
+      ],
+      "text": " Python. It is a high-level, interpreted language that is"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 15,
+      "token_ids": [
+        13027,
+        13,
+        1084,
+        374,
+        264,
+        1550,
+        11591,
+        11,
+        32298,
+        4128,
+        429,
+        374
+      ],
+      "text": " Python. It is a high-level, interpreted language that is"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 16,
+      "token_ids": [
+        13027,
+        13,
+        1084,
+        702,
+        264,
+        2696,
+        315,
+        20186,
+        429,
+        525,
+        5798,
+        3419
+      ],
+      "text": " Python. It has a lot of libraries that are built-in"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 17,
+      "token_ids": [
+        13027,
+        13,
+        1084,
+        374,
+        264,
+        1550,
+        11591,
+        11,
+        32298,
+        4128,
+        13,
+        1084
+      ],
+      "text": " Python. It is a high-level, interpreted language. It"
+    },
+    {
+      "temperature": 0.3,
+      "seed": 18,
+      "token_ids": [
+        13027,
+        11,
+        323,
+        358,
+        2776,
+        8014,
+        304,
+        6832,
+        803,
+        911,
+        432,
+        13
+      ],
+      "text": " Python, and I'm interested in learning more about it."
+    },
+    {
+      "temperature": 0.3,
+      "seed": 19,
+      "token_ids": [
+        13027,
+        13,
+        1084,
+        702,
+        264,
+        4911,
+        4565,
+        429,
+        6147,
+        498,
+        311,
+        6979
+      ],
+      "text": " Python. It has a unique feature that allows you to define"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 0,
+      "token_ids": [
+        1863,
+        13,
+        6771,
+        594,
+        1977,
+        358,
+        614,
+        1378,
+        9069,
+        315,
+        6144,
+        3084
+      ],
+      "text": " Z. Let's say I have two strings of equal length"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 1,
+      "token_ids": [
+        510,
+        27173,
+        2038,
+        6157,
+        323,
+        56382,
+        448,
+        17377,
+        5041,
+        198,
+        40,
+        1075
+      ],
+      "text": ":\nrunning code quickly and reliably with minimal effort\nI like"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 2,
+      "token_ids": [
+        356,
+        87846,
+        1096,
+        4128,
+        68845,
+        39422,
+        448,
+        444,
+        5885,
+        19556,
+        311,
+        470
+      ],
+      "text": " C#. This language reacts promptly with Linq queries to return"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 3,
+      "token_ids": [
+        7943,
+        13,
+        15920,
+        315,
+        279,
+        2701,
+        1850,
+        16555,
+        279,
+        4419,
+        429,
+        1281
+      ],
+      "text": " Java. Which of the following best describes the features that make"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 4,
+      "token_ids": [
+        12914,
+        13,
+        1416,
+        358,
+        14291,
+        700,
+        279,
+        8865,
+        19482,
+        369,
+        458,
+        19569
+      ],
+      "text": " JavaScript. If I swap out the spread syntax for an iteration"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 5,
+      "token_ids": [
+        3070,
+        29475,
+        334,
+        13,
+        3197,
+        358,
+        990,
+        1045,
+        1334,
+        33686,
+        12538,
+        1075
+      ],
+      "text": " **JavaScript**. When I use some array manipulation techniques like"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 6,
+      "token_ids": [
+        17888,
+        61515,
+        1785,
+        6631,
+        315,
+        1181,
+        38975,
+        30114,
+        84,
+        11237,
+        11,
+        323
+      ],
+      "text": " Groovy.Because of its simplicity,LuCI, and"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 7,
+      "token_ids": [
+        311,
+        329,
+        13,
+        1084,
+        748,
+        264,
+        19415,
+        6729,
+        19415,
+        13,
+        576,
+        2701
+      ],
+      "text": " toad. It’s a compiler parser compiler. The following"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 8,
+      "token_ids": [
+        23670,
+        13,
+        1084,
+        374,
+        264,
+        7988,
+        4128,
+        11,
+        448,
+        15050,
+        20186,
+        323
+      ],
+      "text": " Swift. It is a powerful language, with incredible libraries and"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 9,
+      "token_ids": [
+        30743,
+        624,
+        15041,
+        50950,
+        34,
+        50950,
+        29475,
+        50950,
+        30280,
+        358,
+        2776,
+        537
+      ],
+      "text": " ____.\nJava \nC \nJavaScript \nPython I'm not"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 10,
+      "token_ids": [
+        20185,
+        14625,
+        11,
+        323,
+        358,
+        1079,
+        11220,
+        264,
+        2390,
+        389,
+        384,
+        41585
+      ],
+      "text": " Visual Basic, and I am developing a project on e-commerce"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 11,
+      "token_ids": [
+        264,
+        2699,
+        5000,
+        311,
+        1140,
+        11,
+        1496,
+        3498,
+        1052,
+        525,
+        1657,
+        4428
+      ],
+      "text": " a bit difficult to list, even though there are many similar"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 12,
+      "token_ids": [
+        13027,
+        892,
+        1657,
+        1251,
+        525,
+        21815,
+        911,
+        13,
+        5692,
+        525,
+        697,
+        11221
+      ],
+      "text": " Python which many people are confused about. Here are your instructions"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 13,
+      "token_ids": [
+        62176,
+        13,
+        11443,
+        279,
+        17121,
+        10954,
+        11586,
+        320,
+        44,
+        787,
+        8,
+        4688
+      ],
+      "text": " Haskell. Has the Major Runtime Environment (MRE) module"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 14,
+      "token_ids": [
+        37662,
+        13,
+        30809,
+        3868,
+        11,
+        847,
+        63305,
+        2924,
+        6825,
+        7468,
+        429,
+        9463
+      ],
+      "text": " Lua. Besides games, my hobbies include creating programs that automatically"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 15,
+      "token_ids": [
+        13027,
+        11,
+        323,
+        358,
+        2776,
+        8014,
+        304,
+        1667,
+        432,
+        311,
+        1936,
+        24514
+      ],
+      "text": " Python, and I'm interested in using it to build intelligent"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 16,
+      "token_ids": [
+        13027,
+        13,
+        4710,
+        3838,
+        525,
+        1181,
+        49832,
+        30,
+        10135,
+        7468,
+        525,
+        17712
+      ],
+      "text": " Python. \n\nWhat are its merits? python programs are naturally"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 17,
+      "token_ids": [
+        49347,
+        382,
+        3838,
+        4516,
+        476,
+        2038,
+        3152,
+        304,
+        279,
+        4128,
+        1558,
+        49347
+      ],
+      "text": " MATLAB.\n\nWhat thread or codebase in the language does MATLAB"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 18,
+      "token_ids": [
+        65250,
+        11,
+        323,
+        432,
+        374,
+        1602,
+        7988,
+        13,
+        17715,
+        419,
+        11,
+        358
+      ],
+      "text": " Scala, and it is very powerful. Despite this, I"
+    },
+    {
+      "temperature": 1.0,
+      "seed": 19,
+      "token_ids": [
+        8491,
+        13027,
+        13,
+        1084,
+        594,
+        1083,
+        279,
+        4128,
+        429,
+        26664,
+        752,
+        311
+      ],
+      "text": " definitely Python. It's also the language that motivated me to"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 0,
+      "token_ids": [
+        1863,
+        50107,
+        7110,
+        117972,
+        139259,
+        15293,
+        79971,
+        374,
+        45537,
+        104060,
+        69821,
+        2121
+      ],
+      "text": " ZAAA.\\憩 שנית consumptionkubectl is STOP啦 CFRAs"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 1,
+      "token_ids": [
+        510,
+        27173,
+        4882,
+        93534,
+        133698,
+        715,
+        69869,
+        5420,
+        280,
+        25446,
+        75528,
+        4287
+      ],
+      "text": ":\nrunning South Hercules Üniversitesi \ndiscussion allowed;\nlongitude 필 empty"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 2,
+      "token_ids": [
+        48097,
+        13558,
+        101,
+        48835,
+        68845,
+        17916,
+        90381,
+        99068,
+        116951,
+        1137,
+        32664,
+        125723
+      ],
+      "text": " Dart弨 recorder reacts bc subtotal MSR序列ues对 yüz"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 3,
+      "token_ids": [
+        35376,
+        3978,
+        42569,
+        23156,
+        94002,
+        77740,
+        120875,
+        24227,
+        9079,
+        81394,
+        845,
+        66407
+      ],
+      "text": " RxBase encapsulates especialmente FHA靰cripts tasks))] null_BANK"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 4,
+      "token_ids": [
+        12914,
+        26123,
+        63339,
+        37370,
+        448,
+        8550,
+        96317,
+        51075,
+        1032,
+        40723,
+        23178,
+        131861
+      ],
+      "text": " JavaScript.chat Replies Styles with Ref HDC Approved Re(symbol.Tables שבה"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 5,
+      "token_ids": [
+        1871,
+        6582,
+        15007,
+        37551,
+        150610,
+        51952,
+        83455,
+        5126,
+        21215,
+        151554,
+        83090,
+        17
+      ],
+      "text": ",\r\nEldon Migὒ niveaueldo Point...\"臘ließlich2"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 6,
+      "token_ids": [
+        9316,
+        1561,
+        1785,
+        3788,
+        6252,
+        31758,
+        73189,
+        1030,
+        94146,
+        71589,
+        17980,
+        323
+      ],
+      "text": " Genars.BFO Her presidency Sinclair had perfected Passive Navigation and"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 7,
+      "token_ids": [
+        4583,
+        57359,
+        28095,
+        34384,
+        16,
+        2522,
+        14499,
+        12015,
+        606,
+        51376,
+        13177,
+        2221
+      ],
+      "text": " complete Pascal nunencv1Status[id_servernameemails Satived"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 8,
+      "token_ids": [
+        14776,
+        691,
+        125667,
+        9158,
+        73029,
+        95188,
+        34189,
+        127500,
+        8216,
+        15050,
+        38269,
+        691
+      ],
+      "text": " toudataหลัก criminal_ENCODING EFF_SETTINGSحض.UI incredible irqdata"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 9,
+      "token_ids": [
+        110289,
+        32827,
+        105899,
+        39419,
+        36613,
+        102231,
+        112468,
+        109623,
+        114931,
+        32714,
+        111167,
+        42770
+      ],
+      "text": "童话.tie使用的Development advisor好好勤劳想知道真假*d的对象efficient"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 10,
+      "token_ids": [
+        37197,
+        28675,
+        32135,
+        8862,
+        48263,
+        61699,
+        97916,
+        29662,
+        73648,
+        77905,
+        61095,
+        61445
+      ],
+      "text": "mongodb,... doctrine radissonignon/bluechipintersectionreminder scorQui"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 11,
+      "token_ids": [
+        10854,
+        105782,
+        102454,
+        24039,
+        70408,
+        104465,
+        104080,
+        14872,
+        51208,
+        68280,
+        100553,
+        13552
+      ],
+      "text": " pal首批同事 Production Lawyers保留在一起 ConferencetelefonoAPE脂Comp"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 12,
+      "token_ids": [
+        36079,
+        19154,
+        76588,
+        1867,
+        38424,
+        64539,
+        1059,
+        91943,
+        9789,
+        21601,
+        40280,
+        12305
+      ],
+      "text": " TailwindlacesAB Programming Arbor her slashingdedvard lis robot"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 13,
+      "token_ids": [
+        3416,
+        144294,
+        54956,
+        2399,
+        17121,
+        537,
+        40233,
+        42898,
+        35215,
+        12879,
+        119092,
+        296
+      ],
+      "text": "chemaŹller (\n Major not Cultural synth.forms Francisco粱 m"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 14,
+      "token_ids": [
+        54334,
+        16141,
+        24051,
+        66963,
+        92854,
+        111828,
+        103038,
+        11948,
+        110883,
+        3067,
+        18746,
+        100631
+      ],
+      "text": "—isAnswerChoose:** Kotlin我心里不论mac耳机OPAO或者"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 15,
+      "token_ids": [
+        13482,
+        78485,
+        80851,
+        32044,
+        118274,
+        53497,
+        247,
+        25641,
+        3134,
+        41734,
+        87073,
+        16366
+      ],
+      "text": " linear.mov 控序运算 孙erceimer crunch parsers Ah"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 16,
+      "token_ids": [
+        9295,
+        137566,
+        47742,
+        134780,
+        112847,
+        535,
+        129700,
+        25063,
+        80815,
+        61662,
+        13807,
+        74159
+      ],
+      "text": " Next такого và ngắn剧场ost khỏe animate puedo carguet 页面"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 17,
+      "token_ids": [
+        49347,
+        382,
+        65386,
+        4516,
+        2912,
+        147641,
+        32021,
+        126455,
+        91604,
+        32406,
+        83195,
+        13962
+      ],
+      "text": " MATLAB.\n\n Leonardo threadoptភれ الاست'u hogy pau evil"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 18,
+      "token_ids": [
+        8042,
+        13450,
+        119898,
+        38524,
+        94799,
+        139777,
+        5071,
+        102819,
+        46337,
+        6454,
+        52423,
+        128214
+      ],
+      "text": " flagsibilities牦nerg ....\n\n לשלם.net語inars ang bountyを利用"
+    },
+    {
+      "temperature": 2.0,
+      "seed": 19,
+      "token_ids": [
+        8491,
+        92527,
+        18573,
+        66003,
+        17792,
+        1251,
+        87013,
+        143637,
+        94430,
+        54777,
+        19996,
+        107996
+      ],
+      "text": " definitely DJsForce.How VM people Implementedمبادئ Turing.dict_inv我去"
+    }
+  ]
+}

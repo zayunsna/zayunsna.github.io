@@ -6,8 +6,8 @@ description: >
   Temperature reshapes the next-token probabilities; top-k and top-p cut off unlikely tokens. Tested on a small open
   model: at temperature 2.0 the output turned into noise, and top-k fixed it while top-p did not.
 image: /assets/img/tips/llm_temperature/cover.png
-lastmod: 2026-11-16
-last_modified_at: 2026-11-16
+lastmod: 2026-11-23
+last_modified_at: 2026-11-23
 sitemap:
   changefreq: daily
   priority: 1.0
@@ -120,7 +120,8 @@ for t in [0.3, 1.0, 2.0]:
    ' Dart弨 recorder reacts bc subtotal MSR序列ues对 yüz'
 ```
 
-`top_k=0, top_p=1.0` turns both filters off, so only temperature is at work. At 2.0, the model samples from the long tail and mixes random words from many languages.
+`top_k=0, top_p=1.0` turns both filters off. These earlier calls retain the model's saved repetition penalty;
+the added measurements below explicitly fix that setting. At 2.0, the model samples from the long tail and mixes random words from many languages.
 
 ## Top-k and top-p after temperature scaling
 
@@ -155,6 +156,87 @@ The reason is the order. transformers applies temperature first, then top-k, the
 "the top 90%" still contains about 44,000 tokens, so top-p removes almost nothing. Top-k=20 keeps exactly 20, no matter how flat the distribution is.
 Hugging Face's [Generation strategies](https://huggingface.co/docs/transformers/generation_strategies)
 documentation describes these sampling controls (checked 2026-09-28).
+
+## Temperature zero and greedy decoding
+
+In transformers 5.17.0, sampling with `temperature=0.0` raises a `ValueError`. With `num_beams=1`,
+`do_sample=False` selects greedy decoding and leaves temperature out of the logits processing.
+The installed [`TemperatureLogitsWarper` source](https://github.com/huggingface/transformers/blob/v5.17.0/src/transformers/generation/logits_process.py)
+requires a positive float, and the [generation documentation](https://huggingface.co/docs/transformers/v5.17.0/en/main_classes/text_generation)
+describes greedy decoding and sampling (both checked 2026-11-23).
+
+The added checks use the same raw prompt and model as above. The cached snapshot is pinned in the
+[measurement script](/assets/code/llm_temperature/sampling_measurements.py), with CPU bfloat16 weights and eager attention,
+transformers 5.17.0, PyTorch 2.14.0 and Python 3.12.13 on macOS arm64, tested 2026-11-23.
+The original loader left revision implicit; the new script records the snapshot and complete settings in its results.
+The model's saved generation settings include `repetition_penalty=1.1`, `top_k=20` and `top_p=0.8`.
+For these checks, the script fixes `repetition_penalty=1.0`, `top_k=0`, `top_p=1.0`, `num_beams=1`,
+`max_new_tokens=12` and `use_cache=True`. It preserves both model EOS IDs and uses the tokenizer EOS as padding.
+
+Save the linked script beside the code below so that its loader and configuration helper can be imported:
+
+```python
+import torch
+from sampling_measurements import load, generate
+
+model, tok, inputs, config = load()
+try:
+    generate(model, inputs, config, do_sample=True, temperature=0.0)
+except ValueError as exc:
+    print('sampling temperature=0:', type(exc).__name__)
+    print(str(exc))
+with torch.inference_mode():
+    zero = generate(model, inputs, config, do_sample=False, temperature=0.0)
+    one = generate(model, inputs, config, do_sample=False, temperature=1.0)
+print('greedy temperature=0 equals temperature=1:', torch.equal(zero, one))
+print('greedy continuation:', repr(tok.decode(zero[0, inputs.input_ids.shape[1]:], skip_special_tokens=True)))
+```
+
+```text
+sampling temperature=0: ValueError
+`temperature` (=0.0) has to be a strictly positive float, otherwise your next token scores will be invalid. If you're looking for greedy decoding strategies, set `do_sample=False`.
+greedy temperature=0 equals temperature=1: True
+greedy continuation: ' Python. I am a beginner and I am trying to learn'
+```
+
+The two greedy calls produced identical token IDs. Transformers also logged that the sampling-only flags
+`temperature` and `top_k` may be ignored in the greedy call; the saved warning lines accompany the raw output.
+For greedy generation, set `do_sample=False` and leave sampling controls at their defaults.
+
+## Measure twenty continuations per temperature
+
+The same raw prompt, `"My favorite programming language is"`, was sampled once for each seed from 0 through 19 at
+each of the three temperatures. Each call generates up to 12 new tokens. Every seed is reset for each temperature;
+the prompt, weights and filtering settings stay fixed. The following block continues from the loader above:
+
+```python
+from sampling_measurements import diversity
+
+summary, samples = diversity(model, tok, inputs, config)
+```
+
+```text
+temperature | unique continuations | first tokens | starts with ' Python'
+0.3 | 18/20 | 2 | 19/20
+1.0 | 20/20 | 18 | 3/20
+2.0 | 20/20 | 20 | 0/20
+```
+
+| Temperature | Distinct token-ID continuations / calls | Distinct first tokens | First token is ` Python` |
+|---|---|---|---|
+| 0.3 | 18 / 20 | 2 | 19 / 20 |
+| 1.0 | 20 / 20 | 18 | 3 / 20 |
+| 2.0 | 20 / 20 | 20 | 0 / 20 |
+
+At the lowest temperature, the first token was ` Python` in nearly every call, but later tokens still varied enough
+to produce 18 distinct continuations. At both higher temperatures, every continuation was distinct in this sample.
+The first-token vocabulary expanded from 2 to 18 to 20 observed token IDs. The
+[complete samples and token IDs](/assets/code/llm_temperature/sampling_results.json) retain every continuation,
+and the [recorded stdout](/assets/code/llm_temperature/reference_output.txt) contains the measured counts.
+
+These counts describe one prompt, a small model, 20 seeds and a short token budget. They measure observed variety;
+answer usefulness and correctness were not scored. The count of distinct continuations already reaches the sample
+size at both higher temperatures, so it cannot distinguish their variety further with this sample size.
 
 ## Choose sampling settings for the task
 
