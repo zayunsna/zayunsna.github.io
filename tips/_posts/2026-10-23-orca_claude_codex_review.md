@@ -1,10 +1,9 @@
 ---
 layout: post
-title: "Orca review: Claude Code and Codex side by side, and one agent handing work to the other"
+title: "Orca coordinates Claude Code and Codex for code review"
 description: >
-  A hands-on look at Orca, an open-source desktop app for running CLI coding agents side by side. What it does,
-  how its orchestration commands let Claude Code hand a code review to Codex, what that review found, and the one
-  setting to check before you rely on it.
+  Claude Code sends Codex a read-only review through Orca. See the terminal setup, task dispatch, review findings,
+  and how the coordinator collects the answer.
 image: /assets/img/tips/orca_claude_codex_review/cover.png
 lastmod: 2026-11-05
 last_modified_at: 2026-11-05
@@ -13,7 +12,7 @@ sitemap:
   priority: 1.0
 ---
 
-# Orca review: Claude Code and Codex side by side, and one agent handing work to the other
+# Orca coordinates Claude Code and Codex for code review
 
 [Orca](https://github.com/stablyai/orca) is an open-source (MIT) desktop app for running several CLI coding agents at
 once. Its README lists Codex, Claude Code, OpenCode and Pi, on macOS, Windows and Linux, and each agent runs with your
