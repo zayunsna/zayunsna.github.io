@@ -1,10 +1,10 @@
 ---
 hub: llm-inference
 layout: post
-title: "How much does quantization hurt an LLM? 8-bit vs 4-bit, tested"
+title: "8-bit vs 4-bit LLM quantization in a Qwen quality test"
 description: >
-  We rounded a small model's weights to 8, 4, 3 and 2 bits and measured perplexity and correct answers. 8-bit changed nothing;
-  4-bit dropped the 0.5B model from 11 to 4 correct answers, while a 1.5B model kept all 12.
+  A local Qwen weight-rounding simulation measures perplexity and handbook answers, with checks for group size
+  and model size before choosing a bit width.
 image: /assets/img/tips/quantization_quality/cover.png
 lastmod: 2026-11-06
 last_modified_at: 2026-11-06
@@ -13,7 +13,7 @@ sitemap:
   priority: 1.0
 ---
 
-# How much does quantization hurt an LLM? 8-bit vs 4-bit, tested
+# 8-bit vs 4-bit LLM quantization in a Qwen quality test
 
 Quantization stores a model's weights with fewer bits: float32 uses 32 bits per weight, 8-bit uses 8, 4-bit uses 4.
 In our test, 8-bit weights were as good as the original for both models. At 4 bits, a 0.5B model answered only 4 of 12
